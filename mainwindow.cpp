@@ -6,6 +6,7 @@
 #include "task.h"
 #include <QDebug>
 #include <QDir>
+#include <QDirIterator>
 #include <QStandardPaths>
 #include <QTextCodec>
 
@@ -35,6 +36,25 @@ void MainWindow::debugTasks() {
     ui->textBrowser->setText("Tasks of Project " + CURR_PRO.name() + ": " + names);
 }
 
+void MainWindow::readProjects() {
+    QDir dataDir = QDir(QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).at(0));
+    QDirIterator it(dataDir.path(), QDir::Files, QDirIterator::Subdirectories);
+    while (it.hasNext()) {
+        QFile file(it.next());
+        Project project = Project(file.fileName().remove(dataDir.path() + '/').remove(".txt"));
+        Organizer::Projects.append(project);
+        file.open(QIODevice::ReadOnly);
+        QTextStream reader(&file);
+        reader.setCodec(QTextCodec::codecForName("UTF-8"));
+        while (!reader.atEnd()) {
+            QString line = reader.readLine();
+            QString taskName = line.split('|').at(0);
+            project.tasks.append(Task(taskName));
+        }
+        ui->projectWidget->addItem(project.name());
+    }
+}
+
 void MainWindow::saveProjects() {
     for (auto &&project : Organizer::Projects) {
         QString projectData;
@@ -57,10 +77,6 @@ void MainWindow::saveProjects() {
         data << projectData;
         file.close();
     }
-}
-
-void MainWindow::readProjects() {
-
 }
 
 void MainWindow::on_addProBtn_clicked() {
@@ -203,6 +219,7 @@ void MainWindow::savePrefs() {
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
+    saveProjects();
     savePrefs();
     event->accept();
 }
