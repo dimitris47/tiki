@@ -30,6 +30,8 @@ private slots:
     void on_doneBtn_clicked();
     void on_rmTaskBtn_clicked();
 
+    void on_projectWidget_currentRowChanged(int currentRow);
+
 private:
     Ui::MainWindow *ui;
     void readPrefs();

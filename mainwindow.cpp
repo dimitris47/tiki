@@ -27,19 +27,32 @@ void MainWindow::on_rmProBtn_clicked() {
     Organizer::Projects.removeAt(ui->projectWidget->currentRow());
 }
 
+void MainWindow::on_projectWidget_currentRowChanged(int currentRow) {
+    ui->taskWidget->clear();
+    auto tasks = Organizer::Projects.at(currentRow).tasks;
+    tasks.append(Task(ui->projectWidget->currentItem()->text()));
+    ui->taskWidget->clear();
+    QStringList items;
+    for (auto &&task : tasks)
+        items.append(task.getTaskName());
+    ui->taskWidget->addItems(items);
+}
+
 void MainWindow::on_addTaskBtn_clicked() {
-    auto widget = new Dialog(this);
-    int ret = widget->exec();
-    if (ret == QDialog::Rejected)
-        return;
-    if (ret) {
-        auto tasks = Organizer::Projects.at(ui->projectWidget->currentRow()).tasks;
-        tasks.append(Task(widget->itemText));
-        ui->taskWidget->clear();
-        QStringList items;
-        for (auto &&task : tasks)
-            items.append(task.getTaskName());
-        ui->taskWidget->addItems(items);
+    if (ui->projectWidget->selectedItems().size() != 0) {
+        auto widget = new Dialog(this);
+        int ret = widget->exec();
+        if (ret == QDialog::Rejected)
+            return;
+        if (ret) {
+            auto tasks = Organizer::Projects.at(ui->projectWidget->currentRow()).tasks;
+            tasks.append(Task(widget->itemText));
+            ui->taskWidget->clear();
+            QStringList items;
+            for (auto &&task : tasks)
+                items.append(task.getTaskName());
+            ui->taskWidget->addItems(items);
+        }
     }
 }
 
