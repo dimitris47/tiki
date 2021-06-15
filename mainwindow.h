@@ -35,6 +35,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    void saveProjects();
+    void readProjects();
     void readPrefs();
     void debugProjects();
     void debugTasks();

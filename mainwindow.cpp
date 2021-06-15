@@ -5,6 +5,9 @@
 #include "project.h"
 #include "task.h"
 #include <QDebug>
+#include <QDir>
+#include <QStandardPaths>
+#include <QTextCodec>
 
 #define CURR_PRO Organizer::Projects.at(ui->projectWidget->currentRow())
 #define CURR_PRO_TASKS Organizer::Projects.at(ui->projectWidget->currentRow()).tasks
@@ -12,23 +15,52 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
     ui->setupUi(this);
     readPrefs();
+    readProjects();
     debugProjects();
 }
 
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::debugProjects() {
-    QStringList names;
+    QString names;
     for (auto &&project : Organizer::Projects)
-        names.append(project.name());
-    qDebug() << "Projects:\n" << names;
+        names.append(' ' + project.name());
+    ui->textBrowser->setText("Projects:" +  names);
 }
 
 void MainWindow::debugTasks() {
-    QStringList names;
+    QString names;
     for (auto &&task : CURR_PRO_TASKS)
-        names.append(task.name());
-    qDebug() << "Tasks of Project" << CURR_PRO.name() + ":" << names;
+        names.append('\n' + task.name());
+    ui->textBrowser->setText("Tasks of Project " + CURR_PRO.name() + ": " + names);
+}
+
+void MainWindow::saveProjects() {
+    for (auto &&project : Organizer::Projects) {
+        QString projectData;
+        for (auto &&task : project.tasks)
+            projectData.append(task.name() + '|' +
+                               (task.status() ? "true" : "false") + '|' +
+                               QString::number(task.priority()) + '\n');
+        QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        if (!dataDir.exists())
+            dataDir.mkpath(".");
+        QString fileName = dataDir.path() + '/' + project.name() + ".txt";
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
+            qWarning() << tr("error opening %1").arg(fileName);
+            return;
+        }
+        QTextStream data(&file);
+        data.setCodec(QTextCodec::codecForName("UTF-8"));
+        data.setIntegerBase(10);
+        data << projectData;
+        file.close();
+    }
+}
+
+void MainWindow::readProjects() {
+
 }
 
 void MainWindow::on_addProBtn_clicked() {
@@ -41,6 +73,7 @@ void MainWindow::on_addProBtn_clicked() {
         Organizer::Projects.append(Project(widget->itemText));
     }
     debugProjects();
+    saveProjects();
 }
 
 void MainWindow::on_renameProBtn_clicked() {
@@ -57,6 +90,7 @@ void MainWindow::on_renameProBtn_clicked() {
         Organizer::Projects[ui->projectWidget->currentRow()].setName(widget->itemText);
     }
     debugProjects();
+    saveProjects();
 }
 
 void MainWindow::on_rmProBtn_clicked() {
@@ -69,12 +103,10 @@ void MainWindow::on_rmProBtn_clicked() {
         Organizer::Projects.removeAt(row);
         ui->projectWidget->takeItem(row);
     }
-    else {
+    else
         ui->statusbar->showMessage("Can't remove last remaining project -- bug to be solved", 3000);
-//        Organizer::Projects.clear();
-//        ui->projectWidget->clear();
-    }
     debugProjects();
+    saveProjects();
 }
 
 void MainWindow::on_projectWidget_currentRowChanged() {
@@ -104,6 +136,7 @@ void MainWindow::on_addTaskBtn_clicked() {
         ui->taskWidget->addItems(items);
     }
     debugTasks();
+    saveProjects();
 }
 
 void MainWindow::on_renameTaskBtn_clicked() {
@@ -120,6 +153,7 @@ void MainWindow::on_renameTaskBtn_clicked() {
         CURR_PRO_TASKS[ui->taskWidget->currentRow()].setName(ui->taskWidget->currentItem()->text());
     }
     debugTasks();
+    saveProjects();
 }
 
 void MainWindow::on_highBtn_clicked() {

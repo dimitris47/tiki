@@ -1,7 +1,7 @@
 #include "task.h"
 
-Task::Task(QString name, Priority) {
+Task::Task(QString name, bool isDone, Priority) {
     taskName = name;
-    isDone = false;
-    priority = normal;
+    this->isDone = isDone;
+    taskPriority = normal;
 }
