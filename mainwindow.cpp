@@ -138,7 +138,20 @@ void MainWindow::on_doneBtn_clicked() {
 }
 
 void MainWindow::on_rmTaskBtn_clicked() {
-
+    if (ui->taskWidget->currentItem() == NULL) {
+        ui->statusbar->showMessage("No task selected", 1000);
+        return;
+    }
+    int row = ui->taskWidget->currentRow();
+    if (row != 0) {
+        Organizer::Projects.at(ui->projectWidget->currentRow()).tasks.removeAt(row);
+        ui->taskWidget->takeItem(row);
+    }
+    else {
+        Organizer::Projects.at(ui->projectWidget->currentRow()).tasks.clear();
+        ui->taskWidget->clear();
+    }
+    debugTasks();
 }
 
 void MainWindow::readPrefs() {
