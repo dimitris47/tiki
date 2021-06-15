@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>922</width>
+    <height>604</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,10 +15,41 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="2">
+    <item row="0" column="7">
+     <widget class="QPushButton" name="lowBtn">
+      <property name="text">
+       <string>low</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
      <widget class="QPushButton" name="addTaskBtn">
       <property name="text">
        <string>add task</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="3">
+     <widget class="QListWidget" name="projectWidget"/>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="rmProBtn">
+      <property name="text">
+       <string>remove project</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="8">
+     <widget class="QPushButton" name="doneBtn">
+      <property name="text">
+       <string>done</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="5">
+     <widget class="QPushButton" name="highBtn">
+      <property name="text">
+       <string>high</string>
       </property>
      </widget>
     </item>
@@ -29,53 +60,36 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0" colspan="2">
-     <widget class="QListWidget" name="projectWidget"/>
-    </item>
     <item row="0" column="1">
-     <widget class="QPushButton" name="rmProBtn">
+     <widget class="QPushButton" name="renameProBtn">
       <property name="text">
-       <string>remove project</string>
+       <string>rename</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="3">
-     <widget class="QPushButton" name="highBtn">
-      <property name="text">
-       <string>high</string>
-      </property>
-     </widget>
+    <item row="1" column="3" colspan="7">
+     <widget class="QListWidget" name="taskWidget"/>
     </item>
-    <item row="0" column="4">
-     <widget class="QPushButton" name="medBtn">
-      <property name="text">
-       <string>medium</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="5">
-     <widget class="QPushButton" name="lowBtn">
-      <property name="text">
-       <string>low</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="6">
-     <widget class="QPushButton" name="doneBtn">
-      <property name="text">
-       <string>done</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="7">
+    <item row="0" column="9">
      <widget class="QPushButton" name="rmTaskBtn">
       <property name="text">
        <string>remove task</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="2" colspan="6">
-     <widget class="QListWidget" name="taskWidget"/>
+    <item row="0" column="6">
+     <widget class="QPushButton" name="medBtn">
+      <property name="text">
+       <string>medium</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QPushButton" name="renameTaskBtn">
+      <property name="text">
+       <string>rename</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -84,7 +98,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>922</width>
      <height>22</height>
     </rect>
    </property>
