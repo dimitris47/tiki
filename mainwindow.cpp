@@ -6,6 +6,9 @@
 #include "task.h"
 #include <QDebug>
 
+#define CURR_PRO Organizer::Projects.at(ui->projectWidget->currentRow())
+#define CURR_PRO_TASKS Organizer::Projects.at(ui->projectWidget->currentRow()).tasks
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
     ui->setupUi(this);
     readPrefs();
@@ -23,9 +26,9 @@ void MainWindow::debugProjects() {
 
 void MainWindow::debugTasks() {
     QStringList names;
-    for (auto &&task : Organizer::Projects.at(ui->projectWidget->currentRow()).tasks)
+    for (auto &&task : CURR_PRO_TASKS)
         names.append(task.name());
-    qDebug() << "Tasks of Project '" << Organizer::Projects.at(ui->projectWidget->currentRow()).name() << "':\n" << names;
+    qDebug() << "Tasks of Project " << CURR_PRO.name() << ":\n" << names;
 }
 
 void MainWindow::on_addProBtn_clicked() {
@@ -67,18 +70,17 @@ void MainWindow::on_rmProBtn_clicked() {
         ui->projectWidget->takeItem(row);
     }
     else {
-        qDebug() << "last project";
+        ui->statusbar->showMessage("Can't remove last remaining project -- bug to be solved", 3000);
 //        Organizer::Projects.clear();
 //        ui->projectWidget->clear();
-        // TO WORK OUT
     }
     debugProjects();
 }
 
-void MainWindow::on_projectWidget_currentRowChanged(int currentRow) {
+void MainWindow::on_projectWidget_currentRowChanged() {
     ui->taskWidget->clear();
     QStringList items;
-    for (auto &&task : Organizer::Projects.at(currentRow).tasks)
+    for (auto &&task : CURR_PRO_TASKS)
         items.append(task.name());
     ui->taskWidget->addItems(items);
 }
@@ -93,10 +95,10 @@ void MainWindow::on_addTaskBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        Organizer::Projects.at(ui->projectWidget->currentRow()).tasks.append(Task(widget->itemText));
+        CURR_PRO_TASKS.append(Task(widget->itemText));
         ui->taskWidget->clear();
         QStringList items;
-        for (auto &&task : Organizer::Projects.at(ui->projectWidget->currentRow()).tasks)
+        for (auto &&task : CURR_PRO_TASKS)
             items.append(task.name());
         ui->taskWidget->addItems(items);
     }
@@ -114,9 +116,7 @@ void MainWindow::on_renameTaskBtn_clicked() {
         return;
     if (ret) {
         ui->taskWidget->currentItem()->setText(widget->itemText);
-        Organizer::Projects.at(
-                    ui->projectWidget->currentRow()).tasks[ui->taskWidget->currentRow()].setName(
-                    ui->taskWidget->currentItem()->text());
+        CURR_PRO_TASKS[ui->taskWidget->currentRow()].setName(ui->taskWidget->currentItem()->text());
     }
     debugTasks();
 }
@@ -144,11 +144,11 @@ void MainWindow::on_rmTaskBtn_clicked() {
     }
     int row = ui->taskWidget->currentRow();
     if (row != 0) {
-        Organizer::Projects.at(ui->projectWidget->currentRow()).tasks.removeAt(row);
+        CURR_PRO_TASKS.removeAt(row);
         ui->taskWidget->takeItem(row);
     }
     else {
-        Organizer::Projects.at(ui->projectWidget->currentRow()).tasks.clear();
+        CURR_PRO_TASKS.clear();
         ui->taskWidget->clear();
     }
     debugTasks();

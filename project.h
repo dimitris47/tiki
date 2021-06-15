@@ -6,13 +6,9 @@
 class Project {
 public:
     explicit Project(QString name);
+    QString name() const { return projectName; }
+    void setName(QString name) { projectName = name; }
     static QList<Task> tasks;
-    void setName(QString name) {
-        projectName = name;
-    }
-    QString name() const {
-        return projectName;
-    }
 
 private:
     QString projectName;

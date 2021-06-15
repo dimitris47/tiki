@@ -24,7 +24,7 @@ private slots:
     void on_addProBtn_clicked();
     void on_renameProBtn_clicked();
     void on_rmProBtn_clicked();
-    void on_projectWidget_currentRowChanged(int currentRow);
+    void on_projectWidget_currentRowChanged();
     void on_addTaskBtn_clicked();
     void on_renameTaskBtn_clicked();
     void on_highBtn_clicked();
