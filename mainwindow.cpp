@@ -9,6 +9,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
     ui->setupUi(this);
     readPrefs();
+    debugProjects();
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -18,6 +19,13 @@ void MainWindow::debugProjects() {
     for (auto &&project : Organizer::Projects)
         names.append(project.name());
     qDebug() << "Projects:\n" << names;
+}
+
+void MainWindow::debugTasks() {
+    QStringList names;
+    for (auto &&task : Organizer::Projects.at(ui->projectWidget->currentRow()).tasks)
+        names.append(task.name());
+    qDebug() << "Tasks of Project '" << Organizer::Projects.at(ui->projectWidget->currentRow()).name() << "':\n" << names;
 }
 
 void MainWindow::on_addProBtn_clicked() {
@@ -54,15 +62,24 @@ void MainWindow::on_rmProBtn_clicked() {
         return;
     }
     int row = ui->projectWidget->currentRow();
-    Organizer::Projects.removeAt(row);
-    ui->projectWidget->takeItem(row);
+    if (row != 0) {
+        Organizer::Projects.removeAt(row);
+        ui->projectWidget->takeItem(row);
+    }
+    else {
+        qDebug() << "last project";
+//        Organizer::Projects.clear();
+//        ui->projectWidget->clear();
+        // TO WORK OUT
+    }
+    debugProjects();
 }
 
 void MainWindow::on_projectWidget_currentRowChanged(int currentRow) {
     ui->taskWidget->clear();
     QStringList items;
     for (auto &&task : Organizer::Projects.at(currentRow).tasks)
-        items.append(task.getTaskName());
+        items.append(task.name());
     ui->taskWidget->addItems(items);
 }
 
@@ -76,17 +93,32 @@ void MainWindow::on_addTaskBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        auto tasks = Organizer::Projects.at(ui->projectWidget->currentRow()).tasks;
-        tasks.append(Task(widget->itemText));
+        Organizer::Projects.at(ui->projectWidget->currentRow()).tasks.append(Task(widget->itemText));
         ui->taskWidget->clear();
         QStringList items;
-        for (auto &&task : tasks)
-            items.append(task.getTaskName());
+        for (auto &&task : Organizer::Projects.at(ui->projectWidget->currentRow()).tasks)
+            items.append(task.name());
         ui->taskWidget->addItems(items);
     }
+    debugTasks();
 }
 
 void MainWindow::on_renameTaskBtn_clicked() {
+    if (ui->taskWidget->currentItem() == NULL) {
+        ui->statusbar->showMessage("No task selected", 1000);
+        return;
+    }
+    auto widget = new Dialog(this);
+    int ret = widget->exec();
+    if (ret == QDialog::Rejected)
+        return;
+    if (ret) {
+        ui->taskWidget->currentItem()->setText(widget->itemText);
+        Organizer::Projects.at(
+                    ui->projectWidget->currentRow()).tasks[ui->taskWidget->currentRow()].setName(
+                    ui->taskWidget->currentItem()->text());
+    }
+    debugTasks();
 }
 
 void MainWindow::on_highBtn_clicked() {

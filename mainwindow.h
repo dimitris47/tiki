@@ -37,6 +37,7 @@ private:
     Ui::MainWindow *ui;
     void readPrefs();
     void debugProjects();
+    void debugTasks();
 };
 
 #endif // MAINWINDOW_H

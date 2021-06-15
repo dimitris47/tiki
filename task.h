@@ -8,7 +8,12 @@ enum Priority {high, normal, low};
 class Task {
 public:
     explicit Task(QString name = "new task", Priority = normal);
-    QString getTaskName() const { return taskName; }
+    void setName(QString name) {
+        taskName = name;
+    }
+    QString name() const {
+        return taskName;
+    }
 
 private:
     QString taskName;
