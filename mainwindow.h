@@ -36,6 +36,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     void readPrefs();
+    void debugProjects();
 };
 
 #endif // MAINWINDOW_H
