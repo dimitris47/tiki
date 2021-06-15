@@ -2,13 +2,14 @@
 #define PROJECT_H
 
 #include "task.h"
+#include <QList>
 
 class Project {
 public:
     explicit Project(QString name);
     QString name() const { return projectName; }
     void setName(QString name) { projectName = name; }
-    static QList<Task> tasks;
+    QList<Task> tasks;
 
 private:
     QString projectName;

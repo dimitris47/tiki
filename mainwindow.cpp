@@ -9,8 +9,8 @@
 #include <QStandardPaths>
 #include <QTextCodec>
 
-#define CURR_PRO Organizer::Projects.at(ui->projectWidget->currentRow())
-#define CURR_PRO_TASKS Organizer::Projects.at(ui->projectWidget->currentRow()).tasks
+#define CURR_PRO Organizer::Projects[ui->projectWidget->currentRow()]
+#define CURR_PRO_TASKS Organizer::Projects[ui->projectWidget->currentRow()].tasks
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -87,7 +87,7 @@ void MainWindow::on_renameProBtn_clicked() {
         return;
     if (ret) {
         ui->projectWidget->currentItem()->setText(widget->itemText);
-        Organizer::Projects[ui->projectWidget->currentRow()].setName(widget->itemText);
+        CURR_PRO.setName(widget->itemText);
     }
     debugProjects();
     saveProjects();

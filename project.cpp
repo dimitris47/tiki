@@ -6,4 +6,4 @@ Project::Project(QString name) {
     projectName = name;
 }
 
-QList<Task> Project::tasks = {};
+QList<Task> tasks = {};
