@@ -28,7 +28,7 @@ void MainWindow::debugTasks() {
     QStringList names;
     for (auto &&task : CURR_PRO_TASKS)
         names.append(task.name());
-    qDebug() << "Tasks of Project " << CURR_PRO.name() << ":\n" << names;
+    qDebug() << "Tasks of Project" << CURR_PRO.name() + ":" << names;
 }
 
 void MainWindow::on_addProBtn_clicked() {
@@ -86,6 +86,7 @@ void MainWindow::on_projectWidget_currentRowChanged() {
 }
 
 void MainWindow::on_addTaskBtn_clicked() {
+    debugProjects();
     if (ui->projectWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
@@ -143,14 +144,8 @@ void MainWindow::on_rmTaskBtn_clicked() {
         return;
     }
     int row = ui->taskWidget->currentRow();
-    if (row != 0) {
-        CURR_PRO_TASKS.removeAt(row);
-        ui->taskWidget->takeItem(row);
-    }
-    else {
-        CURR_PRO_TASKS.clear();
-        ui->taskWidget->clear();
-    }
+    CURR_PRO_TASKS.removeAt(row);
+    ui->taskWidget->takeItem(row);
     debugTasks();
 }
 
