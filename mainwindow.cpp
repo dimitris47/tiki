@@ -26,14 +26,14 @@ void MainWindow::debugProjects() {
     QString names;
     for (auto &&project : Organizer::Projects)
         names.append(' ' + project.name());
-    ui->textBrowser->setText("Projects:" +  names);
+    qDebug() << "Projects:" +  names;
 }
 
 void MainWindow::debugTasks() {
     QString names;
     for (auto &&task : CURR_PRO_TASKS)
-        names.append('\n' + task.name());
-    ui->textBrowser->setText("Tasks of Project " + CURR_PRO.name() + ": " + names);
+        names.append(task.name());
+    qDebug() << "Tasks of Project " + CURR_PRO.name() + ":\n" + names;
 }
 
 void MainWindow::readProjects() {
@@ -134,6 +134,7 @@ void MainWindow::on_rmProBtn_clicked() {
 }
 
 void MainWindow::on_projectWidget_currentRowChanged() {
+    ui->statusbar->clearMessage();
     ui->taskWidget->clear();
     QStringList items;
     for (auto &&task : CURR_PRO_TASKS)
@@ -162,6 +163,11 @@ void MainWindow::on_addTaskBtn_clicked() {
     }
     debugTasks();
     saveProjects();
+}
+
+void MainWindow::on_taskWidget_currentRowChanged(int currentRow) {
+    if (ui->taskWidget->currentItem() != NULL)
+        ui->statusbar->showMessage(CURR_PRO_TASKS.at(currentRow).details());
 }
 
 void MainWindow::on_renameTaskBtn_clicked() {

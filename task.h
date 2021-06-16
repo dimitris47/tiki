@@ -12,6 +12,8 @@ public:
     void setName(QString name) { taskName = name; }
     bool status() const { return isDone; };
     Priority priority() const { return taskPriority; };
+    QString priorityString() const;
+    QString details() const;
 
 private:
     QString taskName;
