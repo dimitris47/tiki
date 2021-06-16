@@ -48,20 +48,25 @@ void MainWindow::readProjects() {
         reader.setCodec(QTextCodec::codecForName("UTF-8"));
         while (!reader.atEnd()) {
             QString line = reader.readLine();
-            QString taskName = line.split('|').at(0);
-            project.tasks.append(Task(taskName));
-            qDebug() << project.name() << "->" << taskName;
-        }        
+            if (line.contains("-->>")) {
+                QString taskName = line.split("-->>").at(0);
+                project.tasks.append(Task(taskName));
+            }
+        }
     }
-    debugProjects();
+    for (auto &&pro : Organizer::Projects) {
+        ui->projectWidget->addItem(pro.name());
+        for (auto &&task : pro.tasks)
+            qDebug() << pro.name() << "->" << task.name();
+    }
 }
 
 void MainWindow::saveProjects() {
     for (auto &&project : Organizer::Projects) {
         QString projectData;
         for (auto &&task : project.tasks)
-            projectData.append(task.name() + '|' +
-                               (task.status() ? "true" : "false") + '|' +
+            projectData.append(task.name() + "-->>" +
+                               (task.status() ? "true" : "false") + "-->>" +
                                QString::number(task.priority()) + '\n');
         QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
         if (!dataDir.exists())
@@ -221,7 +226,6 @@ void MainWindow::savePrefs() {
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    saveProjects();
     savePrefs();
     event->accept();
 }
