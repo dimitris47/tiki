@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Tiki
+#Name[el_GR]=
+Comment=Simple project organizer
+#Comment[el_GR]=
+Exec=tiki
+Icon=tiki.png
+Terminal=false
+Categories=Utility;
+Keywords=project;tasks;QT;DP;
