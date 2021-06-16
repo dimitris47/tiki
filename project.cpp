@@ -5,5 +5,3 @@
 Project::Project(QString name) {
     projectName = name;
 }
-
-QList<Task> tasks = {};

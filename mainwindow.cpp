@@ -131,6 +131,7 @@ void MainWindow::on_projectWidget_currentRowChanged() {
     for (auto &&task : CURR_PRO_TASKS)
         items.append(task.name());
     ui->taskWidget->addItems(items);
+    debugTasks();
 }
 
 void MainWindow::on_addTaskBtn_clicked() {
