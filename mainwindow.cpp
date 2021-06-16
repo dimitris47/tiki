@@ -97,6 +97,8 @@ void MainWindow::on_renameProBtn_clicked() {
         ui->projectWidget->currentItem()->setText(widget->itemText);
         CURR_PRO.setName(widget->itemText);
     }
+
+    // RENAME OR REMOVE 'OLD' FILE AND CREATE NEW
     saveProjects();
 }
 
@@ -112,6 +114,9 @@ void MainWindow::on_rmProBtn_clicked() {
     }
     else
         ui->statusbar->showMessage("Can't remove last remaining project -- bug to be solved", 3000);
+
+
+    // REMOVE FILE
     saveProjects();
 }
 
