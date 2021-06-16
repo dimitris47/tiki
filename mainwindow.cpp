@@ -50,9 +50,10 @@ void MainWindow::readProjects() {
             QString line = reader.readLine();
             QString taskName = line.split('|').at(0);
             project.tasks.append(Task(taskName));
-        }
-        ui->projectWidget->addItem(project.name());
+            qDebug() << project.name() << "->" << taskName;
+        }        
     }
+    debugProjects();
 }
 
 void MainWindow::saveProjects() {
