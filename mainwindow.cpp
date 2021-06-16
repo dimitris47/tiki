@@ -17,24 +17,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainW
     ui->setupUi(this);
     readPrefs();
     readProjects();
-    debugProjects();
 }
 
 MainWindow::~MainWindow() { delete ui; }
-
-void MainWindow::debugProjects() {
-    QString names;
-    for (auto &&project : Organizer::Projects)
-        names.append(' ' + project.name());
-    qDebug() << "Projects:" +  names;
-}
-
-void MainWindow::debugTasks() {
-    QString names;
-    for (auto &&task : CURR_PRO_TASKS)
-        names.append(task.name());
-    qDebug() << "Tasks of Project " + CURR_PRO.name() + ":\n" + names;
-}
 
 void MainWindow::readProjects() {
     QDir dataDir = QDir(QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).at(0));
@@ -96,7 +81,6 @@ void MainWindow::on_addProBtn_clicked() {
         ui->projectWidget->addItem(widget->itemText);
         Organizer::Projects.append(Project(widget->itemText));
     }
-    debugProjects();
     saveProjects();
 }
 
@@ -113,7 +97,6 @@ void MainWindow::on_renameProBtn_clicked() {
         ui->projectWidget->currentItem()->setText(widget->itemText);
         CURR_PRO.setName(widget->itemText);
     }
-    debugProjects();
     saveProjects();
 }
 
@@ -129,7 +112,6 @@ void MainWindow::on_rmProBtn_clicked() {
     }
     else
         ui->statusbar->showMessage("Can't remove last remaining project -- bug to be solved", 3000);
-    debugProjects();
     saveProjects();
 }
 
@@ -140,11 +122,9 @@ void MainWindow::on_projectWidget_currentRowChanged() {
     for (auto &&task : CURR_PRO_TASKS)
         items.append(task.name());
     ui->taskWidget->addItems(items);
-    debugTasks();
 }
 
 void MainWindow::on_addTaskBtn_clicked() {
-    debugProjects();
     if (ui->projectWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
@@ -161,7 +141,6 @@ void MainWindow::on_addTaskBtn_clicked() {
             items.append(task.name());
         ui->taskWidget->addItems(items);
     }
-    debugTasks();
     saveProjects();
 }
 
@@ -183,7 +162,6 @@ void MainWindow::on_renameTaskBtn_clicked() {
         ui->taskWidget->currentItem()->setText(widget->itemText);
         CURR_PRO_TASKS[ui->taskWidget->currentRow()].setName(ui->taskWidget->currentItem()->text());
     }
-    debugTasks();
     saveProjects();
 }
 
@@ -211,7 +189,6 @@ void MainWindow::on_rmTaskBtn_clicked() {
     int row = ui->taskWidget->currentRow();
     CURR_PRO_TASKS.removeAt(row);
     ui->taskWidget->takeItem(row);
-    debugTasks();
 }
 
 void MainWindow::readPrefs() {

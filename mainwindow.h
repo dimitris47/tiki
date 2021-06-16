@@ -39,8 +39,6 @@ private:
     void readProjects();
     void saveProjects();
     void readPrefs();
-    void debugProjects();
-    void debugTasks();
 };
 
 #endif // MAINWINDOW_H
