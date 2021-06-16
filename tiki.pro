@@ -41,3 +41,12 @@ win32 {
     RC_ICONS = icons/tiki.ico
     RC_LANG = 0x408
     RC_CODEPAGE = 1253
+}
+
+DISTFILES += \
+    icons/tiki.ico \
+    icons/tiki.png \
+    tiki.desktop
+
+RESOURCES += \
+    tiki.qrc

@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Tiki</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="tiki.qrc">
+    <normaloff>:/icons/tiki.png</normaloff>:/icons/tiki.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -105,6 +109,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="tiki.qrc"/>
+ </resources>
  <connections/>
 </ui>
