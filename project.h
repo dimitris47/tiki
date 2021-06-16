@@ -10,6 +10,7 @@ public:
     QString name() const { return projectName; }
     void setName(QString name) { projectName = name; }
     QList<Task> tasks;
+    QStringList toString();
 
 private:
     QString projectName;

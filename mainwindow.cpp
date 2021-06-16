@@ -39,6 +39,7 @@ void MainWindow::debugTasks() {
 void MainWindow::readProjects() {
     QDir dataDir = QDir(QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).at(0));
     QDirIterator it(dataDir.path(), QDir::Files, QDirIterator::Subdirectories);
+    int i {0};
     while (it.hasNext()) {
         QFile file(it.next());
         Project project = Project(file.fileName().remove(dataDir.path() + '/').remove(".txt"));
@@ -50,14 +51,15 @@ void MainWindow::readProjects() {
             QString line = reader.readLine();
             if (line.contains("-->>")) {
                 QString taskName = line.split("-->>").at(0);
-                project.tasks.append(Task(taskName));
+                Task task = Task(taskName);
+                Organizer::Projects[i].tasks.append(task);
             }
         }
+        i++;
     }
     for (auto &&pro : Organizer::Projects) {
         ui->projectWidget->addItem(pro.name());
-        for (auto &&task : pro.tasks)
-            qDebug() << pro.name() << "->" << task.name();
+        qDebug() << pro.toString();
     }
 }
 
