@@ -2,5 +2,17 @@
     <qresource prefix="/">
         <file>icons/tiki.png</file>
         <file>icons/tiki.ico</file>
+        <file>icons/address-book-new.png</file>
+        <file>icons/application-pdf.png</file>
+        <file>icons/dialog-information.png</file>
+        <file>icons/dialog-ok-apply.png</file>
+        <file>icons/dialog-ok.png</file>
+        <file>icons/document-edit.png</file>
+        <file>icons/document-new.png</file>
+        <file>icons/go-bottom.png</file>
+        <file>icons/go-next.png</file>
+        <file>icons/go-previous.png</file>
+        <file>icons/go-top.png</file>
+        <file>icons/list-remove.png</file>
     </qresource>
 </RCC>

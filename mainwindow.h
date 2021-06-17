@@ -35,6 +35,8 @@ private slots:
     void on_notDoneBtn_clicked();
     void on_rmTaskBtn_clicked();
 
+    void on_infoButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     void readProjects();

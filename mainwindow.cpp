@@ -1,12 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialog.h"
+#include "global.h"
 #include "organizer.h"
 #include "project.h"
 #include "task.h"
 #include <QDebug>
 #include <QDir>
 #include <QDirIterator>
+#include <QMessageBox>
 #include <QStandardPaths>
 #include <QTextCodec>
 
@@ -71,7 +73,7 @@ void MainWindow::saveProjects() {
         for (auto &&task : project.tasks)
             projectData.append(task.name() + "-->>" +
                                (task.status() ? "1" : "0") + "-->>" +
-                               QString::number(task.priority()) + '\n');
+                                QString::number(task.priority()) + '\n');
         QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
         if (!dataDir.exists())
             dataDir.mkpath(".");
@@ -299,6 +301,12 @@ void MainWindow::on_rmTaskBtn_clicked() {
     } else {
         ui->statusbar->showMessage("Can't remove the first task of the list -- bug to be solved", 3000);
     }
+}
+
+void MainWindow::on_infoButton_clicked() {
+    QMessageBox::about(this, tr("Program Info"),
+                           (QApplication::applicationName() + " " + QApplication::applicationVersion() + "<br/><br/>" +
+                            APPINFO));
 }
 
 void MainWindow::readPrefs() {
