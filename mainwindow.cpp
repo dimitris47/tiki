@@ -56,6 +56,7 @@ void MainWindow::readProjects() {
             }
         }
         i++;
+        file.close();
     }
     for (auto &&pro : Organizer::Projects) {
         ui->projectWidget->addItem(pro.name());
@@ -112,8 +113,12 @@ void MainWindow::on_renameProBtn_clicked() {
         ui->projectWidget->currentItem()->setText(widget->itemText);
         CURR_PRO.setName(widget->itemText);
     }
-
-    // RENAME OR REMOVE 'OLD' FILE AND CREATE NEW
+    QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    if (!dataDir.exists())
+        dataDir.mkpath(".");
+    QString fileName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
+    QFile file(fileName);
+    file.rename(widget->itemText + ".txt");
     saveProjects();
 }
 
@@ -131,7 +136,17 @@ void MainWindow::on_rmProBtn_clicked() {
         ui->statusbar->showMessage("Can't remove the first project of the list -- bug to be solved", 3000);
 
 
-    // REMOVE FILE
+    QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    if (!dataDir.exists())
+        dataDir.mkpath(".");
+    QString fileName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadWrite | QFile::Text)) {
+        qWarning() << tr("error opening %1").arg(fileName);
+        return;
+    }
+    file.remove();
+
     saveProjects();
 }
 
