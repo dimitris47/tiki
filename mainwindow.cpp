@@ -49,6 +49,9 @@ void MainWindow::readProjects() {
                 case 2:
                     task.setPriority(low);
                 }
+                int status = line.split("-->>").at(1).toInt();
+                task.setStatus(status);
+
                 Organizer::Projects[i].tasks.append(task);
             }
         }
@@ -65,7 +68,7 @@ void MainWindow::saveProjects() {
         QString projectData;
         for (auto &&task : project.tasks)
             projectData.append(task.name() + "-->>" +
-                               (task.status() ? "true" : "false") + "-->>" +
+                               (task.status() ? "1" : "0") + "-->>" +
                                QString::number(task.priority()) + '\n');
         QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
         if (!dataDir.exists())
