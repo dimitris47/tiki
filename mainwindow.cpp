@@ -204,6 +204,18 @@ void MainWindow::on_lowBtn_clicked() {
 }
 
 void MainWindow::on_doneBtn_clicked() {
+    if (CURR_TASK.status() == 0) {
+        QString taskName = CURR_TASK.name();
+        CURR_TASK.setStatus(1);
+        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), ui->taskWidget->count()-1);
+        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+        ui->taskWidget->insertItem(ui->taskWidget->count()-1, taskName);
+        ui->taskWidget->setCurrentRow(ui->taskWidget->count()-1);
+        saveProjects();
+    }
+}
+
+void MainWindow::on_notDoneBtn_clicked() {
 
 }
 

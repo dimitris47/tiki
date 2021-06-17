@@ -32,6 +32,7 @@ private slots:
     void on_medBtn_clicked();
     void on_lowBtn_clicked();
     void on_doneBtn_clicked();
+    void on_notDoneBtn_clicked();
     void on_rmTaskBtn_clicked();
 
 private:
