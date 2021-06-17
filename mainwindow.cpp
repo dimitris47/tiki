@@ -48,6 +48,7 @@ void MainWindow::readProjects() {
                     break;
                 case 2:
                     task.setPriority(low);
+                    break;
                 }
                 int status = line.split("-->>").at(1).toInt();
                 task.setStatus(status);
