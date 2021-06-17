@@ -30,9 +30,9 @@
      <widget class="QListWidget" name="taskWidget"/>
     </item>
     <item row="0" column="6">
-     <widget class="QPushButton" name="medBtn">
+     <widget class="QPushButton" name="normalBtn">
       <property name="text">
-       <string>medium</string>
+       <string>normal</string>
       </property>
      </widget>
     </item>

@@ -120,7 +120,7 @@ void MainWindow::on_renameProBtn_clicked() {
         ui->projectWidget->currentItem()->setText(widget->itemText);
         CURR_PRO.setName(widget->itemText);
     }
-        QFile file(currentName);
+    QFile file(currentName);
     if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
         qWarning() << tr("error opening %1").arg(currentName);
         return;
@@ -204,21 +204,47 @@ void MainWindow::on_renameTaskBtn_clicked() {
 }
 
 void MainWindow::on_highBtn_clicked() {
-    QString taskName = CURR_TASK.name();
-    CURR_TASK.setPriority(high);
-    CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
-    ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-    ui->taskWidget->insertItem(0, taskName);
-    ui->taskWidget->setCurrentRow(0);
-    saveProjects();
+    if (CURR_TASK.priority() != high) {
+        QString taskName = CURR_TASK.name();
+        CURR_TASK.setPriority(high);
+        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
+        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+        ui->taskWidget->insertItem(0, taskName);
+        ui->taskWidget->setCurrentRow(0);
+        saveProjects();
+    }
 }
 
-void MainWindow::on_medBtn_clicked() {
-
+void MainWindow::on_normalBtn_clicked() {
+    if (CURR_TASK.priority() != normal) {
+        QString taskName = CURR_TASK.name();
+        int highs {0};
+        for (auto &&task : CURR_TASKS_ALL)
+            if (task.priority() == high)
+                highs++;
+        CURR_TASK.setPriority(normal);
+        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs);
+        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+        ui->taskWidget->insertItem(highs, taskName);
+        ui->taskWidget->setCurrentRow(highs);
+        saveProjects();
+    }
 }
 
 void MainWindow::on_lowBtn_clicked() {
-
+    if (CURR_TASK.priority() != low) {
+        QString taskName = CURR_TASK.name();
+        int higher {-1};
+        for (auto &&task : CURR_TASKS_ALL)
+            if (task.priority() != low)
+                higher++;
+        CURR_TASK.setPriority(low);
+        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), higher);
+        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+        ui->taskWidget->insertItem(higher, taskName);
+        ui->taskWidget->setCurrentRow(higher);
+        saveProjects();
+    }
 }
 
 void MainWindow::on_doneBtn_clicked() {

@@ -29,7 +29,7 @@ private slots:
     void on_taskWidget_currentRowChanged();
     void on_renameTaskBtn_clicked();
     void on_highBtn_clicked();
-    void on_medBtn_clicked();
+    void on_normalBtn_clicked();
     void on_lowBtn_clicked();
     void on_doneBtn_clicked();
     void on_notDoneBtn_clicked();
