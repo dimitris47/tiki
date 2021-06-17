@@ -105,6 +105,12 @@ void MainWindow::on_renameProBtn_clicked() {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
     }
+
+    QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    if (!dataDir.exists())
+        dataDir.mkpath(".");
+    QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
+
     auto widget = new Dialog(this);
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
@@ -113,12 +119,12 @@ void MainWindow::on_renameProBtn_clicked() {
         ui->projectWidget->currentItem()->setText(widget->itemText);
         CURR_PRO.setName(widget->itemText);
     }
-    QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    if (!dataDir.exists())
-        dataDir.mkpath(".");
-    QString fileName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
-    QFile file(fileName);
-    file.rename(widget->itemText + ".txt");
+        QFile file(currentName);
+    if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
+        qWarning() << tr("error opening %1").arg(currentName);
+        return;
+    }
+    file.rename(currentName, dataDir.path() + '/' + widget->itemText + ".txt");
     saveProjects();
 }
 
@@ -141,11 +147,14 @@ void MainWindow::on_rmProBtn_clicked() {
         dataDir.mkpath(".");
     QString fileName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
     QFile file(fileName);
-    if (!file.open(QIODevice::ReadWrite | QFile::Text)) {
+
+
+    if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
         qWarning() << tr("error opening %1").arg(fileName);
         return;
     }
     file.remove();
+
 
     saveProjects();
 }
