@@ -156,10 +156,11 @@ void MainWindow::on_rmProBtn_clicked() {
 void MainWindow::on_projectWidget_currentRowChanged() {
     ui->statusbar->clearMessage();
     ui->taskWidget->clear();
-    QStringList items;
-    for (auto &&task : CURR_TASKS_ALL)
-        items.append(task.name());
-    ui->taskWidget->addItems(items);
+    for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
+        ui->taskWidget->addItem(CURR_TASKS_ALL.at(i).name());
+        if (CURR_TASKS_ALL.at(i).status() == 1)
+            ui->taskWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
+    }
 }
 
 void MainWindow::on_addTaskBtn_clicked() {
@@ -253,14 +254,36 @@ void MainWindow::on_doneBtn_clicked() {
         CURR_TASK.setStatus(1);
         CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), ui->taskWidget->count()-1);
         ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-        ui->taskWidget->insertItem(ui->taskWidget->count()-1, taskName);
+        ui->taskWidget->insertItem(ui->taskWidget->count(), taskName);
         ui->taskWidget->setCurrentRow(ui->taskWidget->count()-1);
+        ui->taskWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::gray));
+        ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
         saveProjects();
     }
 }
 
 void MainWindow::on_notDoneBtn_clicked() {
-
+    if (CURR_TASK.status() == 1) {
+        CURR_TASK.setStatus(0);
+        QString taskName = CURR_TASK.name();
+        switch (CURR_TASK.priority()) {
+        case 0:
+            CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
+            ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+            ui->taskWidget->insertItem(0, taskName);
+            ui->taskWidget->setCurrentRow(0);
+            saveProjects();
+            break;
+        case 1:
+            on_normalBtn_clicked();
+            break;
+        case 2:
+            on_lowBtn_clicked();
+            break;
+        }
+        ui->taskWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::black));
+        ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
+    }
 }
 
 void MainWindow::on_rmTaskBtn_clicked() {
