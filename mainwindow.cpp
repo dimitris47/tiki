@@ -14,7 +14,7 @@
 #define CURR_TASKS_ALL Organizer::Projects[ui->projectWidget->currentRow()].tasks
 #define CURR_TASK Organizer::Projects[ui->projectWidget->currentRow()].tasks[ui->taskWidget->currentRow()]
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) , ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     readPrefs();
     readProjects();
@@ -143,9 +143,9 @@ void MainWindow::on_rmProBtn_clicked() {
     if (row != 0) {
         Organizer::Projects.removeAt(row);
         ui->projectWidget->takeItem(row);
-    }
-    else
+    } else {
         ui->statusbar->showMessage("Can't remove the first project of the list -- bug to be solved", 3000);
+    }
 
     QFile file(currentName);
     file.remove();
@@ -246,17 +246,17 @@ void MainWindow::on_rmTaskBtn_clicked() {
         CURR_TASKS_ALL.removeAt(row);
         ui->taskWidget->takeItem(row);
         saveProjects();
-    }
-    else
+    } else {
         ui->statusbar->showMessage("Can't remove the first task of the list -- bug to be solved", 3000);
+    }
 }
 
 void MainWindow::readPrefs() {
     QSettings settings;
     bool isMax = settings.value("isMaximized", false).toBool();
-    if (isMax)
+    if (isMax) {
         showMaximized();
-    else {
+    } else {
         const QByteArray geometry = settings.value("geometry", QByteArray()).toByteArray();
         restoreGeometry(geometry);
     }
