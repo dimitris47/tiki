@@ -133,6 +133,12 @@ void MainWindow::on_rmProBtn_clicked() {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
     }
+
+    QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    if (!dataDir.exists())
+        dataDir.mkpath(".");
+    QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
+
     int row = ui->projectWidget->currentRow();
     if (row != 0) {
         Organizer::Projects.removeAt(row);
@@ -141,21 +147,8 @@ void MainWindow::on_rmProBtn_clicked() {
     else
         ui->statusbar->showMessage("Can't remove the first project of the list -- bug to be solved", 3000);
 
-
-    QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    if (!dataDir.exists())
-        dataDir.mkpath(".");
-    QString fileName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
-    QFile file(fileName);
-
-
-    if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
-        qWarning() << tr("error opening %1").arg(fileName);
-        return;
-    }
+    QFile file(currentName);
     file.remove();
-
-
     saveProjects();
 }
 
