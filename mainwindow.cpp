@@ -128,7 +128,7 @@ void MainWindow::on_rmProBtn_clicked() {
         ui->projectWidget->takeItem(row);
     }
     else
-        ui->statusbar->showMessage("Can't remove last remaining project -- bug to be solved", 3000);
+        ui->statusbar->showMessage("Can't remove the first project of the list -- bug to be solved", 3000);
 
 
     // REMOVE FILE
@@ -213,8 +213,12 @@ void MainWindow::on_rmTaskBtn_clicked() {
         return;
     }
     int row = ui->taskWidget->currentRow();
-    CURR_TASKS_ALL.removeAt(row);
-    ui->taskWidget->takeItem(row);
+    if (row != 0) {
+        CURR_TASKS_ALL.removeAt(row);
+        ui->taskWidget->takeItem(row);
+    }
+    else
+        ui->statusbar->showMessage("Can't remove the first task of the list -- bug to be solved", 3000);
 }
 
 void MainWindow::readPrefs() {
