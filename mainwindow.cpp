@@ -144,13 +144,8 @@ void MainWindow::on_rmProBtn_clicked() {
     QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
 
     int row = ui->projectWidget->currentRow();
-    if (row != 0) {
-        Organizer::Projects.removeAt(row);
-        ui->projectWidget->takeItem(row);
-    } else {
-        ui->statusbar->showMessage("Can't remove the first project of the list -- bug to be solved", 3000);
-    }
-
+    ui->projectWidget->takeItem(row);
+    Organizer::Projects.removeAt(row);
     QFile file(currentName);
     file.remove();
     saveProjects();
@@ -159,11 +154,12 @@ void MainWindow::on_rmProBtn_clicked() {
 void MainWindow::on_projectWidget_currentRowChanged() {
     ui->statusbar->clearMessage();
     ui->taskWidget->clear();
-    for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
-        ui->taskWidget->addItem(CURR_TASKS_ALL.at(i).name());
-        if (CURR_TASKS_ALL.at(i).status() == 1)
-            ui->taskWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
-    }
+    if (ui->projectWidget->currentItem() != NULL)
+        for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
+            ui->taskWidget->addItem(CURR_TASKS_ALL.at(i).name());
+            if (CURR_TASKS_ALL.at(i).status() == 1)
+                ui->taskWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
+        }
 }
 
 void MainWindow::on_addTaskBtn_clicked() {
@@ -295,13 +291,9 @@ void MainWindow::on_rmTaskBtn_clicked() {
         return;
     }
     int row = ui->taskWidget->currentRow();
-    if (row != 0) {
-        CURR_TASKS_ALL.removeAt(row);
-        ui->taskWidget->takeItem(row);
-        saveProjects();
-    } else {
-        ui->statusbar->showMessage("Can't remove the first task of the list -- bug to be solved", 3000);
-    }
+    ui->taskWidget->takeItem(row);
+    CURR_TASKS_ALL.removeAt(row);
+    saveProjects();
 }
 
 void MainWindow::on_infoButton_clicked() {
