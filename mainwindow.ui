@@ -465,11 +465,11 @@
       </property>
      </widget>
     </item>
+    <item row="1" column="0" colspan="4">
+     <widget class="QListWidget" name="projectWidget"/>
+    </item>
     <item row="1" column="4" colspan="10">
      <widget class="QListWidget" name="taskWidget"/>
-    </item>
-    <item row="1" column="0" rowspan="2" colspan="4">
-     <widget class="QListWidget" name="projectWidget"/>
     </item>
    </layout>
   </widget>

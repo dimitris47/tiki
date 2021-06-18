@@ -228,6 +228,7 @@ DIST          = icons/tiki.ico \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/qt_config.prf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/toolchain.prf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/default_pre.prf \
@@ -425,6 +426,7 @@ Makefile: tiki.pro ../../../../Qt/5.15.2/gcc_64/mkspecs/linux-g++/qmake.conf ../
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/qt_config.prf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/toolchain.prf \
 		../../../../Qt/5.15.2/gcc_64/mkspecs/features/default_pre.prf \
@@ -603,6 +605,7 @@ Makefile: tiki.pro ../../../../Qt/5.15.2/gcc_64/mkspecs/linux-g++/qmake.conf ../
 ../../../../Qt/5.15.2/gcc_64/mkspecs/features/qt_config.prf:
 ../../../../Qt/5.15.2/gcc_64/mkspecs/linux-g++/qmake.conf:
 ../../../../Qt/5.15.2/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../Qt/5.15.2/gcc_64/mkspecs/features/exclusive_builds.prf:
 ../../../../Qt/5.15.2/gcc_64/mkspecs/features/toolchain.prf:
 ../../../../Qt/5.15.2/gcc_64/mkspecs/features/default_pre.prf:
@@ -674,7 +677,6 @@ qrc_tiki.cpp: tiki.qrc \
 		icons/tiki.ico \
 		icons/dialog-information.png \
 		icons/application-pdf.png \
-		icons/address-book-new.png \
 		icons/dialog-ok-apply.png \
 		icons/document-new.png \
 		icons/tiki.png \
