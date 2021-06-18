@@ -2,7 +2,6 @@
     <qresource prefix="/">
         <file>icons/tiki.png</file>
         <file>icons/tiki.ico</file>
-        <file>icons/address-book-new.png</file>
         <file>icons/application-pdf.png</file>
         <file>icons/dialog-information.png</file>
         <file>icons/dialog-ok-apply.png</file>

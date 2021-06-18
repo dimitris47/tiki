@@ -100,6 +100,7 @@ void MainWindow::on_addProBtn_clicked() {
         ui->projectWidget->addItem(widget->itemText);
         Organizer::Projects.append(Project(widget->itemText));
     }
+    ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
     saveProjects();
 }
 
