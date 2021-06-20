@@ -26,7 +26,7 @@ private slots:
     void on_rmProBtn_clicked();
     void on_projectWidget_currentRowChanged();
     void on_addTaskBtn_clicked();
-    void on_taskWidget_currentRowChanged();
+    void on_taskWidget_currentRowChanged(int currentRow);
     void on_renameTaskBtn_clicked();
     void on_highBtn_clicked();
     void on_normalBtn_clicked();
@@ -34,7 +34,6 @@ private slots:
     void on_doneBtn_clicked();
     void on_notDoneBtn_clicked();
     void on_rmTaskBtn_clicked();
-
     void on_infoButton_clicked();
 
 private:

@@ -61,10 +61,8 @@ void MainWindow::readProjects() {
         i++;
         file.close();
     }
-    for (auto &&pro : Organizer::Projects) {
+    for (auto &&pro : Organizer::Projects)
         ui->projectWidget->addItem(pro.name());
-        qDebug() << pro.toString();
-    }
 }
 
 void MainWindow::saveProjects() {
@@ -99,9 +97,9 @@ void MainWindow::on_addProBtn_clicked() {
     if (ret) {
         ui->projectWidget->addItem(widget->itemText);
         Organizer::Projects.append(Project(widget->itemText));
+        ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
+        saveProjects();
     }
-    ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
-    saveProjects();
 }
 
 void MainWindow::on_renameProBtn_clicked() {
@@ -182,9 +180,9 @@ void MainWindow::on_addTaskBtn_clicked() {
     saveProjects();
 }
 
-void MainWindow::on_taskWidget_currentRowChanged() {
+void MainWindow::on_taskWidget_currentRowChanged(int currentRow) {
     if (ui->taskWidget->currentItem() != NULL)
-        ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
+        ui->statusbar->showMessage(CURR_TASKS_ALL.at(currentRow).details());
 }
 
 void MainWindow::on_renameTaskBtn_clicked() {
@@ -216,19 +214,17 @@ void MainWindow::on_highBtn_clicked() {
 }
 
 void MainWindow::on_normalBtn_clicked() {
-    if (CURR_TASK.priority() != normal) {
-        QString taskName = CURR_TASK.name();
-        int highs {0};
-        for (auto &&task : CURR_TASKS_ALL)
-            if (task.priority() == high)
-                highs++;
-        CURR_TASK.setPriority(normal);
-        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs);
-        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-        ui->taskWidget->insertItem(highs, taskName);
-        ui->taskWidget->setCurrentRow(highs);
-        saveProjects();
-    }
+    QString taskName = CURR_TASK.name();
+    int highs {0};
+    for (auto &&task : CURR_TASKS_ALL)
+        if (task.priority() == high)
+            highs++;
+    CURR_TASK.setPriority(normal);
+    CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs);
+    ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+    ui->taskWidget->insertItem(highs, taskName);
+    ui->taskWidget->setCurrentRow(highs);
+    saveProjects();
 }
 
 void MainWindow::on_lowBtn_clicked() {
@@ -283,6 +279,7 @@ void MainWindow::on_notDoneBtn_clicked() {
         ui->taskWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::black));
         ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
     }
+    saveProjects();
 }
 
 void MainWindow::on_rmTaskBtn_clicked() {
