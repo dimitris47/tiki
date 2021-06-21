@@ -202,14 +202,15 @@ void MainWindow::on_renameTaskBtn_clicked() {
 }
 
 void MainWindow::on_highBtn_clicked() {
-    if (CURR_TASK.priority() != high) {
-        QString taskName = CURR_TASK.name();
-        CURR_TASK.setPriority(high);
-        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
-        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-        ui->taskWidget->insertItem(0, taskName);
-        ui->taskWidget->setCurrentRow(0);
-        saveProjects();
+    if (CURR_TASK.priority() != high)
+        if (!CURR_TASK.status()) {
+            QString taskName = CURR_TASK.name();
+            CURR_TASK.setPriority(high);
+            CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
+            ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+            ui->taskWidget->insertItem(0, taskName);
+            ui->taskWidget->setCurrentRow(0);
+            saveProjects();
     }
 }
 
@@ -218,7 +219,8 @@ void MainWindow::on_normalBtn_clicked() {
     int highs {0};
     for (auto &&task : CURR_TASKS_ALL)
         if (task.priority() == high)
-            highs++;
+            if (!task.status())
+                highs++;
     CURR_TASK.setPriority(normal);
     CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs);
     ui->taskWidget->takeItem(ui->taskWidget->currentRow());
@@ -233,7 +235,8 @@ void MainWindow::on_lowBtn_clicked() {
         int higher {-1};
         for (auto &&task : CURR_TASKS_ALL)
             if (task.priority() != low)
-                higher++;
+                if (!task.status())
+                    higher++;
         CURR_TASK.setPriority(low);
         CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), higher);
         ui->taskWidget->takeItem(ui->taskWidget->currentRow());
