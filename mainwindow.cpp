@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->setupUi(this);
     readPrefs();
     readProjects();
+    ui->projectWidget->setFont(QFont("Sans-serif", 11));
+    ui->taskWidget->setFont(QFont("Sans-serif", 11));
 }
 
 MainWindow::~MainWindow() { delete ui; }
