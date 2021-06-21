@@ -174,10 +174,14 @@ void MainWindow::on_addTaskBtn_clicked() {
     if (ret) {
         CURR_TASKS_ALL.append(Task(widget->itemText.replace("-->>", "-->")));
         ui->taskWidget->clear();
+        CURR_PRO.prioritySort();
         QStringList items;
         for (auto &&task : CURR_TASKS_ALL)
             items.append(task.name());
         ui->taskWidget->addItems(items);
+        for (int i = 0; i < ui->taskWidget->count(); i++)
+            if (CURR_TASKS_ALL.at(i).status())
+                ui->taskWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
     }
     saveProjects();
 }

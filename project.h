@@ -9,7 +9,7 @@ public:
     explicit Project(QString name);
     QString name() const { return projectName; }
     void setName(QString name) { projectName = name; }
-    QStringList toString();
+    void prioritySort();
 
     QList<Task> tasks;
 
