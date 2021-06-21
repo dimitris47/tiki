@@ -95,8 +95,8 @@ void MainWindow::on_addProBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        ui->projectWidget->addItem(widget->itemText);
-        Organizer::Projects.append(Project(widget->itemText));
+        ui->projectWidget->addItem(widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|']+"), "_"));
+        Organizer::Projects.append(Project(widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|']+"), "_")));
         ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
         saveProjects();
     }
@@ -170,7 +170,7 @@ void MainWindow::on_addTaskBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        CURR_TASKS_ALL.append(Task(widget->itemText));
+        CURR_TASKS_ALL.append(Task(widget->itemText.replace("-->>", "-->")));
         ui->taskWidget->clear();
         QStringList items;
         for (auto &&task : CURR_TASKS_ALL)

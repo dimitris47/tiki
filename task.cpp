@@ -1,4 +1,5 @@
 #include "task.h"
+#include <QDebug>
 
 Task::Task(QString name, bool isDone, Priority) {
     taskName = name;
@@ -16,5 +17,11 @@ QString Task::priorityString() const {
 }
 
 QString Task::details() const {
-    return this->name() + ": " + priorityString() + " priority, " + (isDone ? "done" : "not done");
+    QString nameF;
+    if (this->name().count() <= 16) {
+        nameF = this->name();
+    } else {
+        nameF = this->name().remove(16, this->name().count()) + "...";
+    }
+    return nameF + " || " + priorityString() + " priority, " + (isDone ? "done" : "not done");
 }
