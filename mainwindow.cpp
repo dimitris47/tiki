@@ -115,7 +115,7 @@ void MainWindow::on_renameProBtn_clicked() {
         dataDir.mkpath(".");
     QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
 
-    auto widget = new Dialog(this);
+    auto widget = new Dialog(this, ui->projectWidget->currentItem()->text());
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
@@ -196,7 +196,7 @@ void MainWindow::on_renameTaskBtn_clicked() {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
     }
-    auto widget = new Dialog(this);
+    auto widget = new Dialog(this, ui->taskWidget->currentItem()->text());
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;

@@ -9,7 +9,7 @@ class Dialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit Dialog(QWidget *parent = nullptr);
+    explicit Dialog(QWidget *parent = nullptr, QString name = "");
     ~Dialog();
     QString itemText;
 
