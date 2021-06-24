@@ -3,7 +3,7 @@
 
 Dialog::Dialog(QWidget *parent, QString name) : QDialog(parent), ui(new Ui::Dialog) {
     ui->setupUi(this);
-    this->setWindowTitle("new project");
+    this->setWindowTitle("new");
     ui->lineEdit->setText(name);
 }
 
