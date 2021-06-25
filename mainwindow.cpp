@@ -63,8 +63,11 @@ void MainWindow::readProjects() {
         i++;
         file.close();
     }
-    for (auto &&pro : Organizer::Projects)
-        ui->projectWidget->addItem(pro.name());
+    for (int i = 0; i < Organizer::Projects.count(); i++) {
+        ui->projectWidget->addItem(Organizer::Projects.at(i).name());
+        if (Organizer::Projects.at(i).tasks.isEmpty())
+            ui->projectWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
+    }
 }
 
 void MainWindow::saveProjects() {
@@ -100,6 +103,7 @@ void MainWindow::on_addProBtn_clicked() {
         ui->projectWidget->addItem(widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|']+"), "_"));
         Organizer::Projects.append(Project(widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|']+"), "_")));
         ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
+        ui->projectWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::gray));
         saveProjects();
     }
 }
@@ -183,6 +187,8 @@ void MainWindow::on_addTaskBtn_clicked() {
             if (CURR_TASKS_ALL.at(i).status())
                 ui->taskWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
     }
+    if (ui->projectWidget->currentItem()->foreground() == QColor(Qt::GlobalColor::gray))
+        ui->projectWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::black));
     saveProjects();
 }
 
@@ -299,13 +305,15 @@ void MainWindow::on_rmTaskBtn_clicked() {
     int row = ui->taskWidget->currentRow();
     ui->taskWidget->takeItem(row);
     CURR_TASKS_ALL.removeAt(row);
+    if (CURR_TASKS_ALL.isEmpty())
+        ui->projectWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::gray));
     saveProjects();
 }
 
 void MainWindow::on_infoButton_clicked() {
     QMessageBox::about(this, tr("Program Info"),
-                           (QApplication::applicationName() + " " + QApplication::applicationVersion() + "<br/><br/>" +
-                            APPINFO));
+                       (QApplication::applicationName() + " " + QApplication::applicationVersion() + "<br/><br/>" +
+                        APPINFO));
 }
 
 void MainWindow::readPrefs() {
