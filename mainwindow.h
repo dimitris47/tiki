@@ -37,6 +37,7 @@ private slots:
     void on_pdfBtn_clicked();
     void on_printBtn_clicked();
     void on_infoButton_clicked();
+    QStringList stringToPrint();
 
 private:
     Ui::MainWindow *ui;

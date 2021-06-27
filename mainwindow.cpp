@@ -328,6 +328,15 @@ QString dirToWrite() {
     return QString();
 }
 
+QStringList MainWindow::stringToPrint() {
+    QStringList taskList;
+    for (auto &&task : CURR_TASKS_ALL)
+        taskList.append("<span>&#8226; " + task.name().replace("<", "&#60;") + "</span>");
+    return taskList;
+}
+
+QString br = "<br/>";
+
 void MainWindow::on_pdfBtn_clicked() {
     QString fileName = QFileDialog::getSaveFileName((QWidget* )0, "Export to PDF", dirToWrite(), "*.pdf");
     if (QFileInfo(fileName).suffix().isEmpty())
@@ -336,11 +345,8 @@ void MainWindow::on_pdfBtn_clicked() {
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setPageSize(QPageSize(QPageSize::A4));
     printer.setOutputFileName(fileName);
-    QStringList taskList;
-    for (auto &&task : CURR_TASKS_ALL)
-        taskList.append("<span>&#8226; " + task.name().replace("<", "&#60;") + "</span>");
     QTextDocument doc;
-    doc.setHtml("<b>" + CURR_PRO.name() + "</b>" + "<br/><br/><br/>" + taskList.join("<br/><br/>"));
+    doc.setHtml("<b>" + CURR_PRO.name() + "</b>" + br.repeated(3) + stringToPrint().join(br.repeated(2)));
     doc.print(&printer);
     ui->statusbar->showMessage(CURR_PRO.name() + " exported to PDF", 3000);
 }
