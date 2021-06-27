@@ -8,9 +8,12 @@
 #include <QDebug>
 #include <QDir>
 #include <QDirIterator>
+#include <QFileDialog>
 #include <QMessageBox>
+#include <QPrinter>
 #include <QStandardPaths>
 #include <QTextCodec>
+#include <QTextDocument>
 
 #define CURR_PRO Organizer::Projects[ui->projectWidget->currentRow()]
 #define CURR_TASKS_ALL Organizer::Projects[ui->projectWidget->currentRow()].tasks
@@ -310,8 +313,36 @@ void MainWindow::on_rmTaskBtn_clicked() {
     saveProjects();
 }
 
-void MainWindow::on_pdfBtn_clicked() {
+QString dirToWrite() {
+    static QString dir;
+    if (!dir.isEmpty())
+        return dir;
+    QStringList locations = (QStringList()
+                             << QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation)
+                             << QStandardPaths::standardLocations(QStandardPaths::HomeLocation));
+    for (auto &&loc : locations)
+        if (QFileInfo::exists(loc)) {
+            dir = loc;
+            return dir;
+        }
+    return QString();
+}
 
+void MainWindow::on_pdfBtn_clicked() {
+    QString fileName = QFileDialog::getSaveFileName((QWidget* )0, "Export to PDF", dirToWrite(), "*.pdf");
+    if (QFileInfo(fileName).suffix().isEmpty())
+        fileName.append(".pdf");
+    QPrinter printer(QPrinter::PrinterResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setPageSize(QPageSize(QPageSize::A4));
+    printer.setOutputFileName(fileName);
+    QStringList taskList;
+    for (auto &&task : CURR_TASKS_ALL)
+        taskList.append("<span>&#8226; " + task.name().replace("<", "&#60;") + "</span>");
+    QTextDocument doc;
+    doc.setHtml("<b>" + CURR_PRO.name() + "</b>" + "<br/><br/><br/>" + taskList.join("<br/><br/>"));
+    doc.print(&printer);
+    ui->statusbar->showMessage(CURR_PRO.name() + " exported to PDF", 3000);
 }
 
 void MainWindow::on_printBtn_clicked() {
