@@ -34,6 +34,8 @@ private slots:
     void on_doneBtn_clicked();
     void on_notDoneBtn_clicked();
     void on_rmTaskBtn_clicked();
+    void on_pdfBtn_clicked();
+    void on_printBtn_clicked();
     void on_infoButton_clicked();
 
 private:

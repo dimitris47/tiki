@@ -13,5 +13,6 @@
         <file>icons/go-previous.png</file>
         <file>icons/go-top.png</file>
         <file>icons/list-remove.png</file>
+        <file>icons/printer.png</file>
     </qresource>
 </RCC>

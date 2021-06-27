@@ -310,6 +310,14 @@ void MainWindow::on_rmTaskBtn_clicked() {
     saveProjects();
 }
 
+void MainWindow::on_pdfBtn_clicked() {
+
+}
+
+void MainWindow::on_printBtn_clicked() {
+
+}
+
 void MainWindow::on_infoButton_clicked() {
     QMessageBox::about(this, tr("Program Info"),
                        (QApplication::applicationName() + " " + QApplication::applicationVersion() + "<br/><br/>" +
