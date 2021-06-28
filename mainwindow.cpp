@@ -333,7 +333,7 @@ QString sp = "&#160;";
 QString unchecked = "&#9744;";
 QString checked = "&#9745;";
 
-QStringList MainWindow::stringToPrint() {
+QString MainWindow::stringToPrint() {
     QStringList taskList;
     for (auto &&task : CURR_TASKS_ALL)
         if (!task.status()) {
@@ -341,7 +341,9 @@ QStringList MainWindow::stringToPrint() {
         } else {
             taskList.append("<s><div style='color:gray;'>" + task.name().replace("<", "&#60;") + "</div></s>");
         }
-    return taskList;
+    QString toPrint;
+    toPrint.append("<h2>" + CURR_PRO.name() + "</h2>" + br + taskList.join(""));
+    return toPrint;
 }
 
 void MainWindow::on_pdfBtn_clicked() {
@@ -353,19 +355,18 @@ void MainWindow::on_pdfBtn_clicked() {
     printer.setPageSize(QPageSize(QPageSize::A4));
     printer.setOutputFileName(fileName);
     QTextDocument doc;
-    doc.setHtml("<h2>" + CURR_PRO.name() + "</h2>" + br + stringToPrint().join(""));
+    doc.setHtml(stringToPrint());
     doc.print(&printer);
     ui->statusbar->showMessage(CURR_PRO.name() + " exported to PDF", 3000);
 }
 
 void MainWindow::on_printBtn_clicked() {
     QPrinter Printer(QPrinter::HighResolution);
-    QString textToPrint("<h2>" + CURR_PRO.name() + "</h2>" + br + stringToPrint().join(""));
     QPrintDialog PrintDialog(&Printer, this);
     if (PrintDialog.exec()) {
         Printer.setFullPage(true);
         QTextDocument TextDocument;
-        TextDocument.setHtml(textToPrint);
+        TextDocument.setHtml(stringToPrint());
         TextDocument.print(&Printer);
         ui->statusbar->showMessage(CURR_PRO.name() + " sent to printer", 3000);
     }
