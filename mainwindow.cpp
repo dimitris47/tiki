@@ -99,16 +99,22 @@ void MainWindow::saveProjects() {
 }
 
 void MainWindow::on_addProBtn_clicked() {
-    auto widget = new Dialog(this);
+    auto widget = new Dialog(this, "", "New Project");
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        ui->projectWidget->addItem(widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|']+"), "_"));
-        Organizer::Projects.append(Project(widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|']+"), "_")));
-        ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
-        ui->projectWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::gray));
-        saveProjects();
+        QString projectTitle = widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|']+"), "_");
+        QStringList projectTitles;
+        for (auto &&project : Organizer::Projects)
+            projectTitles.append(project.name());
+        if (!projectTitles.contains(projectTitle)) {
+            ui->projectWidget->addItem(projectTitle);
+            Organizer::Projects.append(Project(projectTitle));
+            ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
+            ui->projectWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::gray));
+            saveProjects();
+        }
     }
 }
 
@@ -123,7 +129,7 @@ void MainWindow::on_renameProBtn_clicked() {
         dataDir.mkpath(".");
     QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
 
-    auto widget = new Dialog(this, ui->projectWidget->currentItem()->text());
+    auto widget = new Dialog(this, ui->projectWidget->currentItem()->text(), "Edit Project Title");
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
@@ -175,25 +181,31 @@ void MainWindow::on_addTaskBtn_clicked() {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
     }
-    auto widget = new Dialog(this);
+    auto widget = new Dialog(this, "", "New Task");
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        CURR_TASKS_ALL.append(Task(widget->itemText.replace("-->>", "-->")));
-        ui->taskWidget->clear();
-        CURR_PRO.prioritySort();
-        QStringList items;
+        QString taskText = widget->itemText.replace("-->>", "-->");
+        QStringList taskNames;
         for (auto &&task : CURR_TASKS_ALL)
-            items.append(task.name());
-        ui->taskWidget->addItems(items);
-        for (int i = 0; i < ui->taskWidget->count(); i++)
-            if (CURR_TASKS_ALL.at(i).status())
-                ui->taskWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
+            taskNames.append(task.name());
+        if (!taskNames.contains(taskText)) {
+            CURR_TASKS_ALL.append(Task(widget->itemText.replace("-->>", "-->")));
+            ui->taskWidget->clear();
+            CURR_PRO.prioritySort();
+            QStringList items;
+            for (auto &&task : CURR_TASKS_ALL)
+                items.append(task.name());
+            ui->taskWidget->addItems(items);
+            for (int i = 0; i < ui->taskWidget->count(); i++)
+                if (CURR_TASKS_ALL.at(i).status())
+                    ui->taskWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
+            if (ui->projectWidget->currentItem()->foreground() == QColor(Qt::GlobalColor::gray))
+                ui->projectWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::black));
+            saveProjects();
+        }
     }
-    if (ui->projectWidget->currentItem()->foreground() == QColor(Qt::GlobalColor::gray))
-        ui->projectWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::black));
-    saveProjects();
 }
 
 void MainWindow::on_taskWidget_currentRowChanged(int currentRow) {
@@ -206,7 +218,7 @@ void MainWindow::on_renameTaskBtn_clicked() {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
     }
-    auto widget = new Dialog(this, ui->taskWidget->currentItem()->text());
+    auto widget = new Dialog(this, ui->taskWidget->currentItem()->text(), "Edit Task Name");
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
