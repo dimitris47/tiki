@@ -331,14 +331,20 @@ QString dirToWrite() {
 
 QString br = "<br/>";
 QString sp = "&#160;";
+QString unchecked = "&#9744;";
+QString checked = "&#9745;";
 
 QStringList MainWindow::stringToPrint() {
     QStringList taskList;
+    CURR_PRO.prioritySort();
     for (auto &&task : CURR_TASKS_ALL)
-        taskList.append("<span>&#9744;" + sp.repeated(3) + task.name().replace("<", "&#60;") + "</span>");
+        if (!task.status()) {
+            taskList.append("<span>" + unchecked + sp.repeated(3) + task.name().replace("<", "&#60;") + br + "</span>");
+        } else {
+            taskList.append("<s><div style='color:gray;'>" + task.name().replace("<", "&#60;") + "</div></s>");
+        }
     return taskList;
 }
-
 
 void MainWindow::on_pdfBtn_clicked() {
     QString fileName = QFileDialog::getSaveFileName((QWidget* )0, "Export to PDF", dirToWrite(), "*.pdf");
@@ -349,7 +355,7 @@ void MainWindow::on_pdfBtn_clicked() {
     printer.setPageSize(QPageSize(QPageSize::A4));
     printer.setOutputFileName(fileName);
     QTextDocument doc;
-    doc.setHtml("<h2>" + CURR_PRO.name() + "</h2>" + br.repeated(2) + stringToPrint().join(br.repeated(2)));
+    doc.setHtml("<h2>" + CURR_PRO.name() + "</h2>" + br.repeated(2) + stringToPrint().join(br));
     doc.print(&printer);
     ui->statusbar->showMessage(CURR_PRO.name() + " exported to PDF", 3000);
 }
