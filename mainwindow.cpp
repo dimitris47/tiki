@@ -19,6 +19,9 @@
 #define CURR_PRO Organizer::Projects[ui->projectWidget->currentRow()]
 #define CURR_TASKS_ALL Organizer::Projects[ui->projectWidget->currentRow()].tasks
 #define CURR_TASK Organizer::Projects[ui->projectWidget->currentRow()].tasks[ui->taskWidget->currentRow()]
+#define GRAY QColor(Qt::GlobalColor::gray)
+#define BLACK QColor(Qt::GlobalColor::black)
+
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -70,7 +73,7 @@ void MainWindow::readProjects() {
     for (int i = 0; i < Organizer::Projects.count(); i++) {
         ui->projectWidget->addItem(Organizer::Projects.at(i).name());
         if (Organizer::Projects.at(i).tasks.isEmpty())
-            ui->projectWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
+            ui->projectWidget->item(i)->setForeground(GRAY);
     }
 }
 
@@ -112,7 +115,7 @@ void MainWindow::on_addProBtn_clicked() {
             ui->projectWidget->addItem(projectTitle);
             Organizer::Projects.append(Project(projectTitle));
             ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
-            ui->projectWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::gray));
+            ui->projectWidget->currentItem()->setForeground(GRAY);
             saveProjects();
         }
     }
@@ -172,7 +175,7 @@ void MainWindow::on_projectWidget_currentRowChanged() {
         for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
             ui->taskWidget->addItem(CURR_TASKS_ALL.at(i).name());
             if (CURR_TASKS_ALL.at(i).status() == 1)
-                ui->taskWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
+                ui->taskWidget->item(i)->setForeground(GRAY);
         }
 }
 
@@ -200,9 +203,9 @@ void MainWindow::on_addTaskBtn_clicked() {
             ui->taskWidget->addItems(items);
             for (int i = 0; i < ui->taskWidget->count(); i++)
                 if (CURR_TASKS_ALL.at(i).status())
-                    ui->taskWidget->item(i)->setForeground(QColor(Qt::GlobalColor::gray));
-            if (ui->projectWidget->currentItem()->foreground() == QColor(Qt::GlobalColor::gray))
-                ui->projectWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::black));
+                    ui->taskWidget->item(i)->setForeground(GRAY);
+            if (ui->projectWidget->currentItem()->foreground() == GRAY)
+                ui->projectWidget->currentItem()->setForeground(BLACK);
             saveProjects();
         }
     }
@@ -282,7 +285,7 @@ void MainWindow::on_doneBtn_clicked() {
         ui->taskWidget->takeItem(ui->taskWidget->currentRow());
         ui->taskWidget->insertItem(ui->taskWidget->count(), taskName);
         ui->taskWidget->setCurrentRow(ui->taskWidget->count()-1);
-        ui->taskWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::gray));
+        ui->taskWidget->currentItem()->setForeground(GRAY);
         ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
         saveProjects();
     }
@@ -307,7 +310,7 @@ void MainWindow::on_notDoneBtn_clicked() {
             on_lowBtn_clicked();
             break;
         }
-        ui->taskWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::black));
+        ui->taskWidget->currentItem()->setForeground(BLACK);
         ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
     }
     saveProjects();
@@ -322,7 +325,7 @@ void MainWindow::on_rmTaskBtn_clicked() {
     ui->taskWidget->takeItem(row);
     CURR_TASKS_ALL.removeAt(row);
     if (CURR_TASKS_ALL.isEmpty())
-        ui->projectWidget->currentItem()->setForeground(QColor(Qt::GlobalColor::gray));
+        ui->projectWidget->currentItem()->setForeground(GRAY);
     saveProjects();
 }
 
