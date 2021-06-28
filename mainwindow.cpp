@@ -337,7 +337,7 @@ QStringList MainWindow::stringToPrint() {
     QStringList taskList;
     for (auto &&task : CURR_TASKS_ALL)
         if (!task.status()) {
-            taskList.append("<span>" + unchecked + sp.repeated(3) + task.name().replace("<", "&#60;") + br + "</span>");
+            taskList.append("<span><div style='line-height:130%;'>" + unchecked + sp.repeated(3) + task.name().replace("<", "&#60;") + "</div></span>");
         } else {
             taskList.append("<s><div style='color:gray;'>" + task.name().replace("<", "&#60;") + "</div></s>");
         }
@@ -353,14 +353,14 @@ void MainWindow::on_pdfBtn_clicked() {
     printer.setPageSize(QPageSize(QPageSize::A4));
     printer.setOutputFileName(fileName);
     QTextDocument doc;
-    doc.setHtml("<h2>" + CURR_PRO.name() + "</h2>" + br.repeated(2) + stringToPrint().join(br));
+    doc.setHtml("<h2>" + CURR_PRO.name() + "</h2>" + br + stringToPrint().join(""));
     doc.print(&printer);
     ui->statusbar->showMessage(CURR_PRO.name() + " exported to PDF", 3000);
 }
 
 void MainWindow::on_printBtn_clicked() {
     QPrinter Printer(QPrinter::HighResolution);
-    QString textToPrint("<h2>" + CURR_PRO.name() + "</h2>" + br.repeated(2) + stringToPrint().join(br.repeated(2)));
+    QString textToPrint("<h2>" + CURR_PRO.name() + "</h2>" + br + stringToPrint().join(""));
     QPrintDialog PrintDialog(&Printer, this);
     if (PrintDialog.exec()) {
         Printer.setFullPage(true);
