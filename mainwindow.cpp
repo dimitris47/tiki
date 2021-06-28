@@ -191,7 +191,7 @@ void MainWindow::on_addTaskBtn_clicked() {
         for (auto &&task : CURR_TASKS_ALL)
             taskNames.append(task.name());
         if (!taskNames.contains(taskText)) {
-            CURR_TASKS_ALL.append(Task(widget->itemText.replace("-->>", "-->")));
+            CURR_TASKS_ALL.append(Task(taskText));
             ui->taskWidget->clear();
             CURR_PRO.prioritySort();
             QStringList items;
