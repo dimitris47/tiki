@@ -335,7 +335,6 @@ QString checked = "&#9745;";
 
 QStringList MainWindow::stringToPrint() {
     QStringList taskList;
-    CURR_PRO.prioritySort();
     for (auto &&task : CURR_TASKS_ALL)
         if (!task.status()) {
             taskList.append("<span>" + unchecked + sp.repeated(3) + task.name().replace("<", "&#60;") + br + "</span>");
