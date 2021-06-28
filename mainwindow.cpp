@@ -10,6 +10,7 @@
 #include <QDirIterator>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QPrintDialog>
 #include <QPrinter>
 #include <QStandardPaths>
 #include <QTextCodec>
@@ -328,14 +329,16 @@ QString dirToWrite() {
     return QString();
 }
 
+QString br = "<br/>";
+QString sp = "&#160;";
+
 QStringList MainWindow::stringToPrint() {
     QStringList taskList;
     for (auto &&task : CURR_TASKS_ALL)
-        taskList.append("<span>&#8226; " + task.name().replace("<", "&#60;") + "</span>");
+        taskList.append("<span>&#9744;" + sp.repeated(3) + task.name().replace("<", "&#60;") + "</span>");
     return taskList;
 }
 
-QString br = "<br/>";
 
 void MainWindow::on_pdfBtn_clicked() {
     QString fileName = QFileDialog::getSaveFileName((QWidget* )0, "Export to PDF", dirToWrite(), "*.pdf");
@@ -346,18 +349,27 @@ void MainWindow::on_pdfBtn_clicked() {
     printer.setPageSize(QPageSize(QPageSize::A4));
     printer.setOutputFileName(fileName);
     QTextDocument doc;
-    doc.setHtml("<b>" + CURR_PRO.name() + "</b>" + br.repeated(3) + stringToPrint().join(br.repeated(2)));
+    doc.setHtml("<h2>" + CURR_PRO.name() + "</h2>" + br.repeated(2) + stringToPrint().join(br.repeated(2)));
     doc.print(&printer);
     ui->statusbar->showMessage(CURR_PRO.name() + " exported to PDF", 3000);
 }
 
 void MainWindow::on_printBtn_clicked() {
-
+    QPrinter Printer(QPrinter::HighResolution);
+    QString textToPrint("<h2>" + CURR_PRO.name() + "</h2>" + br.repeated(2) + stringToPrint().join(br.repeated(2)));
+    QPrintDialog PrintDialog(&Printer, this);
+    if (PrintDialog.exec()) {
+        Printer.setFullPage(true);
+        QTextDocument TextDocument;
+        TextDocument.setHtml(textToPrint);
+        TextDocument.print(&Printer);
+        ui->statusbar->showMessage(CURR_PRO.name() + " sent to printer", 3000);
+    }
 }
 
 void MainWindow::on_infoButton_clicked() {
     QMessageBox::about(this, tr("Program Info"),
-                       (QApplication::applicationName() + " " + QApplication::applicationVersion() + "<br/><br/>" +
+                       (QApplication::applicationName() + " " + QApplication::applicationVersion() + br.repeated(2) +
                         APPINFO));
 }
 
