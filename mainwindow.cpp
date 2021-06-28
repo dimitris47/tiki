@@ -329,7 +329,6 @@ QString dirToWrite() {
     return QString();
 }
 
-QString br = "<br/>";
 QString sp = "&#160;";
 QString unchecked = "&#9744;";
 QString checked = "&#9745;";
