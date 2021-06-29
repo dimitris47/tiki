@@ -78,27 +78,28 @@ void MainWindow::readProjects() {
 }
 
 void MainWindow::saveProjects() {
-    for (auto &&project : Organizer::Projects) {
-        QString projectData;
-        for (auto &&task : project.tasks)
-            projectData.append(task.name() + "-->>" +
-                               (task.status() ? "1" : "0") + "-->>" +
-                                QString::number(task.priority()) + '\n');
-        QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-        if (!dataDir.exists())
-            dataDir.mkpath(".");
-        QString fileName = dataDir.path() + '/' + project.name() + ".txt";
-        QFile file(fileName);
-        if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
-            qWarning() << tr("error opening %1").arg(fileName);
-            return;
+    for (auto &&project : Organizer::Projects)
+        if (project.isModified) {
+            QString projectData;
+            for (auto &&task : project.tasks)
+                projectData.append(task.name() + "-->>" +
+                                   (task.status() ? "1" : "0") + "-->>" +
+                                    QString::number(task.priority()) + '\n');
+            QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+            if (!dataDir.exists())
+                dataDir.mkpath(".");
+            QString fileName = dataDir.path() + '/' + project.name() + ".txt";
+            QFile file(fileName);
+            if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
+                qWarning() << tr("error opening %1").arg(fileName);
+                return;
+            }
+            QTextStream data(&file);
+            data.setCodec(QTextCodec::codecForName("UTF-8"));
+            data.setIntegerBase(10);
+            data << projectData;
+            file.close();
         }
-        QTextStream data(&file);
-        data.setCodec(QTextCodec::codecForName("UTF-8"));
-        data.setIntegerBase(10);
-        data << projectData;
-        file.close();
-    }
 }
 
 void MainWindow::on_addProBtn_clicked() {
@@ -116,6 +117,8 @@ void MainWindow::on_addProBtn_clicked() {
             Organizer::Projects.append(Project(projectTitle));
             ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
             ui->projectWidget->currentItem()->setForeground(GRAY);
+            for (auto &&project : Organizer::Projects)
+                project.isModified = true;
             saveProjects();
         }
     }
@@ -146,6 +149,7 @@ void MainWindow::on_renameProBtn_clicked() {
         return;
     }
     file.rename(currentName, dataDir.path() + '/' + widget->itemText + ".txt");
+    CURR_PRO.isModified = true;
     saveProjects();
 }
 
@@ -165,6 +169,7 @@ void MainWindow::on_rmProBtn_clicked() {
     Organizer::Projects.removeAt(row);
     QFile file(currentName);
     file.remove();
+    CURR_PRO.isModified = true;
     saveProjects();
 }
 
@@ -206,6 +211,7 @@ void MainWindow::on_addTaskBtn_clicked() {
                     ui->taskWidget->item(i)->setForeground(GRAY);
             if (ui->projectWidget->currentItem()->foreground() == GRAY)
                 ui->projectWidget->currentItem()->setForeground(BLACK);
+            CURR_PRO.isModified = true;
             saveProjects();
         }
     }
@@ -229,6 +235,7 @@ void MainWindow::on_renameTaskBtn_clicked() {
         ui->taskWidget->currentItem()->setText(widget->itemText);
         CURR_TASKS_ALL[ui->taskWidget->currentRow()].setName(ui->taskWidget->currentItem()->text());
     }
+    CURR_PRO.isModified = true;
     saveProjects();
 }
 
@@ -241,6 +248,7 @@ void MainWindow::on_highBtn_clicked() {
             ui->taskWidget->takeItem(ui->taskWidget->currentRow());
             ui->taskWidget->insertItem(0, taskName);
             ui->taskWidget->setCurrentRow(0);
+            CURR_PRO.isModified = true;
             saveProjects();
     }
 }
@@ -257,6 +265,7 @@ void MainWindow::on_normalBtn_clicked() {
     ui->taskWidget->takeItem(ui->taskWidget->currentRow());
     ui->taskWidget->insertItem(highs, taskName);
     ui->taskWidget->setCurrentRow(highs);
+    CURR_PRO.isModified = true;
     saveProjects();
 }
 
@@ -273,6 +282,7 @@ void MainWindow::on_lowBtn_clicked() {
         ui->taskWidget->takeItem(ui->taskWidget->currentRow());
         ui->taskWidget->insertItem(higher, taskName);
         ui->taskWidget->setCurrentRow(higher);
+        CURR_PRO.isModified = true;
         saveProjects();
     }
 }
@@ -287,6 +297,7 @@ void MainWindow::on_doneBtn_clicked() {
         ui->taskWidget->setCurrentRow(ui->taskWidget->count()-1);
         ui->taskWidget->currentItem()->setForeground(GRAY);
         ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
+        CURR_PRO.isModified = true;
         saveProjects();
     }
 }
@@ -313,6 +324,7 @@ void MainWindow::on_notDoneBtn_clicked() {
         ui->taskWidget->currentItem()->setForeground(BLACK);
         ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
     }
+    CURR_PRO.isModified = true;
     saveProjects();
 }
 
@@ -326,6 +338,7 @@ void MainWindow::on_rmTaskBtn_clicked() {
     CURR_TASKS_ALL.removeAt(row);
     if (CURR_TASKS_ALL.isEmpty())
         ui->projectWidget->currentItem()->setForeground(GRAY);
+    CURR_PRO.isModified = true;
     saveProjects();
 }
 

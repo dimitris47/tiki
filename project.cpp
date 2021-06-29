@@ -3,6 +3,7 @@
 
 Project::Project(QString name) {
     projectName = name;
+    isModified = false;
 }
 
 void Project::prioritySort() {

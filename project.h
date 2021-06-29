@@ -12,6 +12,7 @@ public:
     void prioritySort();
 
     QList<Task> tasks;
+    bool isModified;
 
 private:
     QString projectName;
