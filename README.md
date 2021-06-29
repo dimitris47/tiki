@@ -1,6 +1,6 @@
 # Tiki
 
-Tiki is a simple project manager. You can add projects and priority sorted tasks to your projects. You can also mark tasks as done if you don't want to permanently delete them.
+Tiki is a simple project organizer. You can add projects and priority sorted tasks to your projects. You can also mark tasks as done if you don't want to permanently delete them.
 
 HOW TO INSTALL:
 
