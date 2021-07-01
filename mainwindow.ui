@@ -211,7 +211,14 @@
      </widget>
     </item>
     <item row="1" column="0" colspan="6">
-     <widget class="QListWidget" name="projectWidget"/>
+     <widget class="QListWidget" name="projectWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>32</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
     </item>
     <item row="0" column="6">
      <widget class="QPushButton" name="addTaskBtn">
@@ -456,7 +463,14 @@
      </widget>
     </item>
     <item row="1" column="6" colspan="10">
-     <widget class="QListWidget" name="taskWidget"/>
+     <widget class="QListWidget" name="taskWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>192</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
     </item>
     <item row="0" column="5">
      <spacer name="spacer1">
