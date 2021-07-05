@@ -50,6 +50,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->taskWidget->setFont(QFont("Sans-serif", 11));
 }
 
+bool compareProjects(const Project &pro1, const Project &pro2) {
+    return pro1.name() < pro2.name();
+}
+
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::readProjects() {
@@ -89,6 +93,7 @@ void MainWindow::readProjects() {
         i++;
         file.close();
     }
+    std::sort(Organizer::Projects.begin(), Organizer::Projects.end(), compareProjects);
     for (int i = 0; i < Organizer::Projects.count(); i++) {
         ui->projectWidget->addItem(Organizer::Projects.at(i).name());
         if (Organizer::Projects.at(i).tasks.isEmpty())
