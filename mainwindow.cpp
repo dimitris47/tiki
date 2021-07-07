@@ -264,6 +264,10 @@ void MainWindow::on_renameTaskBtn_clicked() {
 }
 
 void MainWindow::on_highBtn_clicked() {
+    if (ui->taskWidget->currentItem() == NULL) {
+        ui->statusbar->showMessage("No task selected", 1000);
+        return;
+    }
     if (CURR_TASK.priority() != high)
         if (!CURR_TASK.status()) {
             QString taskName = CURR_TASK.name();
@@ -278,6 +282,10 @@ void MainWindow::on_highBtn_clicked() {
 }
 
 void MainWindow::on_normalBtn_clicked() {
+    if (ui->taskWidget->currentItem() == NULL) {
+        ui->statusbar->showMessage("No task selected", 1000);
+        return;
+    }
     QString taskName = CURR_TASK.name();
     int highs {0};
     for (auto &&task : CURR_TASKS_ALL)
@@ -294,6 +302,10 @@ void MainWindow::on_normalBtn_clicked() {
 }
 
 void MainWindow::on_lowBtn_clicked() {
+    if (ui->taskWidget->currentItem() == NULL) {
+        ui->statusbar->showMessage("No task selected", 1000);
+        return;
+    }
     if (CURR_TASK.priority() != low) {
         QString taskName = CURR_TASK.name();
         int higher {-1};
@@ -312,6 +324,10 @@ void MainWindow::on_lowBtn_clicked() {
 }
 
 void MainWindow::on_doneBtn_clicked() {
+    if (ui->taskWidget->currentItem() == NULL) {
+        ui->statusbar->showMessage("No task selected", 1000);
+        return;
+    }
     if (CURR_TASK.status() == 0) {
         QString taskName = CURR_TASK.name();
         CURR_TASK.setStatus(1);
@@ -327,6 +343,10 @@ void MainWindow::on_doneBtn_clicked() {
 }
 
 void MainWindow::on_notDoneBtn_clicked() {
+    if (ui->taskWidget->currentItem() == NULL) {
+        ui->statusbar->showMessage("No task selected", 1000);
+        return;
+    }
     if (CURR_TASK.status() == 1) {
         CURR_TASK.setStatus(0);
         QString taskName = CURR_TASK.name();
@@ -399,6 +419,10 @@ QString MainWindow::stringToPrint() {
 }
 
 void MainWindow::on_pdfBtn_clicked() {
+    if (ui->projectWidget->currentItem() == NULL) {
+        ui->statusbar->showMessage("No project selected", 1000);
+        return;
+    }
     QString fileName = QFileDialog::getSaveFileName((QWidget* )0, "Export to PDF", dirToWrite(), "*.pdf");
     if (QFileInfo(fileName).suffix().isEmpty())
         fileName.append(".pdf");
@@ -413,6 +437,10 @@ void MainWindow::on_pdfBtn_clicked() {
 }
 
 void MainWindow::on_printBtn_clicked() {
+    if (ui->projectWidget->currentItem() == NULL) {
+        ui->statusbar->showMessage("No project selected", 1000);
+        return;
+    }
     QPrinter Printer(QPrinter::HighResolution);
     QPrintDialog PrintDialog(&Printer, this);
     if (PrintDialog.exec()) {
