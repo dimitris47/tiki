@@ -119,6 +119,9 @@
         <height>24</height>
        </size>
       </property>
+      <property name="shortcut">
+       <string>F2</string>
+      </property>
       <property name="flat">
        <bool>true</bool>
       </property>
