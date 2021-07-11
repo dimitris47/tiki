@@ -332,10 +332,12 @@ void MainWindow::on_doneBtn_clicked() {
         QString taskName = CURR_TASK.name();
         CURR_TASK.setStatus(1);
         CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), ui->taskWidget->count()-1);
-        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+        int row = ui->taskWidget->currentRow();
+        ui->taskWidget->takeItem(row);
         ui->taskWidget->insertItem(ui->taskWidget->count(), taskName);
         ui->taskWidget->setCurrentRow(ui->taskWidget->count()-1);
         ui->taskWidget->currentItem()->setForeground(GRAY);
+        ui->taskWidget->setCurrentRow(row);
         ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
         CURR_PRO.isModified = true;
         saveProjects();
@@ -350,10 +352,11 @@ void MainWindow::on_notDoneBtn_clicked() {
     if (CURR_TASK.status() == 1) {
         CURR_TASK.setStatus(0);
         QString taskName = CURR_TASK.name();
+        int row = ui->taskWidget->currentRow();
         switch (CURR_TASK.priority()) {
         case 0:
             CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
-            ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+            ui->taskWidget->takeItem(row);
             ui->taskWidget->insertItem(0, taskName);
             ui->taskWidget->setCurrentRow(0);
             saveProjects();
@@ -366,6 +369,7 @@ void MainWindow::on_notDoneBtn_clicked() {
             break;
         }
         ui->taskWidget->currentItem()->setForeground(BLACK);
+        ui->taskWidget->setCurrentRow(row);
         ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
     }
     CURR_PRO.isModified = true;
