@@ -44,10 +44,10 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    readPrefs();
     readProjects();
     ui->projectWidget->setFont(QFont("Sans-serif", 11));
     ui->taskWidget->setFont(QFont("Sans-serif", 11));
+    readPrefs();
 }
 
 bool compareProjects(const Project &pro1, const Project &pro2) {
@@ -86,7 +86,6 @@ void MainWindow::readProjects() {
                 }
                 int status = line.split("-->>").at(1).toInt();
                 task.setStatus(status);
-
                 Organizer::Projects[i].tasks.append(task);
             }
         }
@@ -205,6 +204,7 @@ void MainWindow::on_projectWidget_currentRowChanged() {
             ui->taskWidget->addItem(CURR_TASKS_ALL.at(i).name());
             if (CURR_TASKS_ALL.at(i).status() == 1)
                 ui->taskWidget->item(i)->setForeground(GRAY);
+            ui->taskWidget->setCurrentRow(0);
         }
 }
 
@@ -445,13 +445,13 @@ void MainWindow::on_printBtn_clicked() {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
     }
-    QPrinter Printer(QPrinter::HighResolution);
-    QPrintDialog PrintDialog(&Printer, this);
+    QPrinter printer(QPrinter::HighResolution);
+    QPrintDialog PrintDialog(&printer, this);
     if (PrintDialog.exec()) {
-        Printer.setFullPage(true);
+        printer.setFullPage(true);
         QTextDocument TextDocument;
         TextDocument.setHtml(stringToPrint());
-        TextDocument.print(&Printer);
+        TextDocument.print(&printer);
         ui->statusbar->showMessage(CURR_PRO.name() + " sent to printer", 3000);
     }
 }
@@ -471,6 +471,8 @@ void MainWindow::readPrefs() {
         const QByteArray geometry = settings.value("geometry", QByteArray()).toByteArray();
         restoreGeometry(geometry);
     }
+    const int selPro = settings.value("selectedProject", 0).toInt();
+    ui->projectWidget->setCurrentRow(selPro);
 }
 
 void MainWindow::savePrefs() {
@@ -478,6 +480,7 @@ void MainWindow::savePrefs() {
     settings.setValue("isMaximized", isMaximized());
     if (!isMaximized())
         settings.setValue("geometry", saveGeometry());
+    settings.setValue("selectedProject", ui->projectWidget->currentRow());
     settings.sync();
 }
 
