@@ -37,10 +37,10 @@ QString Task::priorityString() const {
 
 QString Task::details() const {
     QString nameF;
-    if (this->name().count() <= 16) {
+    if (this->name().count() <= 32) {
         nameF = this->name();
     } else {
-        nameF = this->name().remove(16, this->name().count()) + "...";
+        nameF = this->name().remove(32, this->name().count()) + "...";
     }
     return nameF + " || " + priorityString() + " priority, " + (isDone ? "done" : "not done");
 }

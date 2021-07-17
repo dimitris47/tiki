@@ -143,6 +143,8 @@ void MainWindow::on_addProBtn_clicked() {
             for (auto &&project : Organizer::Projects)
                 project.isModified = true;
             saveProjects();
+        } else {
+            ui->statusbar->showMessage("A project with this name already exists", 3000);
         }
     }
 }
@@ -163,17 +165,25 @@ void MainWindow::on_renameProBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        ui->projectWidget->currentItem()->setText(widget->itemText);
-        CURR_PRO.setName(widget->itemText);
+        QString newProject = widget->itemText;
+        QStringList projectNames;
+        for (auto &&project : Organizer::Projects)
+            projectNames.append(project.name());
+        if (!projectNames.contains(newProject)) {
+            ui->projectWidget->currentItem()->setText(newProject);
+            CURR_PRO.setName(widget->itemText);
+            QFile file(currentName);
+            if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
+                qWarning() << tr("error opening %1").arg(currentName);
+                return;
+            }
+            file.rename(currentName, dataDir.path() + '/' + widget->itemText + ".txt");
+            CURR_PRO.isModified = true;
+            saveProjects();
+        } else {
+            ui->statusbar->showMessage("A project with this name already exists", 3000);
+        }
     }
-    QFile file(currentName);
-    if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
-        qWarning() << tr("error opening %1").arg(currentName);
-        return;
-    }
-    file.rename(currentName, dataDir.path() + '/' + widget->itemText + ".txt");
-    CURR_PRO.isModified = true;
-    saveProjects();
 }
 
 void MainWindow::on_rmProBtn_clicked() {
@@ -237,6 +247,8 @@ void MainWindow::on_addTaskBtn_clicked() {
                 ui->projectWidget->currentItem()->setForeground(BLACK);
             CURR_PRO.isModified = true;
             saveProjects();
+        } else {
+            ui->statusbar->showMessage("A task with this name already exists", 3000);
         }
     }
 }
@@ -256,8 +268,16 @@ void MainWindow::on_renameTaskBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        ui->taskWidget->currentItem()->setText(widget->itemText);
-        CURR_TASKS_ALL[ui->taskWidget->currentRow()].setName(ui->taskWidget->currentItem()->text());
+        QString newTask = widget->itemText;
+        QStringList tasksNames;
+        for (auto &&task : CURR_TASKS_ALL)
+            tasksNames.append(task.name());
+        if (!tasksNames.contains(newTask)) {
+            ui->taskWidget->currentItem()->setText(widget->itemText);
+            CURR_TASKS_ALL[ui->taskWidget->currentRow()].setName(ui->taskWidget->currentItem()->text());
+        } else {
+            ui->statusbar->showMessage("A task with this name already exists", 3000);
+        }
     }
     CURR_PRO.isModified = true;
     saveProjects();
