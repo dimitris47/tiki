@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "project.h"
 #include <QCloseEvent>
 #include <QMainWindow>
 #include <QSettings>
@@ -21,6 +22,7 @@ protected:
     void closeEvent(QCloseEvent *event) override;
 
 private slots:
+    bool allDone(const Project &project);
     void on_addProBtn_clicked();
     void on_renameProBtn_clicked();
     void on_rmProBtn_clicked();

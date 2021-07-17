@@ -56,6 +56,16 @@ bool compareProjects(const Project &pro1, const Project &pro2) {
 
 MainWindow::~MainWindow() { delete ui; }
 
+bool MainWindow::allDone(const Project &project) {
+    bool done {true};
+    for (auto &&task : project.tasks)
+        if (task.status() == 0) {
+            done = false;
+            return done;
+        }
+    return done;
+}
+
 void MainWindow::readProjects() {
     QDir dataDir = QDir(QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).at(0));
     QDirIterator it(dataDir.path(), QDir::Files, QDirIterator::Subdirectories);
@@ -95,7 +105,7 @@ void MainWindow::readProjects() {
     std::sort(Organizer::Projects.begin(), Organizer::Projects.end(), compareProjects);
     for (int i = 0; i < Organizer::Projects.count(); i++) {
         ui->projectWidget->addItem(Organizer::Projects.at(i).name());
-        if (Organizer::Projects.at(i).tasks.isEmpty())
+        if (Organizer::Projects.at(i).tasks.isEmpty() || allDone(Organizer::Projects.at(i)))
             ui->projectWidget->item(i)->setForeground(GRAY);
     }
 }
@@ -362,6 +372,8 @@ void MainWindow::on_doneBtn_clicked() {
         CURR_PRO.isModified = true;
         saveProjects();
     }
+    if (allDone(CURR_PRO))
+        ui->projectWidget->currentItem()->setForeground(GRAY);
 }
 
 void MainWindow::on_notDoneBtn_clicked() {
@@ -394,6 +406,8 @@ void MainWindow::on_notDoneBtn_clicked() {
     }
     CURR_PRO.isModified = true;
     saveProjects();
+    if (!allDone(CURR_PRO))
+        ui->projectWidget->currentItem()->setForeground(BLACK);
 }
 
 void MainWindow::on_rmTaskBtn_clicked() {
