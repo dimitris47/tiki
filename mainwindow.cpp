@@ -224,7 +224,6 @@ void MainWindow::on_projectWidget_currentRowChanged() {
             ui->taskWidget->addItem(CURR_TASKS_ALL.at(i).name());
             if (CURR_TASKS_ALL.at(i).status() == 1)
                 ui->taskWidget->item(i)->setForeground(GRAY);
-            ui->taskWidget->setCurrentRow(0);
         }
 }
 
