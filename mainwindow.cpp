@@ -50,11 +50,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     readPrefs();
 }
 
+MainWindow::~MainWindow() { delete ui; }
+
 bool compareProjects(const Project &pro1, const Project &pro2) {
     return pro1.name() < pro2.name();
 }
-
-MainWindow::~MainWindow() { delete ui; }
 
 bool MainWindow::allDone(const Project &project) {
     bool done {true};

@@ -34,7 +34,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>remove project</string>
+       <string>remove project (Ctrl+Del)</string>
       </property>
       <property name="text">
        <string/>
@@ -48,6 +48,9 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Del</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -69,7 +72,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>mark task as not done</string>
+       <string>mark task as not done (Ctrl+R)</string>
       </property>
       <property name="text">
        <string/>
@@ -83,6 +86,9 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+R</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -104,7 +110,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>rename task</string>
+       <string>rename task (F2)</string>
       </property>
       <property name="text">
        <string/>
@@ -158,7 +164,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>about the program</string>
+       <string>about the program (Ctrl+I)</string>
       </property>
       <property name="text">
        <string/>
@@ -172,6 +178,9 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+I</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -193,7 +202,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>mark task as done</string>
+       <string>mark task as done (Ctrl+D)</string>
       </property>
       <property name="text">
        <string/>
@@ -207,6 +216,9 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+D</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -238,7 +250,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>add task</string>
+       <string>add task (Ctrl+N)</string>
       </property>
       <property name="text">
        <string/>
@@ -276,7 +288,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>print project</string>
+       <string>print project (Ctrl+P)</string>
       </property>
       <property name="text">
        <string/>
@@ -284,6 +296,9 @@
       <property name="icon">
        <iconset resource="tiki.qrc">
         <normaloff>:/icons/printer.png</normaloff>:/icons/printer.png</iconset>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+P</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -305,7 +320,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>set low priority</string>
+       <string>set low priority (Ctrl+-)</string>
       </property>
       <property name="text">
        <string/>
@@ -319,6 +334,9 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+-</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -340,7 +358,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>rename project</string>
+       <string>rename project (Ctrl+Shift+F2)</string>
       </property>
       <property name="text">
        <string/>
@@ -354,6 +372,9 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+F2</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -375,7 +396,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>set high priority</string>
+       <string>set high priority (Ctrl++)</string>
       </property>
       <property name="text">
        <string/>
@@ -389,6 +410,9 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl++</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -410,7 +434,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>add project</string>
+       <string>add project (Ctrl+Shift+N)</string>
       </property>
       <property name="text">
        <string/>
@@ -424,6 +448,9 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+N</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -445,7 +472,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>remove task</string>
+       <string>remove task (Del)</string>
       </property>
       <property name="text">
        <string/>
@@ -506,7 +533,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>set normal priority</string>
+       <string>set normal priority (Ctr+=)</string>
       </property>
       <property name="text">
        <string/>
@@ -520,6 +547,9 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+=</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -541,7 +571,7 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>export project to PDF</string>
+       <string>export project to PDF (Ctrl+E)</string>
       </property>
       <property name="text">
        <string/>
@@ -549,6 +579,9 @@
       <property name="icon">
        <iconset resource="tiki.qrc">
         <normaloff>:/icons/application-pdf.png</normaloff>:/icons/application-pdf.png</iconset>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+E</string>
       </property>
       <property name="flat">
        <bool>true</bool>
