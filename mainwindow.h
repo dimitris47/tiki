@@ -35,11 +35,13 @@ private slots:
     void on_lowBtn_clicked();
     void on_doneBtn_clicked();
     void on_notDoneBtn_clicked();
+    void on_sortTasksBtn_clicked();
     void on_rmTaskBtn_clicked();
     void on_pdfBtn_clicked();
     void on_printBtn_clicked();
     void on_infoButton_clicked();
     QString stringToPrint();
+
 
 private:
     Ui::MainWindow *ui;

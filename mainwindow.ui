@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>560</width>
-    <height>331</height>
+    <width>786</width>
+    <height>471</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="2">
-     <widget class="QPushButton" name="rmProBtn">
+    <item row="0" column="3">
+     <widget class="QPushButton" name="pdfBtn">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -34,64 +34,30 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>remove project (Ctrl+Del)</string>
+       <string>export project to PDF (Ctrl+E)</string>
       </property>
       <property name="text">
        <string/>
       </property>
       <property name="icon">
        <iconset resource="tiki.qrc">
-        <normaloff>:/icons/list-remove.png</normaloff>:/icons/list-remove.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>24</width>
-        <height>24</height>
-       </size>
+        <normaloff>:/icons/application-pdf.png</normaloff>:/icons/application-pdf.png</iconset>
       </property>
       <property name="shortcut">
-       <string>Ctrl+Del</string>
+       <string>Ctrl+E</string>
       </property>
       <property name="flat">
        <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="0" column="12">
-     <widget class="QPushButton" name="notDoneBtn">
+    <item row="1" column="6" colspan="11">
+     <widget class="QListWidget" name="taskWidget">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>192</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>26</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="toolTip">
-       <string>mark task as not done (Ctrl+R)</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="tiki.qrc">
-        <normaloff>:/icons/go-previous.png</normaloff>:/icons/go-previous.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>24</width>
-        <height>24</height>
-       </size>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+R</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -133,24 +99,8 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="14">
-     <spacer name="spacer2">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::MinimumExpanding</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="0" column="15">
-     <widget class="QPushButton" name="infoButton">
+    <item row="0" column="2">
+     <widget class="QPushButton" name="rmProBtn">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -164,14 +114,14 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>about the program (Ctrl+I)</string>
+       <string>remove project (Ctrl+Del)</string>
       </property>
       <property name="text">
        <string/>
       </property>
       <property name="icon">
        <iconset resource="tiki.qrc">
-        <normaloff>:/icons/dialog-information.png</normaloff>:/icons/dialog-information.png</iconset>
+        <normaloff>:/icons/list-remove.png</normaloff>:/icons/list-remove.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -180,163 +130,7 @@
        </size>
       </property>
       <property name="shortcut">
-       <string>Ctrl+I</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="11">
-     <widget class="QPushButton" name="doneBtn">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>26</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="toolTip">
-       <string>mark task as done (Ctrl+D)</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="tiki.qrc">
-        <normaloff>:/icons/dialog-ok-apply.png</normaloff>:/icons/dialog-ok-apply.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>24</width>
-        <height>24</height>
-       </size>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+D</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="6">
-     <widget class="QListWidget" name="projectWidget">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>32</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="6">
-     <widget class="QPushButton" name="addTaskBtn">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>26</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="toolTip">
-       <string>add task (Ctrl+N)</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="tiki.qrc">
-        <normaloff>:/icons/document-new.png</normaloff>:/icons/document-new.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>24</width>
-        <height>24</height>
-       </size>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+N</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="4">
-     <widget class="QPushButton" name="printBtn">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>26</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="toolTip">
-       <string>print project (Ctrl+P)</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="tiki.qrc">
-        <normaloff>:/icons/printer.png</normaloff>:/icons/printer.png</iconset>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+P</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="10">
-     <widget class="QPushButton" name="lowBtn">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>26</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="toolTip">
-       <string>set low priority (Ctrl+-)</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="tiki.qrc">
-        <normaloff>:/icons/go-bottom.png</normaloff>:/icons/go-bottom.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>24</width>
-        <height>24</height>
-       </size>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+-</string>
+       <string>Ctrl+Del</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -381,8 +175,8 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="8">
-     <widget class="QPushButton" name="highBtn">
+    <item row="0" column="10">
+     <widget class="QPushButton" name="lowBtn">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -396,14 +190,14 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>set high priority (Ctrl++)</string>
+       <string>set low priority (Ctrl+-)</string>
       </property>
       <property name="text">
        <string/>
       </property>
       <property name="icon">
        <iconset resource="tiki.qrc">
-        <normaloff>:/icons/go-top.png</normaloff>:/icons/go-top.png</iconset>
+        <normaloff>:/icons/go-bottom.png</normaloff>:/icons/go-bottom.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -412,52 +206,14 @@
        </size>
       </property>
       <property name="shortcut">
-       <string>Ctrl++</string>
+       <string>Ctrl+-</string>
       </property>
       <property name="flat">
        <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QPushButton" name="addProBtn">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>26</width>
-        <height>32</height>
-       </size>
-      </property>
-      <property name="toolTip">
-       <string>add project (Ctrl+Shift+N)</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="tiki.qrc">
-        <normaloff>:/icons/document-new.png</normaloff>:/icons/document-new.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>24</width>
-        <height>24</height>
-       </size>
-      </property>
-      <property name="shortcut">
-       <string>Ctrl+Shift+N</string>
-      </property>
-      <property name="flat">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="13">
+    <item row="0" column="14">
      <widget class="QPushButton" name="rmTaskBtn">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -495,13 +251,35 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="6" colspan="10">
-     <widget class="QListWidget" name="taskWidget">
+    <item row="0" column="4">
+     <widget class="QPushButton" name="printBtn">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>192</horstretch>
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>26</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>print project (Ctrl+P)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="tiki.qrc">
+        <normaloff>:/icons/printer.png</normaloff>:/icons/printer.png</iconset>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+P</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
@@ -517,6 +295,206 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="0" column="11">
+     <widget class="QPushButton" name="doneBtn">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>26</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>mark task as done (Ctrl+D)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="tiki.qrc">
+        <normaloff>:/icons/dialog-ok-apply.png</normaloff>:/icons/dialog-ok-apply.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+D</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="16">
+     <widget class="QPushButton" name="infoButton">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>26</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>about the program (Ctrl+I)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="tiki.qrc">
+        <normaloff>:/icons/dialog-information.png</normaloff>:/icons/dialog-information.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+I</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="6">
+     <widget class="QPushButton" name="addTaskBtn">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>26</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>add task (Ctrl+N)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="tiki.qrc">
+        <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+N</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="6">
+     <widget class="QListWidget" name="projectWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>32</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QPushButton" name="addProBtn">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>26</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>add project (Ctrl+Shift+N)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="tiki.qrc">
+        <normaloff>:/icons/list-add.png</normaloff>:/icons/list-add.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Shift+N</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="12">
+     <widget class="QPushButton" name="notDoneBtn">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>26</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>mark task as not done (Ctrl+R)</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="tiki.qrc">
+        <normaloff>:/icons/go-previous.png</normaloff>:/icons/go-previous.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+R</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
     <item row="0" column="9">
      <widget class="QPushButton" name="normalBtn">
@@ -556,8 +534,24 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="3">
-     <widget class="QPushButton" name="pdfBtn">
+    <item row="0" column="15">
+     <spacer name="spacer2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::MinimumExpanding</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="8">
+     <widget class="QPushButton" name="highBtn">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -571,17 +565,58 @@
        </size>
       </property>
       <property name="toolTip">
-       <string>export project to PDF (Ctrl+E)</string>
+       <string>set high priority (Ctrl++)</string>
       </property>
       <property name="text">
        <string/>
       </property>
       <property name="icon">
        <iconset resource="tiki.qrc">
-        <normaloff>:/icons/application-pdf.png</normaloff>:/icons/application-pdf.png</iconset>
+        <normaloff>:/icons/go-top.png</normaloff>:/icons/go-top.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
       </property>
       <property name="shortcut">
-       <string>Ctrl+E</string>
+       <string>Ctrl++</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="13">
+     <widget class="QPushButton" name="sortTasksBtn">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>26</width>
+        <height>32</height>
+       </size>
+      </property>
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;sort tasks alphabetically - WARNING: this sets all task priorities to 'normal'&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="tiki.qrc">
+        <normaloff>:/icons/view-sort-ascending.png</normaloff>:/icons/view-sort-ascending.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>24</width>
+        <height>24</height>
+       </size>
       </property>
       <property name="flat">
        <bool>true</bool>

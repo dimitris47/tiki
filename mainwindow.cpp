@@ -56,6 +56,10 @@ bool compareProjects(const Project &pro1, const Project &pro2) {
     return pro1.name() < pro2.name();
 }
 
+bool compareTasks(const Task &task1, const Task &task2) {
+    return task1.name() < task2.name();
+}
+
 bool MainWindow::allDone(const Project &project) {
     bool done {true};
     for (auto &&task : project.tasks)
@@ -108,6 +112,15 @@ void MainWindow::readProjects() {
         if (Organizer::Projects.at(i).tasks.isEmpty() || allDone(Organizer::Projects.at(i)))
             ui->projectWidget->item(i)->setForeground(GRAY);
     }
+}
+
+void MainWindow::on_sortTasksBtn_clicked() {
+    if (ui->projectWidget->currentItem() == NULL) {
+        ui->statusbar->showMessage("No project selected", 1000);
+        return;
+    }
+    std::sort(CURR_TASKS_ALL.begin(), CURR_TASKS_ALL.end(), compareTasks);
+
 }
 
 void MainWindow::saveProjects() {
