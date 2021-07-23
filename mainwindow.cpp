@@ -123,6 +123,7 @@ void MainWindow::on_sortTasksBtn_clicked() {
         task.setPriority(normal);
         task.setStatus(0);
     }
+    CURR_PRO.isModified = true;
     std::sort(CURR_TASKS_ALL.begin(), CURR_TASKS_ALL.end(), compareTasks);
     on_projectWidget_currentRowChanged();
     saveProjects();
