@@ -221,18 +221,23 @@ void MainWindow::on_rmProBtn_clicked() {
         return;
     }
 
-    QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    if (!dataDir.exists())
-        dataDir.mkpath(".");
-    QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
-
-    int row = ui->projectWidget->currentRow();
-    ui->projectWidget->takeItem(row);
-    Organizer::Projects.removeAt(row);
-    QFile file(currentName);
-    file.remove();
-    CURR_PRO.isModified = true;
-    saveProjects();
+    QMessageBox box(QMessageBox::Warning,QApplication::applicationName(),
+                    tr("Are you sure you want to delete this project?"),
+                    QMessageBox::Yes | QMessageBox::Cancel,
+                    this);
+    if (box.exec() == QMessageBox::Yes) {
+        QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        if (!dataDir.exists())
+            dataDir.mkpath(".");
+        QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
+        int row = ui->projectWidget->currentRow();
+        ui->projectWidget->takeItem(row);
+        Organizer::Projects.removeAt(row);
+        QFile file(currentName);
+        file.remove();
+        CURR_PRO.isModified = true;
+        saveProjects();
+    }
 }
 
 void MainWindow::on_projectWidget_currentRowChanged() {
