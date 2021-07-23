@@ -119,8 +119,13 @@ void MainWindow::on_sortTasksBtn_clicked() {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
     }
+    for (auto &&task : CURR_TASKS_ALL) {
+        task.setPriority(normal);
+        task.setStatus(0);
+    }
     std::sort(CURR_TASKS_ALL.begin(), CURR_TASKS_ALL.end(), compareTasks);
-
+    on_projectWidget_currentRowChanged();
+    saveProjects();
 }
 
 void MainWindow::saveProjects() {
