@@ -221,7 +221,7 @@ void MainWindow::on_rmProBtn_clicked() {
         return;
     }
 
-    QMessageBox box(QMessageBox::Warning,QApplication::applicationName(),
+    QMessageBox box(QMessageBox::Warning, "Deleting project",
                     tr("Are you sure you want to delete this project?"),
                     QMessageBox::Yes | QMessageBox::Cancel,
                     this);
