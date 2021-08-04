@@ -60,6 +60,15 @@ bool compareTasks(const Task &task1, const Task &task2) {
     return task1.name() < task2.name();
 }
 
+void MainWindow::sortProjects() {
+    std::sort(Organizer::Projects.begin(), Organizer::Projects.end(), compareProjects);
+    for (int i = 0; i < Organizer::Projects.count(); i++) {
+        ui->projectWidget->addItem(Organizer::Projects.at(i).name());
+        if (Organizer::Projects.at(i).tasks.isEmpty() || allDone(Organizer::Projects.at(i)))
+            ui->projectWidget->item(i)->setForeground(GRAY);
+    }
+}
+
 bool MainWindow::allDone(const Project &project) {
     bool done {true};
     for (auto &&task : project.tasks)
@@ -106,12 +115,12 @@ void MainWindow::readProjects() {
         i++;
         file.close();
     }
-    std::sort(Organizer::Projects.begin(), Organizer::Projects.end(), compareProjects);
-    for (int i = 0; i < Organizer::Projects.count(); i++) {
-        ui->projectWidget->addItem(Organizer::Projects.at(i).name());
-        if (Organizer::Projects.at(i).tasks.isEmpty() || allDone(Organizer::Projects.at(i)))
-            ui->projectWidget->item(i)->setForeground(GRAY);
-    }
+    sortProjects();
+}
+
+void MainWindow::on_sortProBtn_clicked() {
+    ui->projectWidget->clear();
+    sortProjects();
 }
 
 void MainWindow::on_sortTasksBtn_clicked() {

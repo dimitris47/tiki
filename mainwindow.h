@@ -23,6 +23,8 @@ protected:
 
 private slots:
     bool allDone(const Project &project);
+    void sortProjects();
+    void on_sortProBtn_clicked();
     void on_addProBtn_clicked();
     void on_renameProBtn_clicked();
     void on_rmProBtn_clicked();
@@ -41,7 +43,6 @@ private slots:
     void on_printBtn_clicked();
     void on_infoButton_clicked();
     QString stringToPrint();
-
 
 private:
     Ui::MainWindow *ui;
