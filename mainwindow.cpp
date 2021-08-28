@@ -169,7 +169,7 @@ void MainWindow::on_addProBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        QString projectTitle = widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|']+"), "_");
+        QString projectTitle = widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|'|'\n']+"), "_");
         QStringList projectTitles;
         for (auto &&project : Organizer::Projects)
             projectTitles.append(project.name());
@@ -203,7 +203,7 @@ void MainWindow::on_renameProBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        QString newProject = widget->itemText;
+        QString newProject = widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|'|'\n']+"), "_");
         QStringList projectNames;
         for (auto &&project : Organizer::Projects)
             projectNames.append(project.name());
@@ -270,7 +270,7 @@ void MainWindow::on_addTaskBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        QString taskText = widget->itemText.replace("-->>", "-->");
+        QString taskText = widget->itemText.replace("-->>", "-->").replace('\n', '_');
         QStringList taskNames;
         for (auto &&task : CURR_TASKS_ALL)
             taskNames.append(task.name());
@@ -310,7 +310,7 @@ void MainWindow::on_renameTaskBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        QString newTask = widget->itemText;
+        QString newTask = widget->itemText.replace("-->>", "-->").replace('\n', '_');
         QStringList tasksNames;
         for (auto &&task : CURR_TASKS_ALL)
             tasksNames.append(task.name());
