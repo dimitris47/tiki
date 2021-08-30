@@ -356,10 +356,17 @@ void MainWindow::on_normalBtn_clicked() {
                 highs++;
     CURR_TASK.setPriority(normal);
     if (highs > -1) {
-        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs);
-        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-        ui->taskWidget->insertItem(highs, taskName);
-        ui->taskWidget->setCurrentRow(highs);
+        if (ui->taskWidget->count() - highs > 1) {
+            CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs + 1);
+            ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+            ui->taskWidget->insertItem(highs + 1, taskName);
+            ui->taskWidget->setCurrentRow(highs + 1);
+        } else {
+            CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs);
+            ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+            ui->taskWidget->insertItem(highs, taskName);
+            ui->taskWidget->setCurrentRow(highs);
+        }
     } else {
         CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
         ui->taskWidget->takeItem(ui->taskWidget->currentRow());
