@@ -349,7 +349,7 @@ void MainWindow::on_normalBtn_clicked() {
         return;
     }
     QString taskName = CURR_TASK.name();
-    int highs {0};
+    int highs {-1};
     for (auto &&task : CURR_TASKS_ALL)
         if (task.priority() == high)
             if (!task.status())
