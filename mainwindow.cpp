@@ -355,10 +355,17 @@ void MainWindow::on_normalBtn_clicked() {
             if (!task.status())
                 highs++;
     CURR_TASK.setPriority(normal);
-    CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs);
-    ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-    ui->taskWidget->insertItem(highs, taskName);
-    ui->taskWidget->setCurrentRow(highs);
+    if (highs > -1) {
+        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs);
+        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+        ui->taskWidget->insertItem(highs, taskName);
+        ui->taskWidget->setCurrentRow(highs);
+    } else {
+        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
+        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
+        ui->taskWidget->insertItem(0, taskName);
+        ui->taskWidget->setCurrentRow(0);
+    }
     CURR_PRO.isModified = true;
     saveProjects();
 }
