@@ -270,6 +270,8 @@ void MainWindow::on_addTaskBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
+        if (widget->itemText.contains("-->>"))
+            ui->statusbar->showMessage("'-->> is reserved and has been replaced by '-->'", 3000);
         QString taskText = widget->itemText.replace("-->>", "-->").replace('\n', '_');
         QStringList taskNames;
         for (auto &&task : CURR_TASKS_ALL)
@@ -310,6 +312,8 @@ void MainWindow::on_renameTaskBtn_clicked() {
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
+        if (widget->itemText.contains("-->>"))
+            ui->statusbar->showMessage("'-->> is reserved and has been replaced by '-->'", 3000);
         QString newTask = widget->itemText.replace("-->>", "-->").replace('\n', '_');
         QStringList tasksNames;
         for (auto &&task : CURR_TASKS_ALL)

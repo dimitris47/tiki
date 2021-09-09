@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>505</width>
-    <height>114</height>
+    <width>587</width>
+    <height>105</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>note: reserved characters will be replaced with underscore ('_')</string>
+      <string>note: reserved characters and line changes will be replaced with underscore ('_')</string>
      </property>
     </widget>
    </item>
