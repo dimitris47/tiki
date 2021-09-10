@@ -298,8 +298,11 @@ void MainWindow::on_addTaskBtn_clicked() {
 }
 
 void MainWindow::on_taskWidget_currentRowChanged(int currentRow) {
-    if (ui->taskWidget->currentItem() != NULL)
+    if (ui->taskWidget->currentItem() != NULL) {
         ui->statusbar->showMessage(CURR_TASKS_ALL.at(currentRow).details());
+    } else {
+        ui->statusbar->clearMessage();
+    }
 }
 
 void MainWindow::on_renameTaskBtn_clicked() {
