@@ -527,7 +527,7 @@
       </property>
       <property name="icon">
        <iconset resource="tiki.qrc">
-        <normaloff>:/icons/go-next.png</normaloff>:/icons/go-next.png</iconset>
+        <normaloff>:/icons/go-next-view.png</normaloff>:/icons/go-next-view.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -565,7 +565,7 @@
       </property>
       <property name="icon">
        <iconset resource="tiki.qrc">
-        <normaloff>:/icons/go-previous.png</normaloff>:/icons/go-previous.png</iconset>
+        <normaloff>:/icons/dialog-not-done.png</normaloff>:/icons/dialog-not-done.png</iconset>
       </property>
       <property name="iconSize">
        <size>

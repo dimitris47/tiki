@@ -5,16 +5,14 @@
         <file>icons/application-pdf.png</file>
         <file>icons/dialog-information.png</file>
         <file>icons/dialog-ok-apply.png</file>
-        <file>icons/dialog-ok.png</file>
         <file>icons/document-edit.png</file>
         <file>icons/go-bottom.png</file>
-        <file>icons/go-next.png</file>
-        <file>icons/go-previous.png</file>
+        <file>icons/go-next-view.png</file>
+        <file>icons/dialog-not-done.png</file>
         <file>icons/go-top.png</file>
         <file>icons/list-remove.png</file>
         <file>icons/printer.png</file>
         <file>icons/list-add.png</file>
-        <file>icons/edit-undo.png</file>
         <file>icons/view-sort-ascending.png</file>
     </qresource>
 </RCC>
