@@ -23,14 +23,14 @@
 Task::Task(QString name, bool isDone, Priority) {
     taskName = name;
     this->isDone = isDone;
-    taskPriority = normal;
+    taskPriority = NORMAL;
 }
 
 QString Task::priorityString() const {
     switch (taskPriority) {
-        case high: return "high"; break;
-        case normal: return "normal"; break;
-        case low: return "low"; break;
+        case HIGH: return "high"; break;
+        case NORMAL: return "normal"; break;
+        case LOW: return "low"; break;
     }
     return "";
 }

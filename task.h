@@ -3,11 +3,13 @@
 
 #include <QString>
 
-enum Priority {high, normal, low};
+enum Priority {
+    HIGH, NORMAL, LOW
+};
 
 class Task {
 public:
-    explicit Task(QString name = "new task", bool isDone = false, Priority = normal);
+    explicit Task(QString name = "new task", bool isDone = false, Priority = NORMAL);
     QString name() const { return taskName; }
     void setName(QString name) { taskName = name; }
     Priority priority() const { return taskPriority; };

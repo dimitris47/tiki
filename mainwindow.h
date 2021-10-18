@@ -24,6 +24,7 @@ protected:
 private slots:
     bool allDone(const Project &project);
     void sortProjects();
+    void sortTasksByPriority();
     void on_sortProBtn_clicked();
     void on_addProBtn_clicked();
     void on_renameProBtn_clicked();

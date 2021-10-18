@@ -60,6 +60,10 @@ bool compareTasks(const Task &task1, const Task &task2) {
     return task1.name() < task2.name();
 }
 
+bool comparePriorities(const Task &task1, const Task &task2) {
+    return task1.priority() < task2.priority();
+}
+
 void MainWindow::sortProjects() {
     std::sort(Organizer::Projects.begin(), Organizer::Projects.end(), compareProjects);
     for (int i = 0; i < Organizer::Projects.count(); i++) {
@@ -67,6 +71,26 @@ void MainWindow::sortProjects() {
         if (Organizer::Projects.at(i).tasks.isEmpty() || allDone(Organizer::Projects.at(i)))
             ui->projectWidget->item(i)->setForeground(GRAY);
     }
+}
+
+void MainWindow::sortTasksByPriority() {
+    std::sort(CURR_TASKS_ALL.begin(), CURR_TASKS_ALL.end(), comparePriorities);
+    for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
+        Task task = CURR_TASKS_ALL.at(i);
+        if (task.status()) {
+            CURR_TASKS_ALL.takeAt(i);
+            CURR_TASKS_ALL.append(task);
+        }
+    }
+    ui->taskWidget->clear();
+    for (auto &&task : CURR_TASKS_ALL)
+        ui->taskWidget->addItem(task.name());
+    for (int i = 0; i < CURR_TASKS_ALL.count(); i++)
+        if (CURR_TASKS_ALL.at(i).status())
+            ui->taskWidget->item(i)->setForeground(GRAY);
+
+    CURR_PRO.isModified = true;
+    saveProjects();
 }
 
 bool MainWindow::allDone(const Project &project) {
@@ -98,13 +122,13 @@ void MainWindow::readProjects() {
                 int priority = line.split("-->>").at(2).toInt();
                 switch (priority) {
                 case 0:
-                    task.setPriority(high);
+                    task.setPriority(HIGH);
                     break;
                 case 1:
-                    task.setPriority(normal);
+                    task.setPriority(NORMAL);
                     break;
                 case 2:
-                    task.setPriority(low);
+                    task.setPriority(LOW);
                     break;
                 }
                 int status = line.split("-->>").at(1).toInt();
@@ -129,7 +153,7 @@ void MainWindow::on_sortTasksBtn_clicked() {
         return;
     }
     for (auto &&task : CURR_TASKS_ALL) {
-        task.setPriority(normal);
+        task.setPriority(NORMAL);
         task.setStatus(0);
     }
     CURR_PRO.isModified = true;
@@ -337,16 +361,9 @@ void MainWindow::on_highBtn_clicked() {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
     }
-    if (CURR_TASK.priority() != high)
-        if (!CURR_TASK.status()) {
-            QString taskName = CURR_TASK.name();
-            CURR_TASK.setPriority(high);
-            CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
-            ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-            ui->taskWidget->insertItem(0, taskName);
-            ui->taskWidget->setCurrentRow(0);
-            CURR_PRO.isModified = true;
-            saveProjects();
+    if (CURR_TASK.priority() != HIGH) {
+        CURR_TASK.setPriority(HIGH);
+        sortTasksByPriority();
     }
 }
 
@@ -355,33 +372,10 @@ void MainWindow::on_normalBtn_clicked() {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
     }
-    QString taskName = CURR_TASK.name();
-    int highs {-1};
-    for (auto &&task : CURR_TASKS_ALL)
-        if (task.priority() == high)
-            if (!task.status())
-                highs++;
-    CURR_TASK.setPriority(normal);
-    if (highs > -1) {
-        if (ui->taskWidget->count() - highs > 1) {
-            CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs + 1);
-            ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-            ui->taskWidget->insertItem(highs + 1, taskName);
-            ui->taskWidget->setCurrentRow(highs + 1);
-        } else {
-            CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), highs);
-            ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-            ui->taskWidget->insertItem(highs, taskName);
-            ui->taskWidget->setCurrentRow(highs);
-        }
-    } else {
-        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
-        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-        ui->taskWidget->insertItem(0, taskName);
-        ui->taskWidget->setCurrentRow(0);
+    if (CURR_TASK.priority() != NORMAL) {
+        CURR_TASK.setPriority(NORMAL);
+        sortTasksByPriority();
     }
-    CURR_PRO.isModified = true;
-    saveProjects();
 }
 
 void MainWindow::on_lowBtn_clicked() {
@@ -389,20 +383,9 @@ void MainWindow::on_lowBtn_clicked() {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
     }
-    if (CURR_TASK.priority() != low) {
-        QString taskName = CURR_TASK.name();
-        int higher {-1};
-        for (auto &&task : CURR_TASKS_ALL)
-            if (task.priority() != low)
-                if (!task.status())
-                    higher++;
-        CURR_TASK.setPriority(low);
-        CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), higher);
-        ui->taskWidget->takeItem(ui->taskWidget->currentRow());
-        ui->taskWidget->insertItem(higher, taskName);
-        ui->taskWidget->setCurrentRow(higher);
-        CURR_PRO.isModified = true;
-        saveProjects();
+    if (CURR_TASK.priority() != LOW) {
+        CURR_TASK.setPriority(LOW);
+        sortTasksByPriority();
     }
 }
 
@@ -434,31 +417,9 @@ void MainWindow::on_notDoneBtn_clicked() {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
     }
-    if (CURR_TASK.status() == 1) {
+    if (CURR_TASK.status() == 1)
         CURR_TASK.setStatus(0);
-        QString taskName = CURR_TASK.name();
-        int row = ui->taskWidget->currentRow();
-        switch (CURR_TASK.priority()) {
-        case 0:
-            CURR_TASKS_ALL.move(ui->taskWidget->currentRow(), 0);
-            ui->taskWidget->takeItem(row);
-            ui->taskWidget->insertItem(0, taskName);
-            ui->taskWidget->setCurrentRow(0);
-            saveProjects();
-            break;
-        case 1:
-            on_normalBtn_clicked();
-            break;
-        case 2:
-            on_lowBtn_clicked();
-            break;
-        }
-        ui->taskWidget->currentItem()->setForeground(BLACK);
-        ui->taskWidget->setCurrentRow(row);
-        ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
-    }
-    CURR_PRO.isModified = true;
-    saveProjects();
+    sortTasksByPriority();
     if (!allDone(CURR_PRO))
         ui->projectWidget->currentItem()->setForeground(BLACK);
 }
