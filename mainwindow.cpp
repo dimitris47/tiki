@@ -94,13 +94,8 @@ void MainWindow::sortTasksByPriority() {
 }
 
 bool MainWindow::allDone(const Project &project) {
-    bool done {true};
-    for (auto &&task : project.tasks)
-        if (task.status() == 0) {
-            done = false;
-            return done;
-        }
-    return done;
+    auto pred = [](Task task) { return task.status() == 1; };
+    return std::all_of(project.tasks.begin(), project.tasks.end(), pred);
 }
 
 void MainWindow::readProjects() {
