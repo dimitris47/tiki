@@ -470,7 +470,10 @@ void MainWindow::on_pdfBtn_clicked() {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
     }
-    QString fileName = QFileDialog::getSaveFileName((QWidget* )0, "Export to PDF", dirToWrite(), "*.pdf");
+    QString fileName = QFileDialog::getSaveFileName(
+                (QWidget* )0, "Export to PDF", dirToWrite(), "*.pdf");
+    if (fileName.isEmpty())
+        return;
     if (QFileInfo(fileName).suffix().isEmpty())
         fileName.append(".pdf");
     QPrinter printer(QPrinter::PrinterResolution);
