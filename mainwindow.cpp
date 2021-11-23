@@ -75,13 +75,15 @@ void MainWindow::sortProjects() {
 
 void MainWindow::sortTasksByPriority() {
     std::sort(CURR_TASKS_ALL.begin(), CURR_TASKS_ALL.end(), comparePriorities);
-    for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
+
+    for (int i = CURR_TASKS_ALL.count() - 1; i >= 0; i--) {
         Task task = CURR_TASKS_ALL.at(i);
         if (task.status()) {
             CURR_TASKS_ALL.takeAt(i);
             CURR_TASKS_ALL.append(task);
         }
     }
+
     ui->taskWidget->clear();
     for (auto &&task : CURR_TASKS_ALL)
         ui->taskWidget->addItem(task.name());
