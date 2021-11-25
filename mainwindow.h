@@ -42,6 +42,7 @@ private slots:
     void on_rmTaskBtn_clicked();
     void on_pdfBtn_clicked();
     void on_printBtn_clicked();
+    void on_fontBtn_clicked();
     void on_infoButton_clicked();
     QString stringToPrint();
 

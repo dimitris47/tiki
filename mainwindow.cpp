@@ -28,6 +28,7 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QFileDialog>
+#include <QFontDialog>
 #include <QMessageBox>
 #include <QPrintDialog>
 #include <QPrinter>
@@ -45,8 +46,6 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     readProjects();
-    ui->projectWidget->setFont(QFont("Sans-serif", 11));
-    ui->taskWidget->setFont(QFont("Sans-serif", 11));
     readPrefs();
 }
 
@@ -504,6 +503,11 @@ void MainWindow::on_printBtn_clicked() {
     }
 }
 
+
+void MainWindow::on_fontBtn_clicked(){
+    QApplication::setFont(QFontDialog::getFont(0, QApplication::font()));
+}
+
 void MainWindow::on_infoButton_clicked() {
     QMessageBox::about(this, tr("Program Info"),
                        (QApplication::applicationName() + " " + QApplication::applicationVersion() + br.repeated(2) +
@@ -521,6 +525,10 @@ void MainWindow::readPrefs() {
     }
     const int selPro = settings.value("selectedProject", 0).toInt();
     ui->projectWidget->setCurrentRow(selPro);
+    const QString f = settings.value("font", QFont()).toString();
+    const int s = settings.value("size", 11).toInt();
+    const QFont font(f, s);
+    QApplication::setFont(font);
 }
 
 void MainWindow::savePrefs() {
@@ -529,6 +537,8 @@ void MainWindow::savePrefs() {
     if (!isMaximized())
         settings.setValue("geometry", saveGeometry());
     settings.setValue("selectedProject", ui->projectWidget->currentRow());
+    settings.setValue("font", QApplication::font().toString());
+    settings.setValue("size", QApplication::font().pointSize());
     settings.sync();
 }
 
