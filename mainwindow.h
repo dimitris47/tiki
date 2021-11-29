@@ -28,11 +28,13 @@ private slots:
     void on_sortProBtn_clicked();
     void on_addProBtn_clicked();
     void on_renameProBtn_clicked();
+    void on_projectWidget_itemDoubleClicked();
     void on_rmProBtn_clicked();
     void on_projectWidget_currentRowChanged();
     void on_addTaskBtn_clicked();
     void on_taskWidget_currentRowChanged(int currentRow);
     void on_renameTaskBtn_clicked();
+    void on_taskWidget_itemDoubleClicked();
     void on_highBtn_clicked();
     void on_normalBtn_clicked();
     void on_lowBtn_clicked();

@@ -244,6 +244,10 @@ void MainWindow::on_renameProBtn_clicked() {
     }
 }
 
+void MainWindow::on_projectWidget_itemDoubleClicked() {
+    on_renameProBtn_clicked();
+}
+
 void MainWindow::on_rmProBtn_clicked() {
     if (ui->projectWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No project selected", 1000);
@@ -350,6 +354,10 @@ void MainWindow::on_renameTaskBtn_clicked() {
     }
     CURR_PRO.isModified = true;
     saveProjects();
+}
+
+void MainWindow::on_taskWidget_itemDoubleClicked() {
+    on_renameTaskBtn_clicked();
 }
 
 void MainWindow::on_highBtn_clicked() {
