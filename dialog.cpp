@@ -20,7 +20,11 @@
 #include "dialog.h"
 #include "ui_dialog.h"
 
-Dialog::Dialog(QWidget *parent, QString name, QString kind) : QDialog(parent), ui(new Ui::Dialog) {
+
+Dialog::Dialog(QWidget *parent, QString name, QString kind)
+    : QDialog(parent)
+    , ui(new Ui::Dialog)
+{
     ui->setupUi(this);
     ui->lineEdit->setText(name);
     this->setWindowTitle(kind);
@@ -28,8 +32,14 @@ Dialog::Dialog(QWidget *parent, QString name, QString kind) : QDialog(parent), u
         ui->label->setText("note: line changes will be replaced with underscore ('_')");
 }
 
-Dialog::~Dialog() { delete ui; }
 
-void Dialog::on_buttonBox_accepted() {
+Dialog::~Dialog()
+{
+    delete ui;
+}
+
+
+void Dialog::on_buttonBox_accepted()
+{
     itemText = ui->lineEdit->text();
 }

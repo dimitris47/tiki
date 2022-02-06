@@ -43,27 +43,66 @@
 #define BLACK QColor(Qt::GlobalColor::black)
 
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
     ui->setupUi(this);
     readProjects();
     readPrefs();
+    useDarkTheme();
 }
 
-MainWindow::~MainWindow() { delete ui; }
 
-bool compareProjects(const Project &pro1, const Project &pro2) {
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+
+void MainWindow::useDarkTheme()
+{
+    QPalette dark_palette;
+
+    dark_palette.setColor(QPalette::Window, QColor(53, 53, 53));
+    dark_palette.setColor(QPalette::WindowText, Qt::white);
+    dark_palette.setColor(QPalette::Base, QColor(25, 25, 25));
+    dark_palette.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
+    dark_palette.setColor(QPalette::ToolTipBase, Qt::white);
+    dark_palette.setColor(QPalette::ToolTipText, Qt::white);
+    dark_palette.setColor(QPalette::Text, Qt::white);
+    dark_palette.setColor(QPalette::Button, QColor(53, 53, 53));
+    dark_palette.setColor(QPalette::ButtonText, Qt::white);
+    dark_palette.setColor(QPalette::BrightText, Qt::red);
+    dark_palette.setColor(QPalette::Link, QColor(42, 130, 218));
+    dark_palette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+    dark_palette.setColor(QPalette::HighlightedText, Qt::black);
+
+    QApplication::setPalette(dark_palette);
+    this->setStyleSheet("QToolTip { color: #ffffff; background-color: #00000f; border: 1px solid white; }");
+}
+
+
+bool compareProjects(const Project &pro1, const Project &pro2)
+{
     return pro1.name() < pro2.name();
 }
 
-bool compareTasks(const Task &task1, const Task &task2) {
+
+bool compareTasks(const Task &task1, const Task &task2)
+{
     return task1.name() < task2.name();
 }
 
-bool comparePriorities(const Task &task1, const Task &task2) {
+
+bool comparePriorities(const Task &task1, const Task &task2)
+{
     return task1.priority() < task2.priority();
 }
 
-void MainWindow::sortProjects() {
+
+void MainWindow::sortProjects()
+{
     std::sort(Organizer::Projects.begin(), Organizer::Projects.end(), compareProjects);
     for (int i = 0; i < Organizer::Projects.count(); i++) {
         ui->projectWidget->addItem(Organizer::Projects.at(i).name());
@@ -72,7 +111,9 @@ void MainWindow::sortProjects() {
     }
 }
 
-void MainWindow::sortTasksByPriority() {
+
+void MainWindow::sortTasksByPriority()
+{
     std::sort(CURR_TASKS_ALL.begin(), CURR_TASKS_ALL.end(), comparePriorities);
 
     for (int i = CURR_TASKS_ALL.count() - 1; i >= 0; i--) {
@@ -94,12 +135,16 @@ void MainWindow::sortTasksByPriority() {
     saveProjects();
 }
 
-bool MainWindow::allDone(const Project &project) {
+
+bool MainWindow::allDone(const Project &project)
+{
     auto pred = [](Task task) { return task.status() == 1; };
     return std::all_of(project.tasks.begin(), project.tasks.end(), pred);
 }
 
-void MainWindow::readProjects() {
+
+void MainWindow::readProjects()
+{
     QDir dataDir = QDir(QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).at(0));
     QDirIterator it(dataDir.path(), QDir::Files, QDirIterator::Subdirectories);
     int i {0};
@@ -138,12 +183,16 @@ void MainWindow::readProjects() {
     sortProjects();
 }
 
-void MainWindow::on_sortProBtn_clicked() {
+
+void MainWindow::on_sortProBtn_clicked()
+{
     ui->projectWidget->clear();
     sortProjects();
 }
 
-void MainWindow::on_sortTasksBtn_clicked() {
+
+void MainWindow::on_sortTasksBtn_clicked()
+{
     if (ui->projectWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
@@ -158,7 +207,9 @@ void MainWindow::on_sortTasksBtn_clicked() {
     saveProjects();
 }
 
-void MainWindow::saveProjects() {
+
+void MainWindow::saveProjects()
+{
     for (auto &&project : Organizer::Projects)
         if (project.isModified) {
             QString projectData;
@@ -183,7 +234,9 @@ void MainWindow::saveProjects() {
         }
 }
 
-void MainWindow::on_addProBtn_clicked() {
+
+void MainWindow::on_addProBtn_clicked()
+{
     auto widget = new Dialog(this, "", "New Project");
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
@@ -207,7 +260,9 @@ void MainWindow::on_addProBtn_clicked() {
     }
 }
 
-void MainWindow::on_renameProBtn_clicked() {
+
+void MainWindow::on_renameProBtn_clicked()
+{
     if (ui->projectWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
@@ -244,11 +299,15 @@ void MainWindow::on_renameProBtn_clicked() {
     }
 }
 
-void MainWindow::on_projectWidget_itemDoubleClicked() {
+
+void MainWindow::on_projectWidget_itemDoubleClicked()
+{
     on_renameProBtn_clicked();
 }
 
-void MainWindow::on_rmProBtn_clicked() {
+
+void MainWindow::on_rmProBtn_clicked()
+{
     if (ui->projectWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
@@ -273,7 +332,9 @@ void MainWindow::on_rmProBtn_clicked() {
     }
 }
 
-void MainWindow::on_projectWidget_currentRowChanged() {
+
+void MainWindow::on_projectWidget_currentRowChanged()
+{
     ui->statusbar->clearMessage();
     ui->taskWidget->clear();
     if (ui->projectWidget->currentItem() != NULL)
@@ -284,7 +345,9 @@ void MainWindow::on_projectWidget_currentRowChanged() {
         }
 }
 
-void MainWindow::on_addTaskBtn_clicked() {
+
+void MainWindow::on_addTaskBtn_clicked()
+{
     if (ui->projectWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
@@ -321,7 +384,9 @@ void MainWindow::on_addTaskBtn_clicked() {
     }
 }
 
-void MainWindow::on_taskWidget_currentRowChanged(int currentRow) {
+
+void MainWindow::on_taskWidget_currentRowChanged(int currentRow)
+{
     if (ui->taskWidget->currentItem() != NULL) {
         ui->statusbar->showMessage(CURR_TASKS_ALL.at(currentRow).details());
     } else {
@@ -329,7 +394,9 @@ void MainWindow::on_taskWidget_currentRowChanged(int currentRow) {
     }
 }
 
-void MainWindow::on_renameTaskBtn_clicked() {
+
+void MainWindow::on_renameTaskBtn_clicked()
+{
     if (ui->taskWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
@@ -356,11 +423,15 @@ void MainWindow::on_renameTaskBtn_clicked() {
     saveProjects();
 }
 
-void MainWindow::on_taskWidget_itemDoubleClicked() {
+
+void MainWindow::on_taskWidget_itemDoubleClicked()
+{
     on_renameTaskBtn_clicked();
 }
 
-void MainWindow::on_highBtn_clicked() {
+
+void MainWindow::on_highBtn_clicked()
+{
     if (ui->taskWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
@@ -371,7 +442,9 @@ void MainWindow::on_highBtn_clicked() {
     }
 }
 
-void MainWindow::on_normalBtn_clicked() {
+
+void MainWindow::on_normalBtn_clicked()
+{
     if (ui->taskWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
@@ -382,7 +455,9 @@ void MainWindow::on_normalBtn_clicked() {
     }
 }
 
-void MainWindow::on_lowBtn_clicked() {
+
+void MainWindow::on_lowBtn_clicked()
+{
     if (ui->taskWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
@@ -393,7 +468,9 @@ void MainWindow::on_lowBtn_clicked() {
     }
 }
 
-void MainWindow::on_doneBtn_clicked() {
+
+void MainWindow::on_doneBtn_clicked()
+{
     if (ui->taskWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
@@ -416,7 +493,9 @@ void MainWindow::on_doneBtn_clicked() {
         ui->projectWidget->currentItem()->setForeground(GRAY);
 }
 
-void MainWindow::on_notDoneBtn_clicked() {
+
+void MainWindow::on_notDoneBtn_clicked()
+{
     if (ui->taskWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
@@ -428,7 +507,9 @@ void MainWindow::on_notDoneBtn_clicked() {
         ui->projectWidget->currentItem()->setForeground(BLACK);
 }
 
-void MainWindow::on_rmTaskBtn_clicked() {
+
+void MainWindow::on_rmTaskBtn_clicked()
+{
     if (ui->taskWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No task selected", 1000);
         return;
@@ -442,7 +523,9 @@ void MainWindow::on_rmTaskBtn_clicked() {
     saveProjects();
 }
 
-QString dirToWrite() {
+
+QString dirToWrite()
+{
     static QString dir;
     if (!dir.isEmpty())
         return dir;
@@ -457,11 +540,14 @@ QString dirToWrite() {
     return QString();
 }
 
+
 QString sp = "&#160;";
 QString unchecked = "&#9744;";
 QString checked = "&#9745;";
 
-QString MainWindow::stringToPrint() {
+
+QString MainWindow::stringToPrint()
+{
     QStringList taskList;
     for (auto &&task : CURR_TASKS_ALL)
         if (!task.status()) {
@@ -474,7 +560,9 @@ QString MainWindow::stringToPrint() {
     return toPrint;
 }
 
-void MainWindow::on_pdfBtn_clicked() {
+
+void MainWindow::on_pdfBtn_clicked()
+{
     if (ui->projectWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
@@ -495,7 +583,9 @@ void MainWindow::on_pdfBtn_clicked() {
     ui->statusbar->showMessage(CURR_PRO.name() + " exported to PDF", 3000);
 }
 
-void MainWindow::on_printBtn_clicked() {
+
+void MainWindow::on_printBtn_clicked()
+{
     if (ui->projectWidget->currentItem() == NULL) {
         ui->statusbar->showMessage("No project selected", 1000);
         return;
@@ -512,17 +602,22 @@ void MainWindow::on_printBtn_clicked() {
 }
 
 
-void MainWindow::on_fontBtn_clicked(){
+void MainWindow::on_fontBtn_clicked()
+{
     QApplication::setFont(QFontDialog::getFont(0, QApplication::font()));
 }
 
-void MainWindow::on_infoButton_clicked() {
+
+void MainWindow::on_infoButton_clicked()
+{
     QMessageBox::about(this, tr("Program Info"),
                        (QApplication::applicationName() + " " + QApplication::applicationVersion() + br.repeated(2) +
                         APPINFO));
 }
 
-void MainWindow::readPrefs() {
+
+void MainWindow::readPrefs()
+{
     QSettings settings;
     bool isMax = settings.value("isMaximized", false).toBool();
     if (isMax) {
@@ -539,7 +634,9 @@ void MainWindow::readPrefs() {
     QApplication::setFont(font);
 }
 
-void MainWindow::savePrefs() {
+
+void MainWindow::savePrefs()
+{
     QSettings settings;
     settings.setValue("isMaximized", isMaximized());
     if (!isMaximized())
@@ -550,7 +647,9 @@ void MainWindow::savePrefs() {
     settings.sync();
 }
 
-void MainWindow::closeEvent(QCloseEvent *event) {
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
     savePrefs();
     event->accept();
 }

@@ -20,27 +20,35 @@
 #include "task.h"
 #include <QDebug>
 
-Task::Task(QString name, bool isDone, Priority) {
+
+Task::Task(QString name, bool isDone, Priority)
+{
     taskName = name;
     this->isDone = isDone;
     taskPriority = NORMAL;
 }
 
-QString Task::priorityString() const {
+
+QString Task::priorityString() const
+{
     switch (taskPriority) {
         case HIGH: return "high"; break;
         case NORMAL: return "normal"; break;
         case LOW: return "low"; break;
     }
+
     return "";
 }
 
-QString Task::details() const {
+
+QString Task::details() const
+{
     QString nameF;
     if (this->name().count() <= 32) {
         nameF = this->name();
     } else {
         nameF = this->name().remove(32, this->name().count()) + "...";
     }
+
     return nameF + " || " + priorityString() + " priority, " + (isDone ? "done" : "not done");
 }

@@ -46,6 +46,7 @@ private slots:
     void on_printBtn_clicked();
     void on_fontBtn_clicked();
     void on_infoButton_clicked();
+    void useDarkTheme();
     QString stringToPrint();
 
 private:
