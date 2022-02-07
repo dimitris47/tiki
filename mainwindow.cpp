@@ -627,6 +627,10 @@ void MainWindow::on_printBtn_clicked()
 void MainWindow::on_fontBtn_clicked()
 {
     QApplication::setFont(QFontDialog::getFont(0, QApplication::font()));
+    if (isDark) {
+        this->setStyleSheet("");
+        this->setStyleSheet("QToolTip { color: #ffffff; background-color: #00000f; border: 1px solid white; }");
+    }
 }
 
 
