@@ -7,7 +7,9 @@ enum Priority {
     HIGH, NORMAL, LOW
 };
 
-class Task {
+
+class Task
+{
 public:
     explicit Task(QString name = "new task", bool isDone = false, Priority = NORMAL);
     QString name() const { return taskName; }

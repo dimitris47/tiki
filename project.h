@@ -4,7 +4,9 @@
 #include "task.h"
 #include <QList>
 
-class Project {
+
+class Project
+{
 public:
     explicit Project(QString name);
     QString name() const { return projectName; }

@@ -50,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     readProjects();
     readPrefs();
-    useDarkTheme();
 }
 
 
@@ -66,7 +65,7 @@ void MainWindow::useDarkTheme()
 
     dark_palette.setColor(QPalette::Window, QColor(53, 53, 53));
     dark_palette.setColor(QPalette::WindowText, Qt::white);
-    dark_palette.setColor(QPalette::Base, QColor(25, 25, 25));
+    dark_palette.setColor(QPalette::Base, QColor(42, 42, 42));
     dark_palette.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
     dark_palette.setColor(QPalette::ToolTipBase, Qt::white);
     dark_palette.setColor(QPalette::ToolTipText, Qt::white);
@@ -80,6 +79,29 @@ void MainWindow::useDarkTheme()
 
     QApplication::setPalette(dark_palette);
     this->setStyleSheet("QToolTip { color: #ffffff; background-color: #00000f; border: 1px solid white; }");
+}
+
+
+void MainWindow::useDefaultTheme()
+{
+    QApplication::setPalette(this->style()->standardPalette());
+    this->setStyleSheet("");
+}
+
+
+void MainWindow::on_toggleThemeButton_clicked()
+{
+    if (isDark) {
+        useDefaultTheme();
+        isDark = false;
+        ui->toggleThemeButton->setIcon(QIcon(":/icons/weather-clear-night.png"));
+        ui->toggleThemeButton->setToolTip("Switch to dark theme");
+    } else {
+        useDarkTheme();
+        isDark = true;
+        ui->toggleThemeButton->setIcon(QIcon(":/icons/weather-clear.png"));
+        ui->toggleThemeButton->setToolTip("Switch to the system provided theme");
+    }
 }
 
 
@@ -619,6 +641,7 @@ void MainWindow::on_infoButton_clicked()
 void MainWindow::readPrefs()
 {
     QSettings settings;
+
     bool isMax = settings.value("isMaximized", false).toBool();
     if (isMax) {
         showMaximized();
@@ -626,24 +649,36 @@ void MainWindow::readPrefs()
         const QByteArray geometry = settings.value("geometry", QByteArray()).toByteArray();
         restoreGeometry(geometry);
     }
+
     const int selPro = settings.value("selectedProject", 0).toInt();
     ui->projectWidget->setCurrentRow(selPro);
+
     const QString f = settings.value("font", QFont()).toString();
     const int s = settings.value("size", 11).toInt();
     const QFont font(f, s);
     QApplication::setFont(font);
+
+    bool dark = settings.value("isDarkTheme", false).toBool();
+    isDark = !dark;
+    on_toggleThemeButton_clicked();
 }
 
 
 void MainWindow::savePrefs()
 {
     QSettings settings;
+
     settings.setValue("isMaximized", isMaximized());
     if (!isMaximized())
         settings.setValue("geometry", saveGeometry());
+
     settings.setValue("selectedProject", ui->projectWidget->currentRow());
+
     settings.setValue("font", QApplication::font().toString());
     settings.setValue("size", QApplication::font().pointSize());
+
+    settings.setValue("isDarkTheme", isDark);
+
     settings.sync();
 }
 

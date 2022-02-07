@@ -7,10 +7,15 @@
 #include <QSettings>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui
+{
+class MainWindow;
+}
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
+
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
 
 public:
@@ -47,6 +52,8 @@ private slots:
     void on_fontBtn_clicked();
     void on_infoButton_clicked();
     void useDarkTheme();
+    void useDefaultTheme();
+    void on_toggleThemeButton_clicked();
     QString stringToPrint();
 
 private:
@@ -54,6 +61,7 @@ private:
     void readProjects();
     void saveProjects();
     void readPrefs();
+    bool isDark;
 };
 
 #endif // MAINWINDOW_H
