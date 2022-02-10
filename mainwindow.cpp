@@ -95,12 +95,12 @@ void MainWindow::on_toggleThemeButton_clicked()
         useDefaultTheme();
         isDark = false;
         ui->toggleThemeButton->setIcon(QIcon(":/icons/weather-clear-night.png"));
-        ui->toggleThemeButton->setToolTip("Switch to dark theme");
+        ui->toggleThemeButton->setToolTip("switch to dark theme (Ctrl+T)");
     } else {
         useDarkTheme();
         isDark = true;
         ui->toggleThemeButton->setIcon(QIcon(":/icons/weather-clear.png"));
-        ui->toggleThemeButton->setToolTip("Switch to the system provided theme");
+        ui->toggleThemeButton->setToolTip("switch to the system provided theme (Ctrl+T)");
     }
 }
 
