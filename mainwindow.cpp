@@ -79,6 +79,10 @@ void MainWindow::useDarkTheme()
 
     QApplication::setPalette(dark_palette);
     this->setStyleSheet("QToolTip { color: #ffffff; background-color: #00000f; border: 1px solid white; }");
+
+    for (auto &&item : ui->projectWidget->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard))
+        if (item->foreground() == Qt::GlobalColor::color1)
+            item->setForeground(Qt::GlobalColor::color0);
 }
 
 
@@ -86,6 +90,10 @@ void MainWindow::useDefaultTheme()
 {
     QApplication::setPalette(this->style()->standardPalette());
     this->setStyleSheet("");
+
+    for (auto &&item : ui->projectWidget->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard))
+        if (item->foreground() == Qt::GlobalColor::color0)
+            item->setForeground(Qt::GlobalColor::color1);
 }
 
 
@@ -525,8 +533,13 @@ void MainWindow::on_notDoneBtn_clicked()
     if (CURR_TASK.status() == 1)
         CURR_TASK.setStatus(0);
     sortTasksByPriority();
-    if (!allDone(CURR_PRO))
-        ui->projectWidget->currentItem()->setForeground(BLACK);
+    if (!allDone(CURR_PRO)) {
+        if (isDark) {
+            ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color0);
+        } else {
+            ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color1);
+        }
+    }
 }
 
 
