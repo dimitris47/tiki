@@ -41,6 +41,7 @@
 #define CURR_TASK Organizer::Projects[ui->projectWidget->currentRow()].tasks[ui->taskWidget->currentRow()]
 #define GRAY QColor(Qt::GlobalColor::gray)
 #define BLACK QColor(Qt::GlobalColor::black)
+#define WHITE QColor(Qt::GlobalColor::white)
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -404,8 +405,13 @@ void MainWindow::on_addTaskBtn_clicked()
             for (int i = 0; i < ui->taskWidget->count(); i++)
                 if (CURR_TASKS_ALL.at(i).status())
                     ui->taskWidget->item(i)->setForeground(GRAY);
-            if (ui->projectWidget->currentItem()->foreground() == GRAY)
-                ui->projectWidget->currentItem()->setForeground(BLACK);
+            if (ui->projectWidget->currentItem()->foreground() == GRAY) {
+                if (isDark) {
+                    ui->projectWidget->currentItem()->setForeground(WHITE);
+                } else {
+                    ui->projectWidget->currentItem()->setForeground(BLACK);
+                }
+            }
             CURR_PRO.isModified = true;
             saveProjects();
         } else {
