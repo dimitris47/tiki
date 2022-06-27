@@ -582,9 +582,9 @@ QString dirToWrite()
 }
 
 
-QString sp = "&#160;";
-QString unchecked = "&#9744;";
-QString checked = "&#9745;";
+const QString sp = "&#160;";
+const QString unchecked = "&#9744;";
+const QString checked = "&#9745;";
 
 
 QString MainWindow::stringToPrint()
@@ -677,7 +677,7 @@ void MainWindow::readPrefs()
     ui->projectWidget->setCurrentRow(selPro);
 
     const QString f = settings.value("font", QFont()).toString();
-    const int s = settings.value("size", 11).toInt();
+    const int s = settings.value("size", 10).toInt();
     const QFont font(f, s);
     QApplication::setFont(font);
 
