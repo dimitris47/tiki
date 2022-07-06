@@ -324,6 +324,8 @@ void MainWindow::on_renameProBtn_clicked()
                 return;
             }
             file.rename(currentName, dataDir.path() + '/' + widget->itemText + ".txt");
+            if (file.exists())
+                file.remove();
             CURR_PRO.isModified = true;
             saveProjects();
         } else {
