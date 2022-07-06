@@ -273,7 +273,8 @@ void MainWindow::on_addProBtn_clicked()
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        QString projectTitle = widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|'|'\n']+"), "_");
+        static QRegularExpression re = QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
+        QString projectTitle = widget->itemText.replace(re, "_");
         QStringList projectTitles;
         for (auto &&project : Organizer::Projects)
             projectTitles.append(project.name());
@@ -309,7 +310,8 @@ void MainWindow::on_renameProBtn_clicked()
     if (ret == QDialog::Rejected)
         return;
     if (ret) {
-        QString newProject = widget->itemText.replace(QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|'|'\n']+"), "_");
+        static QRegularExpression re = QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
+        QString newProject = widget->itemText.replace(re, "_");
         QStringList projectNames;
         for (auto &&project : Organizer::Projects)
             projectNames.append(project.name());
