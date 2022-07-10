@@ -716,6 +716,28 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>projectWidget</tabstop>
+  <tabstop>taskWidget</tabstop>
+  <tabstop>addProBtn</tabstop>
+  <tabstop>renameProBtn</tabstop>
+  <tabstop>sortProBtn</tabstop>
+  <tabstop>rmProBtn</tabstop>
+  <tabstop>pdfBtn</tabstop>
+  <tabstop>printBtn</tabstop>
+  <tabstop>addTaskBtn</tabstop>
+  <tabstop>renameTaskBtn</tabstop>
+  <tabstop>highBtn</tabstop>
+  <tabstop>normalBtn</tabstop>
+  <tabstop>lowBtn</tabstop>
+  <tabstop>doneBtn</tabstop>
+  <tabstop>notDoneBtn</tabstop>
+  <tabstop>sortTasksBtn</tabstop>
+  <tabstop>rmTaskBtn</tabstop>
+  <tabstop>toggleThemeButton</tabstop>
+  <tabstop>fontBtn</tabstop>
+  <tabstop>infoButton</tabstop>
+ </tabstops>
  <resources>
   <include location="tiki.qrc"/>
  </resources>

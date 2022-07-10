@@ -372,12 +372,15 @@ void MainWindow::on_projectWidget_currentRowChanged()
 {
     ui->statusbar->clearMessage();
     ui->taskWidget->clear();
-    if (ui->projectWidget->currentItem() != NULL)
+    if (ui->projectWidget->currentItem() != NULL) {
         for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
             ui->taskWidget->addItem(CURR_TASKS_ALL.at(i).name());
-            if (CURR_TASKS_ALL.at(i).status() == 1)
+            if (CURR_TASKS_ALL.at(i).status() == 1) {
                 ui->taskWidget->item(i)->setForeground(GRAY);
+            }
+            ui->taskWidget->item(i)->setToolTip(ui->taskWidget->item(i)->text());
         }
+    }
 }
 
 
@@ -613,7 +616,7 @@ void MainWindow::on_pdfBtn_clicked()
         return;
     }
     QString fileName = QFileDialog::getSaveFileName(
-                (QWidget* )0, "Export to PDF", dirToWrite(), "*.pdf");
+                (QWidget *) 0, "Export to PDF", dirToWrite(), "*.pdf");
     if (fileName.isEmpty())
         return;
     if (QFileInfo(fileName).suffix().isEmpty())
