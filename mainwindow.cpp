@@ -268,7 +268,7 @@ void MainWindow::saveProjects()
 
 void MainWindow::on_addProBtn_clicked()
 {
-    auto widget = new Dialog(this, "", "New Project");
+    auto widget = new Dialog(this, "", "New Project", isDark);
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
@@ -305,7 +305,7 @@ void MainWindow::on_renameProBtn_clicked()
         dataDir.mkpath(".");
     QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
 
-    auto widget = new Dialog(this, ui->projectWidget->currentItem()->text(), "Edit Project Title");
+    auto widget = new Dialog(this, ui->projectWidget->currentItem()->text(), "Edit Project Title", isDark);
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
@@ -390,7 +390,7 @@ void MainWindow::on_addTaskBtn_clicked()
         ui->statusbar->showMessage("No project selected", 1000);
         return;
     }
-    auto widget = new Dialog(this, "", "New Task");
+    auto widget = new Dialog(this, "", "New Task", isDark);
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
@@ -444,7 +444,7 @@ void MainWindow::on_renameTaskBtn_clicked()
         ui->statusbar->showMessage("No task selected", 1000);
         return;
     }
-    auto widget = new Dialog(this, ui->taskWidget->currentItem()->text(), "Edit Task Name");
+    auto widget = new Dialog(this, ui->taskWidget->currentItem()->text(), "Edit Task Name", isDark);
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;

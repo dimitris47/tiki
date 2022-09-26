@@ -21,7 +21,7 @@
 #include "ui_dialog.h"
 
 
-Dialog::Dialog(QWidget *parent, QString name, QString kind)
+Dialog::Dialog(QWidget *parent, QString name, QString kind, bool isDark)
     : QDialog(parent)
     , ui(new Ui::Dialog)
 {
@@ -30,6 +30,12 @@ Dialog::Dialog(QWidget *parent, QString name, QString kind)
     this->setWindowTitle(kind);
     if (kind == "New Task" || kind == "Edit Task Name")
         ui->label->setText("note: line changes will be replaced with underscore ('_')");
+    QPalette palette;
+    palette.setColor(QPalette::Base, QColor(42, 42, 42));
+    if (isDark) {
+        ui->lineEdit->setPalette(palette);
+        ui->buttonBox->setPalette(palette);
+    }
 }
 
 

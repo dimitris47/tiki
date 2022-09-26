@@ -13,7 +13,7 @@ class Dialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit Dialog(QWidget *parent = nullptr, QString name = "", QString kind = "new");
+    explicit Dialog(QWidget *parent=nullptr, QString name="", QString kind="new", bool isDark=false);
     ~Dialog();
     QString itemText;
 
