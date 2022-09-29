@@ -5,7 +5,7 @@
 
 const QString br("<br/>");
 const QString APPNAME("Tiki");
-const QString VERSION("3.7.2");
+const QString VERSION("3.8");
 const QString CONTRIBUTORS("Dimitris Psathas");
 const QString APPINFO("Program created by Dimitris Psathas" + br.repeated(2) +
                       "Written in C++, built against Qt" + br.repeated(2) +
@@ -13,6 +13,6 @@ const QString APPINFO("Program created by Dimitris Psathas" + br.repeated(2) +
                       "Qt libraries used under (L)GPL3" + br +
                       "Application icon by <a href='https://icons8.com'>icons8.com</a>" + br +
                       "In-app icons by the KDE Project" + br.repeated(2) +
-                      "&copy; 2021 Dimitris Psathas");
+                      "&copy; 2021-2022 Dimitris Psathas");
 
 #endif // GLOBAL_H

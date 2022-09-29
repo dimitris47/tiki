@@ -215,6 +215,24 @@ void MainWindow::readProjects()
 }
 
 
+void MainWindow::showCounts()
+{
+    ui->proCountLbl->setText(QString::number(ui->projectWidget->count()) + " projects");
+    int notDone = 0;
+    int done = 0;
+    for (auto &&task : CURR_TASKS_ALL) {
+        if (!task.status()) {
+            notDone++;
+        } else {
+            done++;
+        }
+    }
+    ui->tasksCountLbl->setText(QString::number(CURR_TASKS_ALL.count()) + " tasks, " +
+                               QString::number(notDone) + " not done, " +
+                               QString::number(done) + " done");
+}
+
+
 void MainWindow::on_sortProBtn_clicked()
 {
     ui->projectWidget->clear();
@@ -290,6 +308,7 @@ void MainWindow::on_addProBtn_clicked()
             ui->statusbar->showMessage("A project with this name already exists", 3000);
         }
     }
+    showCounts();
 }
 
 
@@ -365,6 +384,7 @@ void MainWindow::on_rmProBtn_clicked()
         CURR_PRO.isModified = true;
         saveProjects();
     }
+    showCounts();
 }
 
 
@@ -381,6 +401,7 @@ void MainWindow::on_projectWidget_currentRowChanged()
             ui->taskWidget->item(i)->setToolTip(ui->taskWidget->item(i)->text());
         }
     }
+    showCounts();
 }
 
 
@@ -425,6 +446,7 @@ void MainWindow::on_addTaskBtn_clicked()
             ui->statusbar->showMessage("A task with this name already exists", 3000);
         }
     }
+    showCounts();
 }
 
 
@@ -534,6 +556,7 @@ void MainWindow::on_doneBtn_clicked()
     }
     if (allDone(CURR_PRO))
         ui->projectWidget->currentItem()->setForeground(GRAY);
+    showCounts();
 }
 
 
@@ -553,6 +576,7 @@ void MainWindow::on_notDoneBtn_clicked()
             ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color1);
         }
     }
+    showCounts();
 }
 
 
@@ -569,6 +593,7 @@ void MainWindow::on_rmTaskBtn_clicked()
         ui->projectWidget->currentItem()->setForeground(GRAY);
     CURR_PRO.isModified = true;
     saveProjects();
+    showCounts();
 }
 
 
