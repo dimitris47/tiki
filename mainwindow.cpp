@@ -218,18 +218,23 @@ void MainWindow::readProjects()
 void MainWindow::showCounts()
 {
     ui->proCountLbl->setText(QString::number(ui->projectWidget->count()) + " projects");
-    int notDone = 0;
-    int done = 0;
-    for (auto &&task : CURR_TASKS_ALL) {
-        if (!task.status()) {
-            notDone++;
-        } else {
-            done++;
+
+    if (ui->projectWidget->currentRow() >= 0) {
+        int notDone = 0;
+        int done = 0;
+        for (auto &&task : CURR_TASKS_ALL) {
+            if (!task.status()) {
+                notDone++;
+            } else {
+                done++;
+            }
         }
+        ui->tasksCountLbl->setText(QString::number(CURR_TASKS_ALL.count()) + " tasks, " +
+                                   QString::number(notDone) + " not done, " +
+                                   QString::number(done) + " done");
+    } else {
+        ui->tasksCountLbl->clear();
     }
-    ui->tasksCountLbl->setText(QString::number(CURR_TASKS_ALL.count()) + " tasks, " +
-                               QString::number(notDone) + " not done, " +
-                               QString::number(done) + " done");
 }
 
 
