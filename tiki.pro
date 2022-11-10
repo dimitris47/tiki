@@ -5,7 +5,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11
 TARGET = tiki
 TEMPLATE = app
-VERSION = 3.9
+VERSION = 3.10
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \

@@ -52,9 +52,6 @@ private slots:
     void on_fontBtn_clicked();
     void on_infoButton_clicked();
     void showCounts();
-    void useDarkTheme();
-    void useDefaultTheme();
-    void on_toggleThemeButton_clicked();
     QString stringToPrint();
 
 private:
@@ -62,7 +59,6 @@ private:
     void readProjects();
     void saveProjects();
     void readPrefs();
-    bool isDark;
 };
 
 #endif // MAINWINDOW_H

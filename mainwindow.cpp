@@ -60,60 +60,6 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::useDarkTheme()
-{
-    QPalette dark_palette;
-
-    dark_palette.setColor(QPalette::Window, QColor(53, 53, 53));
-    dark_palette.setColor(QPalette::WindowText, Qt::white);
-    dark_palette.setColor(QPalette::Base, QColor(42, 42, 42));
-    dark_palette.setColor(QPalette::AlternateBase, QColor(53, 53, 53));
-    dark_palette.setColor(QPalette::ToolTipBase, Qt::white);
-    dark_palette.setColor(QPalette::ToolTipText, Qt::white);
-    dark_palette.setColor(QPalette::Text, Qt::white);
-    dark_palette.setColor(QPalette::Button, QColor(53, 53, 53));
-    dark_palette.setColor(QPalette::ButtonText, Qt::white);
-    dark_palette.setColor(QPalette::BrightText, Qt::red);
-    dark_palette.setColor(QPalette::Link, QColor(42, 130, 218));
-    dark_palette.setColor(QPalette::Highlight, QColor(42, 130, 218));
-    dark_palette.setColor(QPalette::HighlightedText, Qt::black);
-
-    QApplication::setPalette(dark_palette);
-    this->setStyleSheet("QToolTip { color: #ffffff; background-color: #00000f; border: 1px solid white; }");
-
-    for (auto &&item : ui->projectWidget->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard))
-        if (item->foreground() == Qt::GlobalColor::color1)
-            item->setForeground(Qt::GlobalColor::color0);
-}
-
-
-void MainWindow::useDefaultTheme()
-{
-    QApplication::setPalette(this->style()->standardPalette());
-    this->setStyleSheet("");
-
-    for (auto &&item : ui->projectWidget->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard))
-        if (item->foreground() == Qt::GlobalColor::color0)
-            item->setForeground(Qt::GlobalColor::color1);
-}
-
-
-void MainWindow::on_toggleThemeButton_clicked()
-{
-    if (isDark) {
-        useDefaultTheme();
-        isDark = false;
-        ui->toggleThemeButton->setIcon(QIcon(":/icons/weather-clear-night.png"));
-        ui->toggleThemeButton->setToolTip("switch to dark theme (Ctrl+T)");
-    } else {
-        useDarkTheme();
-        isDark = true;
-        ui->toggleThemeButton->setIcon(QIcon(":/icons/weather-clear.png"));
-        ui->toggleThemeButton->setToolTip("switch to the system provided theme (Ctrl+T)");
-    }
-}
-
-
 bool compareProjects(const Project &pro1, const Project &pro2)
 {
     return pro1.name() < pro2.name();
@@ -291,7 +237,7 @@ void MainWindow::saveProjects()
 
 void MainWindow::on_addProBtn_clicked()
 {
-    auto widget = new Dialog(this, "", "New Project", isDark);
+    auto widget = new Dialog(this, "", "New Project");
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
@@ -329,7 +275,7 @@ void MainWindow::on_renameProBtn_clicked()
         dataDir.mkpath(".");
     QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
 
-    auto widget = new Dialog(this, ui->projectWidget->currentItem()->text(), "Edit Project Title", isDark);
+    auto widget = new Dialog(this, ui->projectWidget->currentItem()->text(), "Edit Project Title");
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
@@ -416,7 +362,7 @@ void MainWindow::on_addTaskBtn_clicked()
         ui->statusbar->showMessage("No project selected", 1000);
         return;
     }
-    auto widget = new Dialog(this, "", "New Task", isDark);
+    auto widget = new Dialog(this, "", "New Task");
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
@@ -438,13 +384,6 @@ void MainWindow::on_addTaskBtn_clicked()
             for (int i = 0; i < ui->taskWidget->count(); i++)
                 if (CURR_TASKS_ALL.at(i).status())
                     ui->taskWidget->item(i)->setForeground(GRAY);
-            if (ui->projectWidget->currentItem()->foreground() == GRAY) {
-                if (isDark) {
-                    ui->projectWidget->currentItem()->setForeground(WHITE);
-                } else {
-                    ui->projectWidget->currentItem()->setForeground(BLACK);
-                }
-            }
             CURR_PRO.isModified = true;
             saveProjects();
         } else {
@@ -471,7 +410,7 @@ void MainWindow::on_renameTaskBtn_clicked()
         ui->statusbar->showMessage("No task selected", 1000);
         return;
     }
-    auto widget = new Dialog(this, ui->taskWidget->currentItem()->text(), "Edit Task Name", isDark);
+    auto widget = new Dialog(this, ui->taskWidget->currentItem()->text(), "Edit Task Name");
     int ret = widget->exec();
     if (ret == QDialog::Rejected)
         return;
@@ -574,13 +513,6 @@ void MainWindow::on_notDoneBtn_clicked()
     if (CURR_TASK.status() == 1)
         CURR_TASK.setStatus(0);
     sortTasksByPriority();
-    if (!allDone(CURR_PRO)) {
-        if (isDark) {
-            ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color0);
-        } else {
-            ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color1);
-        }
-    }
     showCounts();
 }
 
@@ -683,10 +615,6 @@ void MainWindow::on_printBtn_clicked()
 void MainWindow::on_fontBtn_clicked()
 {
     QApplication::setFont(QFontDialog::getFont(0, QApplication::font()));
-    if (isDark) {
-        this->setStyleSheet("");
-        this->setStyleSheet("QToolTip { color: #ffffff; background-color: #00000f; border: 1px solid white; }");
-    }
 }
 
 
@@ -717,10 +645,6 @@ void MainWindow::readPrefs()
     const int s = settings.value("size", 10).toInt();
     const QFont font(f, s);
     QApplication::setFont(font);
-
-    bool dark = settings.value("isDarkTheme", false).toBool();
-    isDark = !dark;
-    on_toggleThemeButton_clicked();
 }
 
 
@@ -736,8 +660,6 @@ void MainWindow::savePrefs()
 
     settings.setValue("font", QApplication::font().toString());
     settings.setValue("size", QApplication::font().pointSize());
-
-    settings.setValue("isDarkTheme", isDark);
 
     settings.sync();
 }
