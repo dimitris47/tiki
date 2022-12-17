@@ -381,9 +381,13 @@ void MainWindow::on_addTaskBtn_clicked()
             for (auto &&task : CURR_TASKS_ALL)
                 items.append(task.name());
             ui->taskWidget->addItems(items);
-            for (int i = 0; i < ui->taskWidget->count(); i++)
-                if (CURR_TASKS_ALL.at(i).status())
+            for (int i = 0; i < ui->taskWidget->count(); i++) {
+                if (CURR_TASKS_ALL.at(i).status()) {
                     ui->taskWidget->item(i)->setForeground(GRAY);
+                } else {
+                    ui->projectWidget->currentItem()->setForeground(BLACK);
+                }
+            }
             CURR_PRO.isModified = true;
             saveProjects();
         } else {

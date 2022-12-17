@@ -41,5 +41,10 @@ Dialog::~Dialog()
 
 void Dialog::on_buttonBox_accepted()
 {
-    itemText = ui->lineEdit->text();
+    QString text = ui->lineEdit->text();
+    if (text != "") {
+        itemText = text;
+    } else {
+        itemText = "_";
+    }
 }
