@@ -3,9 +3,7 @@
 
 #include <QString>
 
-enum Priority {
-    HIGH, NORMAL, LOW
-};
+enum Priority { HIGH, NORMAL, LOW };
 
 
 class Task

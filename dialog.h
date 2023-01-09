@@ -3,8 +3,8 @@
 
 #include <QDialog>
 
-namespace Ui
-{
+
+namespace Ui {
 class Dialog;
 }
 

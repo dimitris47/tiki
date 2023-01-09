@@ -19,6 +19,7 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "alerts.h"
 #include "dialog.h"
 #include "global.h"
 #include "organizer.h"
@@ -616,6 +617,24 @@ void MainWindow::on_printBtn_clicked()
 }
 
 
+void MainWindow::on_alertBtn_clicked()
+{
+    QSettings settings;
+    QStringList alrt;
+    QString alerts = settings.value("alerts", "").toString();
+    if (alerts != "")
+        alrt = alerts.split("&&");
+    auto widget = new Alerts(this, alrt);
+    int ret = widget->exec();
+    if (ret == QDialog::Rejected)
+        return;
+    if (ret) {
+        settings.setValue("alerts", widget->alrt.join("&&"));
+        settings.sync();
+    }
+}
+
+
 void MainWindow::on_fontBtn_clicked()
 {
     QApplication::setFont(QFontDialog::getFont(0, QApplication::font()));
@@ -640,6 +659,12 @@ void MainWindow::readPrefs()
     } else {
         const QByteArray geometry = settings.value("geometry", QByteArray()).toByteArray();
         restoreGeometry(geometry);
+    }
+
+    QString alerts = settings.value("alerts", "").toString();
+    if (alerts != "") {
+        alerts.replace("&&", "\n");
+        QMessageBox::warning(this, tr("Alerts"), alerts);
     }
 
     const int selPro = settings.value("selectedProject", 0).toInt();

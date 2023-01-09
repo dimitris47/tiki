@@ -5,10 +5,11 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11
 TARGET = tiki
 TEMPLATE = app
-VERSION = 3.11
+VERSION = 4.0
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+    alerts.cpp \
     dialog.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
     task.cpp
 
 HEADERS += \
+    alerts.h \
     dialog.h \
     global.h \
     mainwindow.h \
@@ -25,6 +27,7 @@ HEADERS += \
     task.h
 
 FORMS += \
+    alerts.ui \
     dialog.ui \
     mainwindow.ui
 

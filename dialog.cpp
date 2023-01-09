@@ -28,8 +28,11 @@ Dialog::Dialog(QWidget *parent, QString name, QString kind)
     ui->setupUi(this);
     ui->lineEdit->setText(name);
     this->setWindowTitle(kind);
-    if (kind == "New Task" || kind == "Edit Task Name")
+    if (kind == "New Task" || kind == "Edit Task Name") {
         ui->label->setText("note: line changes will be replaced with underscore ('_')");
+    } else if (kind == "New alert") {
+        ui->label->setVisible(false);
+    }
 }
 
 
