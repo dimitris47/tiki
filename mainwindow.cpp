@@ -40,9 +40,6 @@
 #define CURR_PRO Organizer::Projects[ui->projectWidget->currentRow()]
 #define CURR_TASKS_ALL Organizer::Projects[ui->projectWidget->currentRow()].tasks
 #define CURR_TASK Organizer::Projects[ui->projectWidget->currentRow()].tasks[ui->taskWidget->currentRow()]
-#define GRAY QColor(Qt::GlobalColor::gray)
-#define BLACK QColor(Qt::GlobalColor::black)
-#define WHITE QColor(Qt::GlobalColor::white)
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -85,7 +82,7 @@ void MainWindow::sortProjects()
     for (int i = 0; i < Organizer::Projects.count(); i++) {
         ui->projectWidget->addItem(Organizer::Projects.at(i).name());
         if (Organizer::Projects.at(i).tasks.isEmpty() || allDone(Organizer::Projects.at(i)))
-            ui->projectWidget->item(i)->setForeground(GRAY);
+            ui->projectWidget->item(i)->setForeground(Qt::GlobalColor::gray);
     }
 }
 
@@ -107,7 +104,7 @@ void MainWindow::sortTasksByPriority()
         ui->taskWidget->addItem(task.name());
     for (int i = 0; i < CURR_TASKS_ALL.count(); i++)
         if (CURR_TASKS_ALL.at(i).status())
-            ui->taskWidget->item(i)->setForeground(GRAY);
+            ui->taskWidget->item(i)->setForeground(Qt::GlobalColor::gray);
 
     CURR_PRO.isModified = true;
     saveProjects();
@@ -252,7 +249,7 @@ void MainWindow::on_addProBtn_clicked()
             ui->projectWidget->addItem(projectTitle);
             Organizer::Projects.append(Project(projectTitle));
             ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
-            ui->projectWidget->currentItem()->setForeground(GRAY);
+            ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::gray);
             for (auto &&project : Organizer::Projects)
                 project.isModified = true;
             saveProjects();
@@ -348,7 +345,7 @@ void MainWindow::on_projectWidget_currentRowChanged()
         for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
             ui->taskWidget->addItem(CURR_TASKS_ALL.at(i).name());
             if (CURR_TASKS_ALL.at(i).status() == 1) {
-                ui->taskWidget->item(i)->setForeground(GRAY);
+                ui->taskWidget->item(i)->setForeground(Qt::GlobalColor::gray);
             }
             ui->taskWidget->item(i)->setToolTip(ui->taskWidget->item(i)->text());
         }
@@ -384,9 +381,9 @@ void MainWindow::on_addTaskBtn_clicked()
             ui->taskWidget->addItems(items);
             for (int i = 0; i < ui->taskWidget->count(); i++) {
                 if (CURR_TASKS_ALL.at(i).status()) {
-                    ui->taskWidget->item(i)->setForeground(GRAY);
+                    ui->taskWidget->item(i)->setForeground(Qt::GlobalColor::gray);
                 } else {
-                    ui->projectWidget->currentItem()->setForeground(BLACK);
+                    ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color0);
                 }
             }
             CURR_PRO.isModified = true;
@@ -497,14 +494,14 @@ void MainWindow::on_doneBtn_clicked()
         ui->taskWidget->takeItem(row);
         ui->taskWidget->insertItem(ui->taskWidget->count(), taskName);
         ui->taskWidget->setCurrentRow(ui->taskWidget->count()-1);
-        ui->taskWidget->currentItem()->setForeground(GRAY);
+        ui->taskWidget->currentItem()->setForeground(Qt::GlobalColor::gray);
         ui->taskWidget->setCurrentRow(row);
         ui->statusbar->showMessage(CURR_TASKS_ALL.at(ui->taskWidget->currentRow()).details());
         CURR_PRO.isModified = true;
         saveProjects();
     }
     if (allDone(CURR_PRO))
-        ui->projectWidget->currentItem()->setForeground(GRAY);
+        ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::gray);
     showCounts();
 }
 
@@ -518,6 +515,7 @@ void MainWindow::on_notDoneBtn_clicked()
     if (CURR_TASK.status() == 1)
         CURR_TASK.setStatus(0);
     sortTasksByPriority();
+    ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color0);
     showCounts();
 }
 
@@ -532,7 +530,7 @@ void MainWindow::on_rmTaskBtn_clicked()
     ui->taskWidget->takeItem(row);
     CURR_TASKS_ALL.removeAt(row);
     if (CURR_TASKS_ALL.isEmpty())
-        ui->projectWidget->currentItem()->setForeground(GRAY);
+        ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::gray);
     CURR_PRO.isModified = true;
     saveProjects();
     showCounts();
@@ -568,7 +566,7 @@ QString MainWindow::stringToPrint()
         if (!task.status()) {
             taskList.append("<span><div style='line-height:130%;'>" + unchecked + sp.repeated(3) + task.name().replace("<", "&#60;") + "</div></span>");
         } else {
-            taskList.append("<s><div style='color:gray;'>" + task.name().replace("<", "&#60;") + "</div></s>");
+            taskList.append("<s><div style='color:Qt::GlobalColor::gray;'>" + task.name().replace("<", "&#60;") + "</div></s>");
         }
     QString toPrint;
     toPrint.append("<h2>" + CURR_PRO.name() + "</h2>" + br + taskList.join(""));
