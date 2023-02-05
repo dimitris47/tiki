@@ -81,8 +81,9 @@ void MainWindow::sortProjects()
     std::sort(Organizer::Projects.begin(), Organizer::Projects.end(), compareProjects);
     for (int i = 0; i < Organizer::Projects.count(); i++) {
         ui->projectWidget->addItem(Organizer::Projects.at(i).name());
-        if (Organizer::Projects.at(i).tasks.isEmpty() || allDone(Organizer::Projects.at(i)))
+        if (Organizer::Projects.at(i).tasks.isEmpty() || allDone(Organizer::Projects.at(i))) {
             ui->projectWidget->item(i)->setForeground(Qt::GlobalColor::gray);
+        }
     }
 }
 
@@ -100,11 +101,14 @@ void MainWindow::sortTasksByPriority()
     }
 
     ui->taskWidget->clear();
-    for (auto &&task : CURR_TASKS_ALL)
+    for (auto &&task : CURR_TASKS_ALL) {
         ui->taskWidget->addItem(task.name());
-    for (int i = 0; i < CURR_TASKS_ALL.count(); i++)
-        if (CURR_TASKS_ALL.at(i).status())
+    }
+    for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
+        if (CURR_TASKS_ALL.at(i).status()) {
             ui->taskWidget->item(i)->setForeground(Qt::GlobalColor::gray);
+        }
+    }
 
     CURR_PRO.isModified = true;
     saveProjects();
@@ -125,7 +129,7 @@ void MainWindow::readProjects()
     int i {0};
     while (it.hasNext()) {
         QFile file(it.next());
-        Project project = Project(file.fileName().remove(dataDir.path() + '/').remove(".txt"));
+        Project project(file.fileName().remove(dataDir.path() + '/').remove(".txt"));
         Organizer::Projects.append(project);
         file.open(QIODevice::ReadOnly);
         QTextStream reader(&file);
@@ -208,16 +212,17 @@ void MainWindow::on_sortTasksBtn_clicked()
 
 void MainWindow::saveProjects()
 {
-    for (auto &&project : Organizer::Projects)
+    for (auto &&project : Organizer::Projects) {
         if (project.isModified) {
             QString projectData;
-            for (auto &&task : project.tasks)
-                projectData.append(task.name() + "-->>" +
-                                   (task.status() ? "1" : "0") + "-->>" +
-                                    QString::number(task.priority()) + '\n');
+            for (auto &&task : project.tasks) {
+                projectData.append(task.name() + "-->>" + (task.status() ? "1" : "0") + "-->>" +
+                                   QString::number(task.priority()) + '\n');
+            }
             QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-            if (!dataDir.exists())
+            if (!dataDir.exists()) {
                 dataDir.mkpath(".");
+            }
             QString fileName = dataDir.path() + '/' + project.name() + ".txt";
             QFile file(fileName);
             if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
@@ -230,6 +235,7 @@ void MainWindow::saveProjects()
             data << projectData;
             file.close();
         }
+    }
 }
 
 
@@ -237,21 +243,24 @@ void MainWindow::on_addProBtn_clicked()
 {
     auto widget = new Dialog(this, "", "New Project");
     int ret = widget->exec();
-    if (ret == QDialog::Rejected)
+    if (ret == QDialog::Rejected) {
         return;
+    }
     if (ret) {
         static QRegularExpression re = QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
         QString projectTitle = widget->itemText.replace(re, "_");
         QStringList projectTitles;
-        for (auto &&project : Organizer::Projects)
+        for (auto &&project : Organizer::Projects) {
             projectTitles.append(project.name());
+        }
         if (!projectTitles.contains(projectTitle)) {
             ui->projectWidget->addItem(projectTitle);
             Organizer::Projects.append(Project(projectTitle));
             ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
             ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::gray);
-            for (auto &&project : Organizer::Projects)
+            for (auto &&project : Organizer::Projects) {
                 project.isModified = true;
+            }
             saveProjects();
         } else {
             ui->statusbar->showMessage("A project with this name already exists", 3000);
@@ -269,20 +278,23 @@ void MainWindow::on_renameProBtn_clicked()
     }
 
     QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    if (!dataDir.exists())
+    if (!dataDir.exists()) {
         dataDir.mkpath(".");
+    }
     QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
 
     auto widget = new Dialog(this, ui->projectWidget->currentItem()->text(), "Edit Project Title");
     int ret = widget->exec();
-    if (ret == QDialog::Rejected)
+    if (ret == QDialog::Rejected) {
         return;
+    }
     if (ret) {
         static QRegularExpression re = QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
         QString newProject = widget->itemText.replace(re, "_");
         QStringList projectNames;
-        for (auto &&project : Organizer::Projects)
+        for (auto &&project : Organizer::Projects) {
             projectNames.append(project.name());
+        }
         if (!projectNames.contains(newProject)) {
             ui->projectWidget->currentItem()->setText(newProject);
             CURR_PRO.setName(widget->itemText);
@@ -292,8 +304,9 @@ void MainWindow::on_renameProBtn_clicked()
                 return;
             }
             file.rename(currentName, dataDir.path() + '/' + widget->itemText + ".txt");
-            if (file.exists())
+            if (file.exists()) {
                 file.remove();
+            }
             CURR_PRO.isModified = true;
             saveProjects();
         } else {
@@ -322,8 +335,9 @@ void MainWindow::on_rmProBtn_clicked()
                     this);
     if (box.exec() == QMessageBox::Yes) {
         QDir dataDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-        if (!dataDir.exists())
+        if (!dataDir.exists()) {
             dataDir.mkpath(".");
+        }
         QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
         int row = ui->projectWidget->currentRow();
         ui->projectWidget->takeItem(row);
@@ -362,22 +376,26 @@ void MainWindow::on_addTaskBtn_clicked()
     }
     auto widget = new Dialog(this, "", "New Task");
     int ret = widget->exec();
-    if (ret == QDialog::Rejected)
+    if (ret == QDialog::Rejected) {
         return;
+    }
     if (ret) {
-        if (widget->itemText.contains("-->>"))
+        if (widget->itemText.contains("-->>")) {
             ui->statusbar->showMessage("'-->> is reserved and has been replaced by '-->'", 3000);
+        }
         QString taskText = widget->itemText.replace("-->>", "-->").replace('\n', '_');
         QStringList taskNames;
-        for (auto &&task : CURR_TASKS_ALL)
+        for (auto &&task : CURR_TASKS_ALL) {
             taskNames.append(task.name());
+        }
         if (!taskNames.contains(taskText)) {
             CURR_TASKS_ALL.append(Task(taskText));
             ui->taskWidget->clear();
             CURR_PRO.prioritySort();
             QStringList items;
-            for (auto &&task : CURR_TASKS_ALL)
+            for (auto &&task : CURR_TASKS_ALL) {
                 items.append(task.name());
+            }
             ui->taskWidget->addItems(items);
             for (int i = 0; i < ui->taskWidget->count(); i++) {
                 if (CURR_TASKS_ALL.at(i).status()) {
@@ -414,15 +432,18 @@ void MainWindow::on_renameTaskBtn_clicked()
     }
     auto widget = new Dialog(this, ui->taskWidget->currentItem()->text(), "Edit Task Name");
     int ret = widget->exec();
-    if (ret == QDialog::Rejected)
+    if (ret == QDialog::Rejected) {
         return;
+    }
     if (ret) {
-        if (widget->itemText.contains("-->>"))
+        if (widget->itemText.contains("-->>")) {
             ui->statusbar->showMessage("'-->> is reserved and has been replaced by '-->'", 3000);
+        }
         QString newTask = widget->itemText.replace("-->>", "-->").replace('\n', '_');
         QStringList tasksNames;
-        for (auto &&task : CURR_TASKS_ALL)
+        for (auto &&task : CURR_TASKS_ALL) {
             tasksNames.append(task.name());
+        }
         if (!tasksNames.contains(newTask)) {
             ui->taskWidget->currentItem()->setText(widget->itemText);
             CURR_TASKS_ALL[ui->taskWidget->currentRow()].setName(ui->taskWidget->currentItem()->text());
@@ -500,8 +521,9 @@ void MainWindow::on_doneBtn_clicked()
         CURR_PRO.isModified = true;
         saveProjects();
     }
-    if (allDone(CURR_PRO))
+    if (allDone(CURR_PRO)) {
         ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::gray);
+    }
     showCounts();
 }
 
@@ -512,8 +534,9 @@ void MainWindow::on_notDoneBtn_clicked()
         ui->statusbar->showMessage("No task selected", 1000);
         return;
     }
-    if (CURR_TASK.status() == 1)
+    if (CURR_TASK.status() == 1) {
         CURR_TASK.setStatus(0);
+    }
     sortTasksByPriority();
     ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color0);
     showCounts();
@@ -529,8 +552,9 @@ void MainWindow::on_rmTaskBtn_clicked()
     int row = ui->taskWidget->currentRow();
     ui->taskWidget->takeItem(row);
     CURR_TASKS_ALL.removeAt(row);
-    if (CURR_TASKS_ALL.isEmpty())
+    if (CURR_TASKS_ALL.isEmpty()) {
         ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::gray);
+    }
     CURR_PRO.isModified = true;
     saveProjects();
     showCounts();
@@ -540,16 +564,18 @@ void MainWindow::on_rmTaskBtn_clicked()
 QString dirToWrite()
 {
     static QString dir;
-    if (!dir.isEmpty())
+    if (!dir.isEmpty()) {
         return dir;
+    }
     QStringList locations = (QStringList()
                              << QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation)
                              << QStandardPaths::standardLocations(QStandardPaths::HomeLocation));
-    for (auto &&loc : locations)
+    for (auto &&loc : locations) {
         if (QFileInfo::exists(loc)) {
             dir = loc;
             return dir;
         }
+    }
     return QString();
 }
 
@@ -562,12 +588,13 @@ const QString checked = "&#9745;";
 QString MainWindow::stringToPrint()
 {
     QStringList taskList;
-    for (auto &&task : CURR_TASKS_ALL)
+    for (auto &&task : CURR_TASKS_ALL) {
         if (!task.status()) {
             taskList.append("<span><div style='line-height:130%;'>" + unchecked + sp.repeated(3) + task.name().replace("<", "&#60;") + "</div></span>");
         } else {
             taskList.append("<s><div style='color:Qt::GlobalColor::gray;'>" + task.name().replace("<", "&#60;") + "</div></s>");
         }
+    }
     QString toPrint;
     toPrint.append("<h2>" + CURR_PRO.name() + "</h2>" + br + taskList.join(""));
     return toPrint;
@@ -582,10 +609,12 @@ void MainWindow::on_pdfBtn_clicked()
     }
     QString fileName = QFileDialog::getSaveFileName(
                 (QWidget *) 0, "Export to PDF", dirToWrite(), "*.pdf");
-    if (fileName.isEmpty())
+    if (fileName.isEmpty()) {
         return;
-    if (QFileInfo(fileName).suffix().isEmpty())
+    }
+    if (QFileInfo(fileName).suffix().isEmpty()) {
         fileName.append(".pdf");
+    }
     QPrinter printer(QPrinter::PrinterResolution);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setPageSize(QPageSize(QPageSize::A4));
@@ -620,12 +649,14 @@ void MainWindow::on_alertBtn_clicked()
     QSettings settings;
     QStringList alrt;
     QString alerts = settings.value("alerts", "").toString();
-    if (alerts != "")
+    if (alerts != "") {
         alrt = alerts.split("&&");
+    }
     auto widget = new Alerts(this, alrt);
     int ret = widget->exec();
-    if (ret == QDialog::Rejected)
+    if (ret == QDialog::Rejected) {
         return;
+    }
     if (ret) {
         settings.setValue("alerts", widget->alrt.join("&&"));
         settings.sync();
@@ -680,8 +711,9 @@ void MainWindow::savePrefs()
     QSettings settings;
 
     settings.setValue("isMaximized", isMaximized());
-    if (!isMaximized())
+    if (!isMaximized()) {
         settings.setValue("geometry", saveGeometry());
+    }
 
     settings.setValue("selectedProject", ui->projectWidget->currentRow());
 
