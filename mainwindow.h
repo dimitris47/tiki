@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "project.h"
+
 #include <QCloseEvent>
 #include <QMainWindow>
 #include <QSettings>
@@ -27,32 +28,32 @@ protected:
     void closeEvent(QCloseEvent *event) override;
 
 private slots:
-    bool allDone(const Project &project);
-    void sortProjects();
-    void sortTasksByPriority();
-    void on_sortProBtn_clicked();
     void on_addProBtn_clicked();
-    void on_renameProBtn_clicked();
-    void on_projectWidget_itemDoubleClicked();
-    void on_rmProBtn_clicked();
-    void on_projectWidget_currentRowChanged();
     void on_addTaskBtn_clicked();
-    void on_taskWidget_currentRowChanged(int currentRow);
-    void on_renameTaskBtn_clicked();
-    void on_taskWidget_itemDoubleClicked();
-    void on_highBtn_clicked();
-    void on_normalBtn_clicked();
-    void on_lowBtn_clicked();
+    void on_alertBtn_clicked();
     void on_doneBtn_clicked();
+    void on_fontBtn_clicked();
+    void on_highBtn_clicked();
+    void on_infoButton_clicked();
+    void on_lowBtn_clicked();
+    void on_normalBtn_clicked();
     void on_notDoneBtn_clicked();
-    void on_sortTasksBtn_clicked();
-    void on_rmTaskBtn_clicked();
     void on_pdfBtn_clicked();
     void on_printBtn_clicked();
-    void on_alertBtn_clicked();
-    void on_fontBtn_clicked();
-    void on_infoButton_clicked();
+    void on_projectWidget_currentRowChanged();
+    void on_projectWidget_itemDoubleClicked();
+    void on_renameProBtn_clicked();
+    void on_renameTaskBtn_clicked();
+    void on_rmProBtn_clicked();
+    void on_rmTaskBtn_clicked();
+    void on_sortProBtn_clicked();
+    void on_sortTasksBtn_clicked();
+    void on_taskWidget_currentRowChanged(int currentRow);
+    void on_taskWidget_itemDoubleClicked();
     void showCounts();
+    void sortProjects();
+    void sortTasksByPriority();
+    bool allDone(const Project &project);
     QString stringToPrint();
 
 private:

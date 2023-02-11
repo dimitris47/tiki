@@ -19,12 +19,14 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include "alerts.h"
 #include "dialog.h"
 #include "global.h"
 #include "organizer.h"
 #include "project.h"
 #include "task.h"
+
 #include <QDebug>
 #include <QDir>
 #include <QDirIterator>
@@ -79,7 +81,7 @@ bool comparePriorities(const Task &task1, const Task &task2)
 void MainWindow::sortProjects()
 {
     std::sort(Organizer::Projects.begin(), Organizer::Projects.end(), compareProjects);
-    for (int i = 0; i < Organizer::Projects.count(); i++) {
+    for (int i=0; i<Organizer::Projects.count(); i++) {
         ui->projectWidget->addItem(Organizer::Projects.at(i).name());
         if (Organizer::Projects.at(i).tasks.isEmpty() || allDone(Organizer::Projects.at(i))) {
             ui->projectWidget->item(i)->setForeground(Qt::GlobalColor::gray);
@@ -92,7 +94,7 @@ void MainWindow::sortTasksByPriority()
 {
     std::sort(CURR_TASKS_ALL.begin(), CURR_TASKS_ALL.end(), comparePriorities);
 
-    for (int i = CURR_TASKS_ALL.count() - 1; i >= 0; i--) {
+    for (int i=CURR_TASKS_ALL.count()-1; i>=0; i--) {
         Task task = CURR_TASKS_ALL.at(i);
         if (task.status()) {
             CURR_TASKS_ALL.takeAt(i);
@@ -104,7 +106,7 @@ void MainWindow::sortTasksByPriority()
     for (auto &&task : CURR_TASKS_ALL) {
         ui->taskWidget->addItem(task.name());
     }
-    for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
+    for (int i=0; i<CURR_TASKS_ALL.count(); i++) {
         if (CURR_TASKS_ALL.at(i).status()) {
             ui->taskWidget->item(i)->setForeground(Qt::GlobalColor::gray);
         }
@@ -251,9 +253,9 @@ void MainWindow::on_addProBtn_clicked()
         QString projectTitle = widget->itemText.replace(re, "_");
         QStringList projectTitles;
         for (auto &&project : Organizer::Projects) {
-            projectTitles.append(project.name());
+            projectTitles.append(project.name().toLower());
         }
-        if (!projectTitles.contains(projectTitle)) {
+        if (!projectTitles.contains(projectTitle.toLower())) {
             ui->projectWidget->addItem(projectTitle);
             Organizer::Projects.append(Project(projectTitle));
             ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
@@ -263,7 +265,7 @@ void MainWindow::on_addProBtn_clicked()
             }
             saveProjects();
         } else {
-            ui->statusbar->showMessage("A project with this name already exists", 3000);
+            ui->statusbar->showMessage("A project with this name already exists", 6000);
         }
     }
     showCounts();
@@ -293,9 +295,9 @@ void MainWindow::on_renameProBtn_clicked()
         QString newProject = widget->itemText.replace(re, "_");
         QStringList projectNames;
         for (auto &&project : Organizer::Projects) {
-            projectNames.append(project.name());
+            projectNames.append(project.name().toLower());
         }
-        if (!projectNames.contains(newProject)) {
+        if (!projectNames.contains(newProject.toLower())) {
             ui->projectWidget->currentItem()->setText(newProject);
             CURR_PRO.setName(widget->itemText);
             QFile file(currentName);
@@ -310,7 +312,7 @@ void MainWindow::on_renameProBtn_clicked()
             CURR_PRO.isModified = true;
             saveProjects();
         } else {
-            ui->statusbar->showMessage("A project with this name already exists", 3000);
+            ui->statusbar->showMessage("A project with this name already exists", 6000);
         }
     }
 }
@@ -356,7 +358,7 @@ void MainWindow::on_projectWidget_currentRowChanged()
     ui->statusbar->clearMessage();
     ui->taskWidget->clear();
     if (ui->projectWidget->currentItem() != NULL) {
-        for (int i = 0; i < CURR_TASKS_ALL.count(); i++) {
+        for (int i=0; i<CURR_TASKS_ALL.count(); i++) {
             ui->taskWidget->addItem(CURR_TASKS_ALL.at(i).name());
             if (CURR_TASKS_ALL.at(i).status() == 1) {
                 ui->taskWidget->item(i)->setForeground(Qt::GlobalColor::gray);
@@ -397,7 +399,7 @@ void MainWindow::on_addTaskBtn_clicked()
                 items.append(task.name());
             }
             ui->taskWidget->addItems(items);
-            for (int i = 0; i < ui->taskWidget->count(); i++) {
+            for (int i=0; i<ui->taskWidget->count(); i++) {
                 if (CURR_TASKS_ALL.at(i).status()) {
                     ui->taskWidget->item(i)->setForeground(Qt::GlobalColor::gray);
                 } else {
@@ -729,3 +731,4 @@ void MainWindow::closeEvent(QCloseEvent *event)
     savePrefs();
     event->accept();
 }
+

@@ -17,7 +17,8 @@
  */
 
 
-#include "organizer.h"
+#include "project.h"
+
 #include <QList>
 
 namespace Organizer {

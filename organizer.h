@@ -4,7 +4,6 @@
 #include "project.h"
 #include "task.h"
 
-
 namespace Organizer {
 extern QList<Project> Projects;
 }

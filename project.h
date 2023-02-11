@@ -2,6 +2,7 @@
 #define PROJECT_H
 
 #include "task.h"
+
 #include <QList>
 
 
