@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Dimitris Psathas <dimitrisinbox@gmail.com>
+ * Copyright 2021-2023 Dimitris Psathas <dimitrisinbox@gmail.com>
  *
  * This file is part of Tiki.
  *
