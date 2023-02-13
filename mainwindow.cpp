@@ -249,7 +249,7 @@ void MainWindow::on_addProBtn_clicked()
         return;
     }
     if (ret) {
-        static QRegularExpression re = QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
+        static QRegularExpression re = QRegularExpression("[.|~|?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
         QString projectTitle = widget->itemText.replace(re, "_");
         QStringList projectTitles;
         for (auto &&project : Organizer::Projects) {
@@ -291,7 +291,7 @@ void MainWindow::on_renameProBtn_clicked()
         return;
     }
     if (ret) {
-        static QRegularExpression re = QRegularExpression("[?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
+        static QRegularExpression re = QRegularExpression("[.|~|?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
         QString newProject = widget->itemText.replace(re, "_");
         QStringList projectNames;
         for (auto &&project : Organizer::Projects) {
