@@ -46,7 +46,6 @@ private slots:
     void on_renameTaskBtn_clicked();
     void on_rmProBtn_clicked();
     void on_rmTaskBtn_clicked();
-    void on_sortProBtn_clicked();
     void on_sortTasksBtn_clicked();
     void on_taskWidget_currentRowChanged(int currentRow);
     void on_taskWidget_itemDoubleClicked();

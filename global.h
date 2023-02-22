@@ -5,7 +5,7 @@
 
 const QString br("<br/>");
 const QString APPNAME("Tiki");
-const QString VERSION("4.3");
+const QString VERSION("4.4");
 const QString CONTRIBUTORS("Dimitris Psathas");
 const QString APPINFO("Program created by Dimitris Psathas" + br.repeated(2) +
                       "Written in C++, built against Qt" + br.repeated(2) +

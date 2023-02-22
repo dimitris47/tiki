@@ -62,13 +62,13 @@ MainWindow::~MainWindow()
 
 bool compareProjects(const Project &pro1, const Project &pro2)
 {
-    return pro1.name() < pro2.name();
+    return pro1.name().toLower() < pro2.name().toLower();
 }
 
 
 bool compareTasks(const Task &task1, const Task &task2)
 {
-    return task1.name() < task2.name();
+    return task1.name().toLower() < task2.name().toLower();
 }
 
 
@@ -80,6 +80,7 @@ bool comparePriorities(const Task &task1, const Task &task2)
 
 void MainWindow::sortProjects()
 {
+    ui->projectWidget->clear();
     std::sort(Organizer::Projects.begin(), Organizer::Projects.end(), compareProjects);
     for (int i=0; i<Organizer::Projects.count(); i++) {
         ui->projectWidget->addItem(Organizer::Projects.at(i).name());
@@ -188,13 +189,6 @@ void MainWindow::showCounts()
 }
 
 
-void MainWindow::on_sortProBtn_clicked()
-{
-    ui->projectWidget->clear();
-    sortProjects();
-}
-
-
 void MainWindow::on_sortTasksBtn_clicked()
 {
     if (ui->projectWidget->currentItem() == NULL) {
@@ -250,7 +244,7 @@ void MainWindow::on_addProBtn_clicked()
     }
     if (ret) {
         static QRegularExpression re = QRegularExpression("[.|~|?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
-        QString projectTitle = widget->itemText.replace(re, "_");
+        const QString projectTitle = widget->itemText.replace(re, "_");
         QStringList projectTitles;
         for (auto &&project : Organizer::Projects) {
             projectTitles.append(project.name().toLower());
@@ -258,17 +252,17 @@ void MainWindow::on_addProBtn_clicked()
         if (!projectTitles.contains(projectTitle.toLower())) {
             ui->projectWidget->addItem(projectTitle);
             Organizer::Projects.append(Project(projectTitle));
-            ui->projectWidget->setCurrentRow(ui->projectWidget->count()-1);
-            ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::gray);
             for (auto &&project : Organizer::Projects) {
                 project.isModified = true;
             }
+            showCounts();
+            sortProjects();
+            ui->projectWidget->setCurrentItem(ui->projectWidget->findItems(projectTitle, Qt::MatchFlag()).at(0));
             saveProjects();
         } else {
             ui->statusbar->showMessage("A project with this name already exists", 6000);
         }
     }
-    showCounts();
 }
 
 
@@ -283,7 +277,8 @@ void MainWindow::on_renameProBtn_clicked()
     if (!dataDir.exists()) {
         dataDir.mkpath(".");
     }
-    QString currentName = dataDir.path() + '/' + ui->projectWidget->currentItem()->text() + ".txt";
+    const QString curr = ui->projectWidget->currentItem()->text();
+    const QString currentName = dataDir.path() + '/' + curr + ".txt";
 
     auto widget = new Dialog(this, ui->projectWidget->currentItem()->text(), "Edit Project Title");
     int ret = widget->exec();
@@ -292,14 +287,14 @@ void MainWindow::on_renameProBtn_clicked()
     }
     if (ret) {
         static QRegularExpression re = QRegularExpression("[.|~|?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
-        QString newProject = widget->itemText.replace(re, "_");
+        const QString newTitle = widget->itemText.replace(re, "_");
         QStringList projectNames;
         for (auto &&project : Organizer::Projects) {
             projectNames.append(project.name().toLower());
         }
-        if (!projectNames.contains(newProject.toLower())) {
-            ui->projectWidget->currentItem()->setText(newProject);
-            CURR_PRO.setName(widget->itemText);
+        if (!projectNames.contains(newTitle.toLower()) || curr.toLower() == newTitle.toLower()) {
+            ui->projectWidget->currentItem()->setText(newTitle);
+            CURR_PRO.setName(newTitle);
             QFile file(currentName);
             if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
                 qWarning() << tr("error opening %1").arg(currentName);
@@ -310,6 +305,8 @@ void MainWindow::on_renameProBtn_clicked()
                 file.remove();
             }
             CURR_PRO.isModified = true;
+            sortProjects();
+            ui->projectWidget->setCurrentItem(ui->projectWidget->findItems(newTitle, Qt::MatchFlag()).at(0));
             saveProjects();
         } else {
             ui->statusbar->showMessage("A project with this name already exists", 6000);
