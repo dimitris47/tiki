@@ -129,7 +129,7 @@ void MainWindow::readProjects()
 {
     QDir dataDir = QDir(QStandardPaths::standardLocations(QStandardPaths::AppDataLocation).at(0));
     QDirIterator it(dataDir.path(), QDir::Files, QDirIterator::Subdirectories);
-    int i {0};
+    int i = 0;
     while (it.hasNext()) {
         QFile file(it.next());
         Project project(file.fileName().remove(dataDir.path() + '/').remove(".txt"));
