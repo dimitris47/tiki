@@ -28,6 +28,7 @@ protected:
     void closeEvent(QCloseEvent *event) override;
 
 private slots:
+    void on_addFromFileBtn_clicked();
     void on_addProBtn_clicked();
     void on_addTaskBtn_clicked();
     void on_alertBtn_clicked();

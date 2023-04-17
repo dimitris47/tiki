@@ -266,6 +266,100 @@ void MainWindow::on_addProBtn_clicked()
 }
 
 
+QString writableDir() {
+    static QString dir;
+    if (!dir.isEmpty()) {
+        return dir;
+    }
+    QStringList locations = (QStringList()
+                             << QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation)
+                             << QStandardPaths::standardLocations(QStandardPaths::HomeLocation));
+    for (auto &&loc : locations) {
+        if (QFileInfo::exists(loc)) {
+            dir = loc;
+            return dir;
+        }
+    }
+    return QString();
+}
+
+
+void MainWindow::on_addFromFileBtn_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Open file", writableDir(), QString("All files (*.*)"));
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    QFile data(fileName);
+    if (!data.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "error opening " << fileName;
+        return;
+    }
+
+    QStringList path = fileName.split('/');
+    QStringList name = path.at(path.length()-1).split('.');
+    QString projectName = name.at(name.length()-2);
+
+    static QRegularExpression re = QRegularExpression("[.|~|?|:|\\|/|%|*|\"|<|>|'|'|'\n']+");
+    const QString projectTitle = projectName.replace(re, "_");
+    QStringList projectTitles;
+    for (auto &&project : Organizer::Projects) {
+        projectTitles.append(project.name().toLower());
+    }
+
+    if (!projectTitles.contains(projectTitle.toLower())) {
+        ui->projectWidget->addItem(projectTitle);
+        Organizer::Projects.append(Project(projectTitle));
+        for (auto &&project : Organizer::Projects) {
+            project.isModified = true;
+        }
+        showCounts();
+        sortProjects();
+        ui->projectWidget->setCurrentItem(ui->projectWidget->findItems(projectTitle, Qt::MatchFlag()).at(0));
+        saveProjects();
+
+        QTextStream reader(&data);
+        reader.setCodec(QTextCodec::codecForName("UTF-8"));
+        while (!reader.atEnd()) {
+            QString line = reader.readLine();
+            if (line.contains("-->>")) {
+                ui->statusbar->showMessage("'-->> is reserved and has been replaced by '-->'", 3000);
+            }
+            QString taskText = line.replace("-->>", "-->").replace('\n', '_');
+            QStringList taskNames;
+            for (auto &&task : CURR_TASKS_ALL) {
+                taskNames.append(task.name());
+            }
+            if (!taskNames.contains(taskText)) {
+                CURR_TASKS_ALL.append(Task(taskText));
+                ui->taskWidget->clear();
+                CURR_PRO.prioritySort();
+                QStringList items;
+                for (auto &&task : CURR_TASKS_ALL) {
+                    items.append(task.name());
+                }
+                ui->taskWidget->addItems(items);
+                for (int i=0; i<ui->taskWidget->count(); i++) {
+                    if (CURR_TASKS_ALL.at(i).status()) {
+                        ui->taskWidget->item(i)->setForeground(Qt::GlobalColor::gray);
+                    } else {
+                        ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color0);
+                    }
+                }
+                CURR_PRO.isModified = true;
+                saveProjects();
+            } else {
+                ui->statusbar->showMessage("A task with this name already exists", 3000);
+            }
+        }
+        showCounts();
+    } else {
+        ui->statusbar->showMessage("A project with this name already exists", 6000);
+    }
+}
+
+
 void MainWindow::on_renameProBtn_clicked()
 {
     if (ui->projectWidget->currentItem() == NULL) {
@@ -728,4 +822,3 @@ void MainWindow::closeEvent(QCloseEvent *event)
     savePrefs();
     event->accept();
 }
-

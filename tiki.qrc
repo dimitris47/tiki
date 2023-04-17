@@ -16,5 +16,6 @@
         <file>icons/view-sort-ascending.png</file>
         <file>icons/application-x-font-afm.png</file>
         <file>icons/mx-alerts.svg</file>
+        <file>icons/new-from-file.png</file>
     </qresource>
 </RCC>
