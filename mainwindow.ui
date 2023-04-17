@@ -709,6 +709,9 @@
         <height>32</height>
        </size>
       </property>
+      <property name="toolTip">
+       <string>add project from text file (Ctrl+Alt+N)</string>
+      </property>
       <property name="text">
        <string/>
       </property>
@@ -721,6 +724,9 @@
         <width>24</width>
         <height>24</height>
        </size>
+      </property>
+      <property name="shortcut">
+       <string>Ctrl+Alt+N</string>
       </property>
       <property name="flat">
        <bool>true</bool>
