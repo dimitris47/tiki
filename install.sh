@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+read def _ OLD < tiki_inno_installer.iss
 IFS=" = " read _ ver < tiki.pro
 VERSION=$ver
 PACKAGE=tiki
@@ -9,6 +10,8 @@ BUILDDIR=/tmp/build-${PACKAGE}-${VERSION}
 DEBEMAIL="dimitrisinbox@gmail.com"
 DEBFULLNAME="Dimitris Psathas"
 export DEBEMAIL DEBFULLNAME
+
+sed -i -e "s/#define MyAppVersion \"$OLD\"/#define MyAppVersion \"$ver\"/g" tiki_inno_installer.iss
 
 mkdir -p "${BUILDDIR}" && pushd "${BUILDDIR}"
 ~/Qt/5.15.2/gcc_64/bin/qmake PREFIX=/usr "${SRCDIR}/tiki.pro" CONFIG+=release
