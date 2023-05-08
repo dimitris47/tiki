@@ -494,7 +494,7 @@ void MainWindow::on_addTaskBtn_clicked()
                 if (CURR_TASKS_ALL.at(i).status()) {
                     ui->taskWidget->item(i)->setForeground(Qt::GlobalColor::gray);
                 } else {
-                    ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color0);
+                    ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::darkCyan);
                 }
             }
             CURR_PRO.isModified = true;
