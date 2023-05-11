@@ -662,7 +662,8 @@ QString dirToWrite()
     }
     QStringList locations = (QStringList()
                              << QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation)
-                             << QStandardPaths::standardLocations(QStandardPaths::HomeLocation));
+                             << QStandardPaths::standardLocations(QStandardPaths::HomeLocation)
+                             << QStandardPaths::standardLocations(QStandardPaths::DesktopLocation));
     for (auto &&loc : locations) {
         if (QFileInfo::exists(loc)) {
             dir = loc;
@@ -734,6 +735,30 @@ void MainWindow::on_printBtn_clicked()
         TextDocument.print(&printer);
         ui->statusbar->showMessage(CURR_PRO.name() + " sent to printer", 3000);
     }
+}
+
+
+void MainWindow::on_expTxtBtn_clicked()
+{
+    QStringList tasksToExport = {};
+    for (int i=0; i<CURR_PRO.tasks.count(); i++) {
+        tasksToExport.append(ui->taskWidget->item(i)->text());
+    }
+    QString fileName = QFileDialog::getSaveFileName(
+        (QWidget *) 0, "Export to Text File", dirToWrite() + "/" + CURR_PRO.name(), "*.txt");
+    if (fileName.isEmpty()) {
+        return;
+    }
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
+        qWarning() << tr("error opening %1").arg(fileName);
+        return;
+    }
+    QTextStream data(&file);
+    data.setCodec(QTextCodec::codecForName("UTF-8"));
+    data.setIntegerBase(10);
+    data << tasksToExport.join('\n');
+    file.close();
 }
 
 

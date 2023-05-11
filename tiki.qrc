@@ -17,5 +17,6 @@
         <file>icons/application-x-font-afm.png</file>
         <file>icons/mx-alerts.svg</file>
         <file>icons/new-from-file.png</file>
+        <file>icons/icons8-todo-list-96.png</file>
     </qresource>
 </RCC>

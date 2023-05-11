@@ -33,6 +33,7 @@ private slots:
     void on_addTaskBtn_clicked();
     void on_alertBtn_clicked();
     void on_doneBtn_clicked();
+    void on_expTxtBtn_clicked();
     void on_fontBtn_clicked();
     void on_highBtn_clicked();
     void on_infoButton_clicked();
