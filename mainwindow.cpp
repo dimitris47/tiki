@@ -343,8 +343,6 @@ void MainWindow::on_addFromFileBtn_clicked()
                 for (int i=0; i<ui->taskWidget->count(); i++) {
                     if (CURR_TASKS_ALL.at(i).status()) {
                         ui->taskWidget->item(i)->setForeground(Qt::GlobalColor::gray);
-                    } else {
-                        ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color0);
                     }
                 }
                 CURR_PRO.isModified = true;
@@ -631,7 +629,7 @@ void MainWindow::on_notDoneBtn_clicked()
         CURR_TASK.setStatus(0);
     }
     sortTasksByPriority();
-    ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::color0);
+    ui->projectWidget->currentItem()->setForeground(Qt::GlobalColor::darkCyan);
     showCounts();
 }
 
