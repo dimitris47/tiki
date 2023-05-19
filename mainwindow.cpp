@@ -700,7 +700,7 @@ void MainWindow::on_pdfBtn_clicked()
         return;
     }
     QString fileName = QFileDialog::getSaveFileName(
-                (QWidget *) 0, "Export to PDF", dirToWrite(), "*.pdf");
+                (QWidget *) 0, "Export to PDF", dirToWrite() + "/" + CURR_PRO.name(), "*.pdf");
     if (fileName.isEmpty()) {
         return;
     }
