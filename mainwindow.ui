@@ -753,6 +753,9 @@
         <height>32</height>
        </size>
       </property>
+      <property name="toolTip">
+       <string>export project to text file (Ctrl+Alt+E)</string>
+      </property>
       <property name="text">
        <string/>
       </property>
